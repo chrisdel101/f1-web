@@ -1,21 +1,11 @@
 const router = require('koa-router')()
 const indexController = require('../controllers/index.controller')
+const driversController = require('../controllers/drivers.controller')
 
 router.get('/', indexController.render)
 
-router.get('/driver', async (ctx, next) => {
-  const res = indexController.httpCall(
-    `https://api.sportradar.us/formula1/trial/v2/en/competitors/sr:competitor:7135/profile.json?api_key=${
-      process.env.F1
-    }
-    `
-  )
-  const val = await res
-  console.log(val)
-  ctx.body = val
-  await ctx.render('index', {
-    title: title
-  })
+router.post('/driver', (ctx, next) => {
+  console.log(ctx.request.body)
 })
 router.get('/', async (ctx, next) => {})
 

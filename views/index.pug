@@ -4,7 +4,7 @@ block content
   h1= title
   form(method=method action=action enctype=enctype).driverForm
     .drivers
-      select
+      select(name=selectName)
         each driver in drivers
           option(value=driver) #{driver}
     button.btn.btn-primary(type=button_type value=button_value) #{buttonField}
