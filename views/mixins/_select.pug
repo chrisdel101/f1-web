@@ -1,0 +1,11 @@
+mixin select(data)
+  form(method=data.method action=data.action enctype=data.enctype)
+    .drivers
+      select(name=data.selectName)
+          each i in data.enums
+              option(value=i.name) #{i.name}
+      button.btn.btn-primary(type=data.buttonType value=data.buttonValue) #{data.buttonField}
+        
+           
+            
+      

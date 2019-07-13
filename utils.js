@@ -12,16 +12,23 @@ module.exports = {
       })
     })
   },
-  fetchDrivers: async id => {
+  getDriverNames: data => {
+    return data.stage.competitors.map(obj => {
+      // extract id from string in data
+      const id = obj.id.split(':')[obj.id.split(':').length - 1]
+      return {
+        name: obj.name,
+        id: id
+      }
+    })
+  },
+  fetchData: async id => {
     // const stageUrl = `https://api.sportradar.us/formula1/trial/v2/en/sport_events/sr:stage:324771/summary.json?api_key=${
     //   process.env.F1
     // }`
     // const call = utils.httpCall(stageUrl)
     // let json = await call
     // json = JSON.parse(json)
-    const names = json.stage.competitors.map(obj => {
-      return obj.name
-    })
-    return names
+    return json
   }
 }
