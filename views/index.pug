@@ -2,11 +2,21 @@ extends layout
 
 block content
   h1= title
-  form(method=method action=action enctype=enctype).driverForm
-    .drivers
-      select(name=selectName)
-        each driver in drivers
-          option(value=driver) #{driver}
-    button.btn.btn-primary(type=button_type value=button_value) #{buttonField}
+  if routeName === 'index'
+    form(method=method action=action enctype=enctype).driverForm
+      .drivers
+        select(name=selectName)
+          each driver in drivers
+            option(value=driver) #{driver}
+      button.btn.btn-primary(type=button_type value=button_value) #{buttonField}
+  else if routeName === 'driver'
+    form(method=method action=action enctype=enctype).driverForm
+        .drivers
+          select(name=selectName)
+            each driver in drivers
+              option(value=driver) #{driver}
+        button.btn.btn-primary(type=button_type value=button_value) #{buttonField}
+        div "Hello"
+
 
 

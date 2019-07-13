@@ -38,9 +38,21 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+// uses async arrow functions
+// app.use(async (ctx, next) => {
+//   try {
+//     await next() // next is now a function
+//   } catch (err) {
+//     ctx.body = { message: err.message }
+//     ctx.status = err.status || 500
+//   }
+// })
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+
+// set locals
+app.context.title = 'Forumla One'
 
 // error-handling
 app.on('error', (err, ctx) => {

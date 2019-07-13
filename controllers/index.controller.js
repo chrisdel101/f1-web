@@ -1,11 +1,9 @@
 const utils = require('../utils')
-const title = 'Formula 1'
-const json = require('../test.json')
 module.exports = {
   render: async (ctx, next) => {
-    let drivers = await module.exports.fetchDrivers()
+    let drivers = await utils.fetchDrivers()
     await ctx.render('index', {
-      title: title,
+      title: ctx.title,
       drivers: drivers,
       method: 'POST',
       action: '/driver',
@@ -13,7 +11,8 @@ module.exports = {
       buttonField: 'Submit',
       buttonType: 'submit',
       buttonValue: 'submit',
-      selectName: 'selectDriver'
+      selectName: 'selectDriver',
+      routeName: 'index'
     })
   },
   fetchDrivers: async id => {
