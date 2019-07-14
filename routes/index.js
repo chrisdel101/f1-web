@@ -5,10 +5,7 @@ const driversController = require('../controllers/drivers.controller')
 
 router.get('/', indexController.render)
 
-router.post('/driver', async (ctx, next) => {
-  console.log('here')
-  // driversController.fetchDriver(ctx, next).then(res => console.log(res))
-})
+router.post('/driver', driversController.fetchDriver)
 
 router.get('/string', async (ctx, next) => {
   ctx.body = 'koa2 string'

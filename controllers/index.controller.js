@@ -3,7 +3,6 @@ module.exports = {
   render: async (ctx, next) => {
     const data = await utils.fetchData()
     const drivers = utils.getDriverNames(data)
-    console.log('TEST')
     await ctx.render('index', {
       title: ctx.title,
       enums: drivers,
