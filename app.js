@@ -11,6 +11,7 @@ const logger = require('koa-logger')
 const index = require('./routes/index')
 const users = require('./routes/users')
 const F1 = 'Formula 1'
+const urls = require('./urls')
 // error handler
 onerror(app)
 
@@ -53,8 +54,8 @@ app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 
 // set locals
-app.context.title = 'Forumla One'
-
+app.context.title = F1
+app.context.urls = urls
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)

@@ -1,5 +1,5 @@
 module.exports = {
-  F1driverImage: name => {
+  f1driverImage: name => {
     return `https://www.formula1.com/content/fom-website/en/drivers/${name}/_jcr_content/image.img.1536.medium.jpg`
   },
   f1API: apiKey => {
