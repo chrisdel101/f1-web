@@ -1,7 +1,33 @@
 mixin card(data)
-  - console.log(urls)
+  - console.log(data)
   .card
     .column
       .driver-image
-        img(src=data.imgName)
+        img(src=urls.f1driverImage(data.imgName))
     .column
+      table.driver-data
+        tbody
+          tr 
+            td Name #{data.name} 
+          tr 
+            td Country #{data.nationality} 
+          tr 
+            td Team #{data.team} 
+          tr 
+            td Points #{data.points} 
+          tr 
+           td Number #{data.carNumber} 
+          tr 
+            td Rank #{data.currentRank} 
+          tr 
+            td Victories #{data.victories} 
+          tr 
+            td Season Races #{data.seasonsRaces} 
+          tr 
+            td Races with Points #{data.seasonsRacesWpoints} 
+          tr 
+            td Pole Posiions #{data.polePositions} 
+          tr 
+            td Podiums #{data.podiums} 
+          tr 
+            td Fastest Laps #{data.fastestLap} 

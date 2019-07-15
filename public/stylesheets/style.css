@@ -6,10 +6,16 @@ body {
 a {
   color: #00b7ff;
 }
-
+table {
+  width: 100%;
+}
 img {
   max-width: 100%;
 }
 .driver-image {
   max-width: 400px;
+}
+.driver-card .card {
+  display: flex;
+  flex-direction: row;
 }
