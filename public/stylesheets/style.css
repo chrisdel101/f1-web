@@ -7,15 +7,35 @@ a {
   color: #00b7ff;
 }
 table {
-  width: 100%;
+  width: 50%;
 }
 img {
   max-width: 100%;
 }
 .driver-image {
-  max-width: 400px;
+  max-width: 100%;
+}
+.car-image {
+  max-width: 50%;
+  align-self: flex-end;
+}
+.driver-column {
+  width: 50%;
+}
+.stats-column {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: whitesmoke;
 }
 .driver-card .card {
   display: flex;
   flex-direction: row;
+}
+.stats {
+  align-self: center;
+}
+.stat-key {
+  font-weight: bold;
 }

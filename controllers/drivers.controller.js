@@ -8,9 +8,10 @@ async function fetchDriver(ctx, next) {
   const driverObj = makeDriverObj(data, drivers, ctx.request.body.selectDriver)
   console.log('here', ctx.urls)
   await ctx.render('driver', {
-    routeName: 'driver',
     urls: ctx.urls,
     title: ctx.title,
+    capitalize: utils.capitalize,
+    routeName: 'driver',
     enums: drivers,
     method: 'POST',
     action: '/driver',

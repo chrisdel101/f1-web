@@ -1,33 +1,59 @@
 mixin card(data)
   - console.log(data)
   .card
-    .column
+    .column.driver-column
       .driver-image
         img(src=urls.f1driverImage(data.imgName))
-    .column
-      table.driver-data
+    .column.stats-column
+      //- .car-image
+      //-   img(src=urls.f1carImage(capitalize(data.team)))
+      table.stats
         tbody
           tr 
-            td Name #{data.name} 
+            td 
+              span.stat-key Name 
+              span.stat-value #{data.name} 
           tr 
-            td Country #{data.nationality} 
+            td 
+              span.stat-key Country 
+              span.stat-value #{data.nationality} 
           tr 
-            td Team #{data.team} 
+            td 
+              span.stat-key Team 
+              span.stat-value #{data.team} 
           tr 
-            td Points #{data.points} 
+            td 
+              span.stat-key Points 
+              span.stat-value #{data.points} 
           tr 
-           td Number #{data.carNumber} 
+           td 
+            span.stat-key Number 
+            span.stat-value #{data.carNumber} 
           tr 
-            td Rank #{data.currentRank} 
+            td 
+              span.stat-key Rank 
+              span.stat-value #{data.currentRank} 
           tr 
-            td Victories #{data.victories} 
+            td 
+              span.stat-key Victories 
+              span.stat-value #{data.victories} 
           tr 
-            td Season Races #{data.seasonsRaces} 
+            td 
+              span.stat-key Season Races 
+              span.stat-value #{data.seasonRaces} 
           tr 
-            td Races with Points #{data.seasonsRacesWpoints} 
+            td 
+              span.stat-key Races with Points 
+              span.stat-value #{data.seasonRaceWpoints} 
           tr 
-            td Pole Posiions #{data.polePositions} 
+            td 
+              span.stat-key Pole Posiions 
+              span.stat-value #{data.polePositions} 
           tr 
-            td Podiums #{data.podiums} 
+            td 
+              span.stat-key Podiums 
+              span.stat-value #{data.podiums} 
           tr 
-            td Fastest Laps #{data.fastestLap} 
+            td 
+              span.stat-key Fastest Laps 
+              span.stat-value #{data.fastestLap} 

@@ -29,5 +29,8 @@ module.exports = {
     // let json = await call
     // json = JSON.parse(json)
     return json
+  },
+  capitalize: word => {
+    return word && word[0].toUpperCase() + word.slice(1)
   }
 }
