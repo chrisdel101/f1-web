@@ -3,8 +3,9 @@ const json = require('../test.json')
 
 async function fetchDriver(ctx, next) {
   const data = await utils.fetchData()
+  console.log(data)
   const drivers = utils.getDriverNames(data)
-  // console.log(ctx.request.body.selectDriver)
+  console.log(ctx.request.body.selectDriver)
   const driverObj = makeDriverObj(data, drivers, ctx.request.body.selectDriver)
   console.log('here', ctx.urls)
   await ctx.render('driver', {
