@@ -10,5 +10,8 @@ module.exports = {
   },
   f12019url: apiKey => {
     return `https://api.sportradar.us/formula1/trial/v2/en/sport_events/sr:stage:426678/summary.json?api_key=${apiKey}`
+  },
+  localDev: params => {
+    return `http://localhost:5000/${params}`
   }
 }

@@ -3,26 +3,26 @@ const json = require('../test.json')
 
 async function fetchDriver(ctx, next) {
   const data = await utils.fetchData()
-  console.log(data)
-  const drivers = utils.getDriverNames(data)
-  console.log(ctx.request.body.selectDriver)
-  const driverObj = makeDriverObj(data, drivers, ctx.request.body.selectDriver)
-  console.log('here', ctx.urls)
-  await ctx.render('driver', {
-    urls: ctx.urls,
-    title: ctx.title,
-    capitalize: utils.capitalize,
-    routeName: 'driver',
-    enums: drivers,
-    method: 'POST',
-    action: '/driver',
-    enctype: 'application/x-www-form-urlencoded',
-    buttonField: 'Submit',
-    buttonType: 'submit',
-    buttonValue: 'submit',
-    selectName: 'selectDriver',
-    driverObj: driverObj
-  })
+  // console.log(data)
+  // const drivers = utils.getDriverNames(data)
+  // console.log(ctx.request.body.selectDriver)
+  // const driverObj = makeDriverObj(data, drivers, ctx.request.body.selectDriver)
+  // // console.log('here', ctx.urls)
+  // await ctx.render('driver', {
+  //   urls: ctx.urls,
+  //   title: ctx.title,
+  //   capitalize: utils.capitalize,
+  //   routeName: 'driver',
+  //   enums: drivers,
+  //   method: 'POST',
+  //   action: '/driver',
+  //   enctype: 'application/x-www-form-urlencoded',
+  //   buttonField: 'Submit',
+  //   buttonType: 'submit',
+  //   buttonValue: 'submit',
+  //   selectName: 'selectDriver',
+  //   driverObj: driverObj
+  // })
 }
 // get driver data from form name
 function getDriverfromFormData(data, drivers, name) {

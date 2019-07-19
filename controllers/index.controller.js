@@ -1,8 +1,8 @@
 const utils = require('../utils')
 module.exports = {
   render: async (ctx, next) => {
-    const data = await utils.fetchData()
-    const drivers = utils.getDriverNames(data)
+    let drivers = await utils.fetchData('drivers')
+    drivers = JSON.parse(drivers)
     await ctx.render('index', {
       title: ctx.title,
       enums: drivers,
