@@ -2,27 +2,32 @@ const utils = require('../utils')
 const json = require('../test.json')
 
 async function fetchDriver(ctx, next) {
-  const data = await utils.fetchData()
-  // console.log(data)
-  // const drivers = utils.getDriverNames(data)
-  // console.log(ctx.request.body.selectDriver)
+  let driverName = ctx.request.body.selectDriver
+  driverName = driverHyphenName(driverName)
+  console.log(driverName)
+  // const drivers = utils.getDriverData(data)
+
+  const data = await utils.fetchData('drivers/${driverName}')
+  console.log(data)
+  // return
+  // console.log()
   // const driverObj = makeDriverObj(data, drivers, ctx.request.body.selectDriver)
-  // // console.log('here', ctx.urls)
-  // await ctx.render('driver', {
-  //   urls: ctx.urls,
-  //   title: ctx.title,
-  //   capitalize: utils.capitalize,
-  //   routeName: 'driver',
-  //   enums: drivers,
-  //   method: 'POST',
-  //   action: '/driver',
-  //   enctype: 'application/x-www-form-urlencoded',
-  //   buttonField: 'Submit',
-  //   buttonType: 'submit',
-  //   buttonValue: 'submit',
-  //   selectName: 'selectDriver',
-  //   driverObj: driverObj
-  // })
+  // console.log('here', ctx.urls)
+  await ctx.render('driver', {
+    urls: ctx.urls,
+    title: ctx.title,
+    capitalize: utils.capitalize,
+    routeName: 'driver',
+    enums: drivers,
+    method: 'POST',
+    action: '/driver',
+    enctype: 'application/x-www-form-urlencoded',
+    buttonField: 'Submit',
+    buttonType: 'submit',
+    buttonValue: 'submit',
+    selectName: 'selectDriver',
+    driverObj: driverObj
+  })
 }
 // get driver data from form name
 function getDriverfromFormData(data, drivers, name) {
@@ -37,7 +42,7 @@ function makeDriverObj(data, drivers, name) {
   return {
     id: driverData[0].id,
     name: driverCardName(name),
-    imgName: driverImageName(name),
+    imgName: driverHyphenName(name),
     nationality: driverData[0].nationality,
     team: driverData[0].team.name,
     teamId: driverData[0].team.id,
@@ -58,11 +63,10 @@ function driverCardName(name) {
   return `${names[1]} ${names[0]}`
 }
 // make into format for image string
-function driverImageName(name) {
+function driverHyphenName(name) {
+  name = name.replace(',', ' ')
   let names = name.split(' ')
-  names[0] = names[0].substr(0, names[0].length - 1)
-  names = `${names[1]}-${names[0]}`.toLowerCase()
-  return names
+  return `${names[0]}-${names[1]}`.toLowerCase()
 }
 module.exports = {
   fetchDriver: fetchDriver,

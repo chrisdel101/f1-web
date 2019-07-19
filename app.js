@@ -12,6 +12,7 @@ const index = require('./routes/index')
 const users = require('./routes/users')
 const F1 = 'Formula 1'
 const urls = require('./urls')
+const errorHandlers = require('./errorHandlers')
 // error handler
 onerror(app)
 
@@ -56,9 +57,24 @@ app.use(users.routes(), users.allowedMethods())
 // set locals
 app.context.title = F1
 app.context.urls = urls
-// error-handling
-app.on('error', (err, ctx) => {
-  console.error('server error', err, ctx)
-})
+// // error-handling
+// app.on('error', (err, ctx) => {
+//   console.error('server error', err, ctx)
+// })
+
+// If that above routes didnt work, we 404 them and forward to error handler
+app.use(errorHandlers.notFound)
+
+// One of our error handlers will see if these errors are just validation errors
+app.use(errorHandlers.flashValidationErrors)
+
+// Otherwise this was a really bad error we didn't expect! Shoot eh
+if (process.env.NODE_ENV === 'development') {
+  /* Development Error Handler - Prints stack trace */
+  app.use(errorHandlers.developmentErrors)
+} else {
+  // production error handler
+  app.use(errorHandlers.productionErrors)
+}
 
 module.exports = app

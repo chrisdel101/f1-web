@@ -2,10 +2,11 @@ const router = require('koa-router')()
 const indexController = require('../controllers/index.controller')
 const driversController = require('../controllers/drivers.controller')
 // console.log(driversController)
+const { catchErrors } = require('../errorHandlers')
 
-router.get('/', indexController.render)
+router.get('/', indexController.test)
 
-router.post('/driver', driversController.fetchDriver)
+router.post('/driver', catchErrors(driversController.fetchDriver))
 
 router.get('/string', async (ctx, next) => {
   ctx.body = 'koa2 string'

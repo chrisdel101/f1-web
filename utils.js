@@ -15,16 +15,6 @@ module.exports = {
       })
     })
   },
-  getDriverNames: data => {
-    // return data.stage.competitors.map(obj => {
-    //   // extract id from string in data
-    //   // const id = obj.id.split(':')[obj.id.split(':').length - 1]
-    //   return {
-    //     name: obj.name,
-    //     id: obj.id
-    //   }
-    // })
-  },
   fetchData: async params => {
     if (process.env.API_ENV === 'remote') {
       const stageUrl = urls.f12019url(process.env.F1)
@@ -36,6 +26,7 @@ module.exports = {
       return json
     } else if (process.env.API_ENV === 'flask') {
       const call = module.exports.httpCall(urls.localDev(params))
+      console.log(urls.localDev(params))
       let remoteJson = await call
       return remoteJson
     }

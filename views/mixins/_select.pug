@@ -2,11 +2,11 @@ mixin select(data)
   form(method=data.method action=data.action enctype=data.enctype)
     .drivers
       select(name=data.selectName)
-        each driver in data.enums
-          - console.log(driver[0])
-      //-     each driverArr in data.enums
-      //-         //- option(value=`) #{i.name}
-      //- button.btn.btn-primary(type=data.buttonType value=data.buttonValue) #{data.buttonField}
+        each driver in data.enums.drivers
+          - const driverVal = driver.split(' ').join() 
+          - const driverName = driver.replace(',', ' ')
+          option(value=driverVal) #{driverName}
+      button.btn.btn-primary(type=data.buttonType value=data.buttonValue) #{data.buttonField}
         
            
             
