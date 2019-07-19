@@ -4,7 +4,7 @@ const driversController = require('../controllers/drivers.controller')
 // console.log(driversController)
 const { catchErrors } = require('../errorHandlers')
 
-router.get('/', indexController.test)
+router.get('/', indexController.render)
 
 router.post('/driver', catchErrors(driversController.fetchDriver))
 
