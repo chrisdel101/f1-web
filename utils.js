@@ -1,6 +1,5 @@
 const https = require('https')
 const http = require('http')
-const json = require('./test.json')
 const urls = require('./urls')
 const utils = require('./utils')
 
@@ -23,7 +22,8 @@ module.exports = {
       remoteJson = JSON.parse(remoteJson)
       return remoteJson
     } else if (process.env.API_ENV === 'local') {
-      return json
+      // TODO
+      return
     } else if (process.env.API_ENV === 'flask') {
       const call = module.exports.httpCall(urls.localDev(params))
       console.log(urls.localDev(params))

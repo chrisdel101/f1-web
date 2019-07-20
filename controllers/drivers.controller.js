@@ -1,5 +1,4 @@
 const utils = require('../utils')
-const json = require('../test.json')
 
 async function fetchDriver(ctx, next) {
   let driverName = driverHyphenName(ctx.request.body.selectDriver)
