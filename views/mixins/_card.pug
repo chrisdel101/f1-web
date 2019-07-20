@@ -1,12 +1,9 @@
 mixin card(data)
-  - console.log(data)
   .card
     .column.driver-column
       .driver-image
         img(src=data.main_image)
     .column.stats-column
-      //- .car-image
-      //-   img(src=urls.f1carImage(capitalize(data.team)))
       table.stats
         tbody
           tr 
