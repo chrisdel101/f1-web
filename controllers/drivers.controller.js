@@ -2,17 +2,12 @@ const utils = require('../utils')
 const json = require('../test.json')
 
 async function fetchDriver(ctx, next) {
-  let driverName = ctx.request.body.selectDriver
-  driverName = driverHyphenName(driverName)
+  let driverName = driverHyphenName(ctx.request.body.selectDriver)
   console.log(driverName)
-  // const drivers = utils.getDriverData(data)
+  const drivers = JSON.parse(await utils.fetchData('drivers'))
 
-  const data = await utils.fetchData('drivers/${driverName}')
-  console.log(data)
-  // return
-  // console.log()
-  // const driverObj = makeDriverObj(data, drivers, ctx.request.body.selectDriver)
-  // console.log('here', ctx.urls)
+  const driverData = JSON.parse(await utils.fetchData(`drivers/${driverName}`))
+
   await ctx.render('driver', {
     urls: ctx.urls,
     title: ctx.title,
@@ -26,7 +21,7 @@ async function fetchDriver(ctx, next) {
     buttonType: 'submit',
     buttonValue: 'submit',
     selectName: 'selectDriver',
-    driverObj: driverObj
+    driverData: driverData
   })
 }
 // get driver data from form name

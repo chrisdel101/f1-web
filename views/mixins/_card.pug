@@ -1,59 +1,57 @@
-//- mixin card(data)
-//-   - console.log(data)
-//-   .card
-//-     .column.driver-column
-//-       .driver-image
-//-         img(src=urls.f1driverImage(data.imgName))
-//-     .column.stats-column
-//-       //- .car-image
-//-       //-   img(src=urls.f1carImage(capitalize(data.team)))
-//-       table.stats
-//-         tbody
-//-           tr 
-//-             td 
-//-               span.stat-key Name 
-//-               span.stat-value #{data.name} 
-//-           tr 
-//-             td 
-//-               span.stat-key Country 
-//-               span.stat-value #{data.nationality} 
-//-           tr 
-//-             td 
-//-               span.stat-key Team 
-//-               span.stat-value #{data.team} 
-//-           tr 
-//-             td 
-//-               span.stat-key Points 
-//-               span.stat-value #{data.points} 
-//-           tr 
-//-            td 
-//-             span.stat-key Number 
-//-             span.stat-value #{data.carNumber} 
-//-           tr 
-//-             td 
-//-               span.stat-key Rank 
-//-               span.stat-value #{data.currentRank} 
-//-           tr 
-//-             td 
-//-               span.stat-key Victories 
-//-               span.stat-value #{data.victories} 
-//-           tr 
-//-             td 
-//-               span.stat-key Season Races 
-//-               span.stat-value #{data.seasonRaces} 
-//-           tr 
-//-             td 
-//-               span.stat-key Races with Points 
-//-               span.stat-value #{data.seasonRaceWpoints} 
-//-           tr 
-//-             td 
-//-               span.stat-key Pole Posiions 
-//-               span.stat-value #{data.polePositions} 
-//-           tr 
-//-             td 
-//-               span.stat-key Podiums 
-//-               span.stat-value #{data.podiums} 
-//-           tr 
-//-             td 
-//-               span.stat-key Fastest Laps 
-//-               span.stat-value #{data.fastestLap} 
+mixin card(data)
+  - console.log(data)
+  .card
+    .column.driver-column
+      .driver-image
+        img(src=data.main_image)
+    .column.stats-column
+      //- .car-image
+      //-   img(src=urls.f1carImage(capitalize(data.team)))
+      table.stats
+        tbody
+          tr 
+            td 
+              span.stat-key Name 
+              span.stat-value #{data.driver_name} 
+          tr 
+            td 
+              span.stat-key Country 
+              span.stat-value #{data.country} 
+          tr 
+            td 
+              span.stat-key Team 
+              span.stat-value #{data.team} 
+          tr 
+            td 
+              span.stat-key Points 
+              span.stat-value #{data.points} 
+          tr 
+           td 
+            span.stat-key Number 
+            span.stat-value #{data.driver_number} 
+          tr 
+            td 
+              span.stat-key Higest Grid Position 
+              span.stat-value #{data.highest_grid_position} 
+          tr 
+            td 
+              span.stat-key Date of Birth 
+              span.stat-value #{data.date_of_birth} 
+          tr 
+          tr 
+            td 
+              span.stat-key Place of Birth 
+              span.stat-value #{data.place_of_birth} 
+          tr 
+            td 
+              span.stat-key Podiums 
+              span.stat-value #{data.podiums} 
+          tr 
+            td 
+              span.stat-key World Championships
+              span.stat-value #{data.world_championships} 
+          tr 
+            td 
+              span.stat-key Pole Posiions 
+              span.stat-value #{data.polePositions} 
+          

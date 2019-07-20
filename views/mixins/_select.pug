@@ -1,4 +1,5 @@
 mixin select(data)
+  - console.log(data)
   form(method=data.method action=data.action enctype=data.enctype)
     .drivers
       select(name=data.selectName)
