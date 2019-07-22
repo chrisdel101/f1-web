@@ -6,7 +6,6 @@ const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
-const logger = require('koa-logger')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
@@ -23,7 +22,6 @@ app.use(
   })
 )
 app.use(json())
-app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 
 app.use(
@@ -33,7 +31,6 @@ app.use(
   })
 )
 
-// logger
 app.use(async (ctx, next) => {
   const start = new Date()
   await next()
@@ -64,9 +61,6 @@ app.context.urls = urls
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound)
-
-// One of our error handlers will see if these errors are just validation errors
-app.use(errorHandlers.flashValidationErrors)
 
 // Otherwise this was a really bad error we didn't expect! Shoot eh
 if (process.env.NODE_ENV === 'development') {
