@@ -6,7 +6,7 @@ block content
   h1= title
   +select({
     method:method,
-    action: action,
+    action: driverAction,
     enctype: enctype,
     selectName: driverSelectName,
     enums: driverEnums, 
@@ -16,7 +16,7 @@ block content
   }) 
   +select({
     method:method,
-    action: action,
+    action: teamAction,
     enctype: enctype,
     selectName: teamSelectName,
     enums: teamsEnums, 

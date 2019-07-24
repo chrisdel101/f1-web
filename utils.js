@@ -30,6 +30,15 @@ module.exports = {
       return remoteJson
     }
   },
+  hyphenate: name => {
+    name = name.replace(',', ' ')
+    let names = name.split(' ')
+    return `${names[0]}-${names[1]}`.toLowerCase()
+  },
+  // remove seperators
+  unSlugify: (word, separatorToAdd, separatorToRemove = '_') => {
+    return word.split(separatorToRemove).join(separatorToAdd)
+  },
   capitalize: word => {
     return word && word[0].toUpperCase() + word.slice(1)
   }

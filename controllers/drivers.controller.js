@@ -1,7 +1,7 @@
 const utils = require('../utils')
 
 async function fetchDriver(ctx, next) {
-  let driverName = driverHyphenName(ctx.request.body.selectDriver)
+  let driverName = utils.hyphenate(ctx.request.body.selectDriver)
   const drivers = JSON.parse(await utils.fetchData('drivers'))
   const driverData = JSON.parse(await utils.fetchData(`drivers/${driverName}`))
   await ctx.render('driver', {

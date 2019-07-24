@@ -9,7 +9,8 @@ async function render(ctx, next) {
   await ctx.render('index', {
     title: ctx.title,
     method: 'POST',
-    action: '/driver',
+    driverAction: driversObj.driverAction,
+    teamAction: teamsObj.teamAction,
     enctype: 'application/x-www-form-urlencoded',
     buttonField: 'Submit',
     buttonType: 'submit',
@@ -25,7 +26,8 @@ async function handleDrivers(ctx, next) {
     const driversArr = JSON.parse(await utils.fetchData('drivers'))
     return {
       driversArr: driversArr,
-      selectName: 'selectDriver'
+      selectName: 'selectDriver',
+      driverAction: '/driver'
     }
   } catch {
     const error = {
@@ -39,13 +41,15 @@ async function handleDrivers(ctx, next) {
 }
 async function handleTeams(ctx, next) {
   try {
-    const teams = JSON.parse(await utils.fetchData('teams')).map(
-      obj => obj.name
+    // extract just the names
+    const teams = JSON.parse(await utils.fetchData('teams')).map(obj =>
+      utils.unSlugify(obj.name, ' ')
     )
-    console.log('t', teams)
+    console.log(teams)
     return {
       teamsArr: teams,
-      selectName: 'selectTeam'
+      selectName: 'selectTeam',
+      teamAction: '/team'
     }
   } catch {
     const error = {
