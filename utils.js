@@ -26,20 +26,48 @@ module.exports = {
       return
     } else if (process.env.API_ENV === 'flask') {
       const call = module.exports.httpCall(urls.localDev(params))
+      console.log(urls.localDev(params))
       let remoteJson = await call
       return remoteJson
     }
   },
+
   hyphenate: name => {
     name = name.replace(',', ' ')
     let names = name.split(' ')
     return `${names[0]}-${names[1]}`.toLowerCase()
   },
-  // remove seperators
-  unSlugify: (word, separatorToAdd, separatorToRemove = '_') => {
+  // remove seperators and replace with others
+  addSeparator: (word, separatorToAdd, separatorToRemove = '_') => {
     return word.split(separatorToRemove).join(separatorToAdd)
   },
+  // cap beginning of each seperate word
   capitalize: word => {
     return word && word[0].toUpperCase() + word.slice(1)
+  },
+  // shorted from Red_Bull_Racing to Red_Bull
+  teamShortener: fullName => {
+    if (fullName === 'Haas F1 Team') {
+      return 'Hass'
+    }
+    // count whitespaces - get num of words
+    const whiteSpaces = fullName.split(' ').length - 1
+    // toro rosso, etc
+    if (whiteSpaces <= 1) {
+      return fullName
+    }
+    let splitName = fullName.split('')
+    // remove last word
+    let newName = ''
+    let whiteSpace = 0
+    for (let i = 0; i < splitName.length; i++) {
+      if (splitName[i] === ' ') {
+        whiteSpace++
+      }
+      if (whiteSpace >= whiteSpaces) {
+        return newName
+      }
+      newName += splitName[i]
+    }
   }
 }

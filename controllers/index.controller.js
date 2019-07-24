@@ -43,7 +43,7 @@ async function handleTeams(ctx, next) {
   try {
     // extract just the names
     const teams = JSON.parse(await utils.fetchData('teams')).map(obj =>
-      utils.unSlugify(obj.name, ' ')
+      utils.addSeparator(obj.name, ' ')
     )
     console.log(teams)
     return {
