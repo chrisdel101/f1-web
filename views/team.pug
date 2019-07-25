@@ -1,0 +1,9 @@
+extends layout
+
+include mixins/_select
+include mixins/_card
+
+block content
+  h1= title
+  .team-card
+    +card(teamData)

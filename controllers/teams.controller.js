@@ -7,23 +7,13 @@ async function fetchTeam(ctx, next) {
   teamName = utils.capitalize(teamName)
   teamName = utils.teamShortener(teamName)
   teamName = utils.addSeparator(teamName, '-', ' ')
-  const teamsData = JSON.parse(await utils.fetchData(`teams/${teamName}`))
+  const teamData = JSON.parse(await utils.fetchData(`teams/${teamName}`))
   // console.log(teamsData)
-  return teamsData
-  await ctx.render('driver', {
-    urls: ctx.urls,
+  await ctx.render('team', {
     title: ctx.title,
+    teamData: teamData,
     capitalize: utils.capitalize,
-    routeName: 'driver',
-    enums: drivers,
-    method: 'POST',
-    action: '/driver',
-    enctype: 'application/x-www-form-urlencoded',
-    buttonField: 'Submit',
-    buttonType: 'submit',
-    buttonValue: 'submit',
-    selectName: 'selectDriver',
-    driverData: driverData
+    separator: utils.addSeparator
   })
 }
 // make into format for image string

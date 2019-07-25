@@ -8,6 +8,7 @@ async function fetchDriver(ctx, next) {
     urls: ctx.urls,
     title: ctx.title,
     capitalize: utils.capitalize,
+    separator: utils.addSeparator,
     routeName: 'driver',
     enums: drivers,
     method: 'POST',

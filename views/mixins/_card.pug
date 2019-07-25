@@ -1,54 +1,16 @@
 mixin card(data)
   .card
-    .column.driver-column
-      .driver-image
+    .column.left-column
+      .main-image
         img(src=data.main_image)
-    .column.stats-column
+    .column.right-column
       table.stats
         tbody
-          tr 
-            td 
-              span.stat-key Name 
-              span.stat-value #{data.driver_name} 
-          tr 
-            td 
-              span.stat-key Country 
-              span.stat-value #{data.country} 
-          tr 
-            td 
-              span.stat-key Team 
-              span.stat-value #{data.team} 
-          tr 
-            td 
-              span.stat-key Points 
-              span.stat-value #{data.points} 
-          tr 
-           td 
-            span.stat-key Number 
-            span.stat-value #{data.driver_number} 
-          tr 
-            td 
-              span.stat-key Higest Grid Position 
-              span.stat-value #{data.highest_grid_position} 
-          tr 
-            td 
-              span.stat-key Date of Birth 
-              span.stat-value #{data.date_of_birth} 
-          tr 
-          tr 
-            td 
-              span.stat-key Place of Birth 
-              span.stat-value #{data.place_of_birth} 
-          tr 
-            td 
-              span.stat-key Podiums 
-              span.stat-value #{data.podiums} 
-          tr 
-            td 
-              span.stat-key World Championships
-              span.stat-value #{data.world_championships} 
-          tr 
-            td 
-              span.stat-key Pole Posiions 
-              span.stat-value #{data.polePositions} 
+          for val, key in data
+            - key = capitalize(separator(key, " "))
+            tr 
+              td 
+                span.stat-key #{key} 
+                span.stat-value #{val} 
+          
           

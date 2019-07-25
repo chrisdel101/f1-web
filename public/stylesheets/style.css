@@ -12,24 +12,25 @@ table {
 img {
   max-width: 100%;
 }
-.driver-image {
+.main-image {
   max-width: 100%;
 }
 .car-image {
   max-width: 50%;
   align-self: flex-end;
 }
-.driver-column {
+.left-column {
   width: 50%;
 }
-.stats-column {
+.right-column {
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-color: whitesmoke;
 }
-.driver-card .card {
+.driver-card .card,
+.team-card .card {
   display: flex;
   flex-direction: row;
 }
