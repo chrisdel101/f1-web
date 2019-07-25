@@ -26,7 +26,7 @@ module.exports = {
       return
     } else if (process.env.API_ENV === 'flask') {
       const call = module.exports.httpCall(urls.localDev(params))
-      console.log(urls.localDev(params))
+      // console.log(urls.localDev(params))
       let remoteJson = await call
       return remoteJson
     }
@@ -52,12 +52,12 @@ module.exports = {
     }
     // count whitespaces - get num of words
     const whiteSpaces = fullName.split(' ').length - 1
-    // toro rosso, etc
+    // 2 words or toro rosso, etc
     if (whiteSpaces <= 1) {
       return fullName
     }
+    // else more than 2 words - red bull racing etc
     let splitName = fullName.split('')
-    // remove last word
     let newName = ''
     let whiteSpace = 0
     for (let i = 0; i < splitName.length; i++) {

@@ -5,7 +5,6 @@ module.exports = {
 async function render(ctx, next) {
   const driversObj = await handleDrivers(ctx, next)
   const teamsObj = await handleTeams(ctx, next)
-  // console.log('teams', teamsObj)
   await ctx.render('index', {
     title: ctx.title,
     method: 'POST',
@@ -45,7 +44,7 @@ async function handleTeams(ctx, next) {
     const teams = JSON.parse(await utils.fetchData('teams')).map(obj =>
       utils.addSeparator(obj.name, ' ')
     )
-    console.log(teams)
+    // console.log(teams)
     return {
       teamsArr: teams,
       selectName: 'selectTeam',
