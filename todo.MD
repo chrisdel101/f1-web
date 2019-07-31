@@ -2,6 +2,10 @@
 
 **Overall idea**: send cards of drivers to users via messenger, and text, and in mobile app.
 
+### Tasks
+
+- add error handling for when API is not running Error: connect ECONNREFUSED 127.0.0.1:5000
+
 ### Stories
 
 - show driver and basics stats

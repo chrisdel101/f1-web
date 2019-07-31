@@ -12,6 +12,7 @@ module.exports = {
     return `https://api.sportradar.us/formula1/trial/v2/en/sport_events/sr:stage:426678/summary.json?api_key=${apiKey}`
   },
   localDev: params => {
+    // console.log(`=====================http://localhost:5000/${params}`)
     return `http://localhost:5000/${params}`
   }
 }

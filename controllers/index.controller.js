@@ -5,7 +5,7 @@ module.exports = {
 async function render(ctx, next) {
   const driversObj = await handleDrivers(ctx, next)
   const teamsObj = await handleTeams(ctx, next)
-  console.log('TEMA', teamsObj)
+  // console.log('TEMA', teamsObj)
 
   await ctx.render('index', {
     title: ctx.title,
