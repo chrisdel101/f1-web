@@ -26,8 +26,8 @@ module.exports = {
       return
     } else if (process.env.API_ENV === 'flask') {
       const call = module.exports.httpCall(urls.localDev(params))
-      // console.log(urls.localDev(params))
       let remoteJson = await call
+      // console.log(remoteJ)
       return remoteJson
     }
   },

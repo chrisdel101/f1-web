@@ -4,7 +4,8 @@ mixin select(data)
     .select
       select(name=data.selectName)
         each d in data.enums 
-          option(value=d) #{d}
+          - console.log("DD"  ,d)
+          option(value=d) #{d.name}
       button.btn.btn-primary(type=data.buttonType value=data.buttonValue) #{data.buttonField}
         
            

@@ -16,12 +16,6 @@ async function fetchTeam(ctx, next) {
     separator: utils.addSeparator
   })
 }
-// make into format for image string
-function driverHyphenName(name) {
-  name = name.replace(',', ' ')
-  let names = name.split(' ')
-  return `${names[0]}-${names[1]}`.toLowerCase()
-}
 module.exports = {
   fetchTeam: fetchTeam
 }
