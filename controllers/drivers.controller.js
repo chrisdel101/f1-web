@@ -11,7 +11,7 @@ async function fetchDriver(ctx, next) {
     separator: utils.addSeparator,
     routeName: 'driver',
     enums: drivers,
-    method: 'POST',
+    method: 'GET',
     action: '/driver',
     enctype: 'application/x-www-form-urlencoded',
     buttonField: 'Submit',
