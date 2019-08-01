@@ -4,15 +4,14 @@ module.exports = {
 }
 async function render(ctx, next) {
   const driversObj = await handleDrivers(ctx, next)
+  console.log('DRIVE', driversObj)
   const teamsObj = await handleTeams(ctx, next)
-  // console.log('TEMA', teamsObj)
 
   await ctx.render('index', {
     title: ctx.title,
     method: 'POST',
     driverAction: driversObj.driverAction,
     teamAction: teamsObj.teamAction,
-    enctype: 'application/x-www-form-urlencoded',
     buttonField: 'Submit',
     buttonType: 'submit',
     buttonValue: 'submit',
@@ -28,7 +27,7 @@ async function handleDrivers(ctx, next) {
     // console.log(driversArr)
     return {
       driversArr: driversArr,
-      selectName: 'selectDriver',
+      selectName: 'driver',
       driverAction: '/driver'
     }
   } catch {
@@ -48,7 +47,7 @@ async function handleTeams(ctx, next) {
     // console.log(teamsaArr)
     return {
       teamsArr: teamsArr,
-      selectName: 'selectTeam',
+      selectName: 'team',
       teamAction: '/team'
     }
   } catch {
