@@ -73,11 +73,11 @@ module.exports = {
   getSelectData: async (cache, route) => {
     try {
       let dataObj
-      console.log('route', route)
-      console.log('cache', cache)
+      // console.log('route', route)
+      // console.log('cache', cache)
       // console.log('ent', cache)
-      console.log('rou', cache[route])
-      console.log('len', cache[route] && cache[route].length)
+      // console.log('rou', cache[route])
+      // console.log('len', cache[route] && cache[route].length)
       if (cache[route] && cache[route].length) {
         // console.log('here')
         dataObj = cache[route]

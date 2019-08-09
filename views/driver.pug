@@ -3,23 +3,23 @@ extends layout
 include mixins/_select
 include mixins/_card
 block content
+  //- - console.log(driverAction)
   h1= title
-  //- +select({
-  //-   method:method,
-  //-   action: action,
-  //-   enctype: enctype,
-  //-   selectName: selectName,
-  //-   enums: driverEnums, 
-  //-   buttonType: buttonType,
-  //-   buttonValue: buttonValue,
-  //-   buttonField: buttonField 
-  //- })
-  - console.log('Enum', teamEnums)
   +select({
     method:method,
-    action: action,
+    action: driverAction,
     enctype: enctype,
-    selectName: selectName,
+    selectName: driverSelectName,
+    enums: driverEnums, 
+    buttonType: buttonType,
+    buttonValue: buttonValue,
+    buttonField: buttonField 
+  })
+  +select({
+    method:method,
+    action: teamAction,
+    enctype: enctype,
+    selectName: teamSelectName,
     enums: teamEnums, 
     buttonType: buttonType,
     buttonValue: buttonValue,

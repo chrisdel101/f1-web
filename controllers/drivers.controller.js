@@ -2,29 +2,41 @@ const utils = require('../utils')
 const cache = require('../cache')
 const indexController = require('./index.controller')
 
+async function handleFormData() {
+  const drivers = await indexController.handleDrivers()
+  const teams = await indexController.handleTeams()
+  return {
+    drivers,
+    teams
+  }
+}
 async function fetchDriver(ctx, next) {
-  const driverSlug = await ctx.query.driver
-  // console.log('q', ctx.query.driver)
-  console.log('DRIVER', cache)
-  // console.log('driv', `drivers/${ctx.query.driver}`)
+  const driverSlug = ctx.query.driver
+  const formData = await handleFormData()
+  const driversObj = formData.drivers
+  const teamsObj = formData.teams
+  console.log('driv', driversObj.selectName)
   const driverData = JSON.parse(
     await utils.fetchData(`drivers/${ctx.query.driver}`)
   )
+  console.log(driversObj)
   await ctx.render('driver', {
     urls: ctx.urls,
     title: ctx.title,
     capitalize: utils.capitalize,
     separator: utils.addSeparator,
     routeName: 'driver',
-    driverEnums: drivers,
-    teamEnums: teams,
+    driverEnums: driversObj.driversArr,
+    teamEnums: teamsObj.teamsArr,
     method: 'GET',
-    action: '/driver',
     enctype: 'application/x-www-form-urlencoded',
     buttonField: 'Submit',
     buttonType: 'submit',
     buttonValue: 'submit',
-    selectName: 'driver',
+    teamAction: teamsObj.teamAction,
+    teamSelectName: teamsObj.selectName,
+    driverAction: driversObj.driverAction,
+    driverSelectName: driversObj.selectName,
     driverData: driverData
   })
 }

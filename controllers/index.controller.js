@@ -2,52 +2,50 @@ const utils = require('../utils')
 const cache = require('../cache')
 module.exports = {
   render,
-  cache
+  cache,
+  handleDrivers,
+  handleTeams
 }
 async function render(ctx, next) {
-  const teamsObj = await handleTeams(ctx, next)
-  console.log('TEAMOBJ', teamsObj)
-  const driversObj = await handleDrivers(ctx, next)
-  console.log('DRIVEOBJ', driversObj)
+  const teamsObj = await handleTeams()
+  // console.log('TEAMOBJ', teamsObj)
+  const driversObj = await handleDrivers()
+  // console.log('DRIVEOBJ', driversObj)
 
-  // await ctx.render('index', {
-  //   title: ctx.title,
-  //   method: 'GET',
-  //   enctype: 'application/x-www-form-urlencoded',
-  //   driverAction: driversObj.driverAction,
-  //   teamAction: teamsObj.teamAction,
-  //   buttonField: 'Submit',
-  //   buttonType: 'submit',
-  //   buttonValue: 'submit',
-  //   driverSelectName: driversObj.selectName,
-  //   driverEnums: driversObj.driversArr,
-  //   teamSelectName: teamsObj.selectName,
-  //   teamsEnums: teamsObj.teamsArr
-  // })
+  await ctx.render('index', {
+    title: ctx.title,
+    method: 'GET',
+    enctype: 'application/x-www-form-urlencoded',
+    driverAction: driversObj.driverAction,
+    teamAction: teamsObj.teamAction,
+    buttonField: 'Submit',
+    buttonType: 'submit',
+    buttonValue: 'submit',
+    driverSelectName: driversObj.selectName,
+    driverEnums: driversObj.driversArr,
+    teamSelectName: teamsObj.selectName,
+    teamsEnums: teamsObj.teamsArr
+  })
 }
-async function handleDrivers(ctx, next) {
+async function handleDrivers() {
   try {
     const driversArr = await utils.getSelectData(cache, 'drivers')
+    // add to cache
     cache.drivers = driversArr
     return {
       driversArr: driversArr,
       selectName: 'driver',
       driverAction: '/driver'
     }
-  } catch {
-    const error = {
-      message: 'Internal Server Error',
-      status: 500,
-      detail: 'Could not parse driver information.',
-      stack: new Error().stack
-    }
-    await ctx.render('error', error)
+  } catch (e) {
+    console.log('A error in handleDrivers', e)
   }
 }
-async function handleTeams(ctx, next) {
+async function handleTeams() {
   try {
     // extract just the names
     const teamsArr = await utils.getSelectData(cache, 'teams')
+    // add to cache
     cache.teams = teamsArr
     // console.log('CA', teamsArr)
     return {
@@ -56,12 +54,6 @@ async function handleTeams(ctx, next) {
       teamAction: '/team'
     }
   } catch {
-    const error = {
-      message: 'Internal Server Error',
-      status: 500,
-      detail: 'Could not parse driver information.',
-      stack: new Error().stack
-    }
-    await ctx.render('error', error)
+    console.log('A error in handleTeams', e)
   }
 }
