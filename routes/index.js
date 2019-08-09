@@ -5,6 +5,6 @@ const teamsController = require('../controllers/teams.controller')
 
 router.get('/', indexController.render)
 
-router.post('/driver', driversController.fetchDriver)
-router.post('/team', teamsController.fetchTeam)
+router.get('/driver', driversController.fetchDriver)
+router.get('/team', teamsController.fetchTeam)
 module.exports = router

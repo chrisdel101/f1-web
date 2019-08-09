@@ -69,5 +69,26 @@ module.exports = {
       }
       newName += splitName[i]
     }
+  },
+  getSelectData: async (cache, route) => {
+    try {
+      let dataObj
+      console.log('route', route)
+      console.log('cache', cache)
+      // console.log('ent', cache)
+      console.log('rou', cache[route])
+      console.log('len', cache[route] && cache[route].length)
+      if (cache[route] && cache[route].length) {
+        // console.log('here')
+        dataObj = cache[route]
+      } else {
+        // console.log('below')
+        dataObj = JSON.parse(await module.exports.fetchData(route))
+      }
+      return dataObj
+    } catch (e) {
+      console.log('Error in getSelectedData', e)
+      await ctx.render('error', error)
+    }
   }
 }

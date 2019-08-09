@@ -1,13 +1,14 @@
 const utils = require('../utils')
 const cache = require('../cache')
+const indexController = require('./index.controller')
 
 async function fetchDriver(ctx, next) {
-  const driverSlug = await ctx.request.body
+  const driverSlug = await ctx.query.driver
+  // console.log('q', ctx.query.driver)
   console.log('DRIVER', cache)
-  // console.log('driv', driverSlug)
-  const drivers = JSON.parse(await utils.fetchData('drivers'))
+  // console.log('driv', `drivers/${ctx.query.driver}`)
   const driverData = JSON.parse(
-    await utils.fetchData(`drivers/${driverSlug.driver}`)
+    await utils.fetchData(`drivers/${ctx.query.driver}`)
   )
   await ctx.render('driver', {
     urls: ctx.urls,
@@ -15,14 +16,15 @@ async function fetchDriver(ctx, next) {
     capitalize: utils.capitalize,
     separator: utils.addSeparator,
     routeName: 'driver',
-    enums: drivers,
-    method: 'POST',
+    driverEnums: drivers,
+    teamEnums: teams,
+    method: 'GET',
     action: '/driver',
     enctype: 'application/x-www-form-urlencoded',
     buttonField: 'Submit',
     buttonType: 'submit',
     buttonValue: 'submit',
-    selectName: 'selectDriver',
+    selectName: 'driver',
     driverData: driverData
   })
 }

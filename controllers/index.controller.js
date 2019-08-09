@@ -5,30 +5,30 @@ module.exports = {
   cache
 }
 async function render(ctx, next) {
-  const driversObj = await handleDrivers(ctx, next)
-  // console.log('DRIVE', driversObj)
   const teamsObj = await handleTeams(ctx, next)
+  console.log('TEAMOBJ', teamsObj)
+  const driversObj = await handleDrivers(ctx, next)
+  console.log('DRIVEOBJ', driversObj)
 
-  await ctx.render('index', {
-    title: ctx.title,
-    method: 'POST',
-    enctype: 'application/x-www-form-urlencoded',
-    driverAction: driversObj.driverAction,
-    teamAction: teamsObj.teamAction,
-    buttonField: 'Submit',
-    buttonType: 'submit',
-    buttonValue: 'submit',
-    driverSelectName: driversObj.selectName,
-    driverEnums: driversObj.driversArr,
-    teamSelectName: teamsObj.selectName,
-    teamsEnums: teamsObj.teamsArr
-  })
+  // await ctx.render('index', {
+  //   title: ctx.title,
+  //   method: 'GET',
+  //   enctype: 'application/x-www-form-urlencoded',
+  //   driverAction: driversObj.driverAction,
+  //   teamAction: teamsObj.teamAction,
+  //   buttonField: 'Submit',
+  //   buttonType: 'submit',
+  //   buttonValue: 'submit',
+  //   driverSelectName: driversObj.selectName,
+  //   driverEnums: driversObj.driversArr,
+  //   teamSelectName: teamsObj.selectName,
+  //   teamsEnums: teamsObj.teamsArr
+  // })
 }
 async function handleDrivers(ctx, next) {
   try {
-    const driversArr = JSON.parse(await utils.fetchData('drivers'))
+    const driversArr = await utils.getSelectData(cache, 'drivers')
     cache.drivers = driversArr
-    // console.log('DRI cache', cache)
     return {
       driversArr: driversArr,
       selectName: 'driver',
@@ -47,9 +47,9 @@ async function handleDrivers(ctx, next) {
 async function handleTeams(ctx, next) {
   try {
     // extract just the names
-    const teamsArr = JSON.parse(await utils.fetchData('teams'))
+    const teamsArr = await utils.getSelectData(cache, 'teams')
     cache.teams = teamsArr
-    // console.log(cache)
+    // console.log('CA', teamsArr)
     return {
       teamsArr: teamsArr,
       selectName: 'team',
