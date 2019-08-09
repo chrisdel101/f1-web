@@ -1,10 +1,10 @@
 mixin select(data)
   //- - console.log('data',data)
-  form(method=data.method action=data.action)
+  form(method=data.method action=data.action enctype=data.enctype)
     .select
       select(name=data.selectName)
         each d in data.enums 
-          - console.log("DD"  ,d)
+          //- - console.log("DD"  ,d)
           option(value=d.name_slug) #{d.name}
       button.btn.btn-primary(type=data.buttonType value=data.buttonValue) #{data.buttonField}
         

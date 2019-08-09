@@ -1,10 +1,14 @@
 const utils = require('../utils')
+const cache = require('../cache')
 
 async function fetchDriver(ctx, next) {
-  const driverSlug = await ctx.request.body.driver
+  const driverSlug = await ctx.request.body
+  console.log('DRIVER', cache)
+  // console.log('driv', driverSlug)
   const drivers = JSON.parse(await utils.fetchData('drivers'))
-  const driverData = JSON.parse(await utils.fetchData(`drivers/${driverSlug}`))
-  // console.log('driv', driverData)
+  const driverData = JSON.parse(
+    await utils.fetchData(`drivers/${driverSlug.driver}`)
+  )
   await ctx.render('driver', {
     urls: ctx.urls,
     title: ctx.title,
@@ -12,7 +16,7 @@ async function fetchDriver(ctx, next) {
     separator: utils.addSeparator,
     routeName: 'driver',
     enums: drivers,
-    method: 'GET',
+    method: 'POST',
     action: '/driver',
     enctype: 'application/x-www-form-urlencoded',
     buttonField: 'Submit',

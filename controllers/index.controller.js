@@ -1,15 +1,18 @@
 const utils = require('../utils')
+const cache = require('../cache')
 module.exports = {
-  render
+  render,
+  cache
 }
 async function render(ctx, next) {
   const driversObj = await handleDrivers(ctx, next)
-  console.log('DRIVE', driversObj)
+  // console.log('DRIVE', driversObj)
   const teamsObj = await handleTeams(ctx, next)
 
   await ctx.render('index', {
     title: ctx.title,
-    method: 'GET',
+    method: 'POST',
+    enctype: 'application/x-www-form-urlencoded',
     driverAction: driversObj.driverAction,
     teamAction: teamsObj.teamAction,
     buttonField: 'Submit',
@@ -24,7 +27,8 @@ async function render(ctx, next) {
 async function handleDrivers(ctx, next) {
   try {
     const driversArr = JSON.parse(await utils.fetchData('drivers'))
-    // console.log(driversArr)
+    cache.drivers = driversArr
+    // console.log('DRI cache', cache)
     return {
       driversArr: driversArr,
       selectName: 'driver',
@@ -44,7 +48,8 @@ async function handleTeams(ctx, next) {
   try {
     // extract just the names
     const teamsArr = JSON.parse(await utils.fetchData('teams'))
-    // console.log(teamsaArr)
+    cache.teams = teamsArr
+    // console.log(cache)
     return {
       teamsArr: teamsArr,
       selectName: 'team',
