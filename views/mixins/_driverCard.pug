@@ -1,0 +1,60 @@
+mixin driverCard(data)
+  - console.log(data)
+  .card.driver-card
+    .driver-title-container
+      h6.driver-title #{data.driver_name}
+      .flag-img-container
+        img(src=data.flag_img_url)
+    .driver-stats-container
+      .column.left-column
+        .main-image
+          img(src=data.main_image)
+      .column.right-column
+        .left-table-container.driver-table-container
+          table.stats
+            tbody
+              tr 
+                td
+                  span.stat-key Place of Birth: 
+                  span.stat-val #{data.place_of_birth}
+              tr 
+                td
+                  span.stat-key Country: 
+                  span.stat-val #{data.country}
+              tr 
+                td
+                  span.stat-key Team: 
+                  span.stat-val #{data.team}
+              tr 
+                td
+                  span.stat-key Techical Chief: 
+                  span.stat-val #{capitalize(separator(data.technical_chief, " "))}
+              tr 
+                td
+                  span.stat-key Highest Finish: 
+                  span.stat-val #{capitalize(separator(data.highest_race_finish, " "))}
+        .right-table-container.driver-table-container
+          table.stats
+            tbody
+              tr 
+                td
+                  span.stat-key Points: 
+                  span.stat-val #{data.points}
+              tr 
+                td
+                  span.stat-key Number: 
+                  span.stat-val #{data.driver_number}
+              tr 
+                td
+                  span.stat-key Podiums: 
+                  span.stat-val #{data.podiums}
+              tr 
+                td
+                  span.stat-key Championships: 
+                  span.stat-val #{data.world_championships}
+              tr 
+                td
+                  span.stat-key Highest Grid Place: 
+                  span.stat-val #{data.highest_grid_position}
+             
+              

@@ -1,7 +1,7 @@
 extends layout
 
 include mixins/_select
-include mixins/_card
+include mixins/_driverCard
 block content
   //- - console.log(driverAction)
   h1= title
@@ -25,5 +25,4 @@ block content
     buttonValue: buttonValue,
     buttonField: buttonField 
   })
-  .driver-card
-    +card(driverData)
+  +driverCard(driverData)

@@ -1,11 +1,11 @@
 mixin teamCard(data)
   //- - console.log(data)
-  .card
+  .card.team-card
     .team-title-container
       h6.team-title #{capitalize(separator(data.full_team_name, " "))}
       .drivers
         div #{data.drivers[0]}
-        div #{data.drivers[1]}
+        div #{data.drivers[0]}
 
     .team-stats-container
       .column.left-column

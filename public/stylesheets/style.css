@@ -27,12 +27,20 @@ img {
   display: flex;
   background-color: whitesmoke;
 }
-.team-stats-container {
+.team-stats-container,
+.driver-stats-container {
   display: flex;
+}
+.driver-stats-container {
+  min-height: 300px;
 }
 .team-title-container {
   display: flex;
   justify-content: center;
+}
+.driver-table-container {
+  width: 50%;
+  padding: 0 5px;
 }
 .driver-card .card,
 .team-card .card {
