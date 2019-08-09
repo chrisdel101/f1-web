@@ -1,7 +1,7 @@
 extends layout
 
 include mixins/_select
-include mixins/_card
+include mixins/_teamCard
 
 block content
   h1= title
@@ -27,4 +27,4 @@ block content
     buttonField: buttonField 
   })
   .team-card
-    +card(teamData)
+    +teamCard(teamData)

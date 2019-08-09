@@ -39,6 +39,10 @@ module.exports = {
   },
   // remove seperators and replace with others
   addSeparator: (word, separatorToAdd, separatorToRemove = '_') => {
+    if (!word) {
+      console.error('Warning: addSeparator must take a word')
+      return 'N/A'
+    }
     return word.split(separatorToRemove).join(separatorToAdd)
   },
   // cap beginning of each seperate word

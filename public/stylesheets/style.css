@@ -25,18 +25,27 @@ img {
 .right-column {
   width: 50%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   background-color: whitesmoke;
+}
+.team-stats-container {
+  display: flex;
+}
+.team-title-container {
+  display: flex;
+  justify-content: center;
 }
 .driver-card .card,
 .team-card .card {
   display: flex;
-  flex-direction: row;
-}
-.stats {
-  align-self: center;
 }
 .stat-key {
   font-weight: bold;
+}
+.stat-key,
+.stat-val {
+  font-size: 13px;
+  white-space: nowrap;
+}
+.team-table-container {
+  padding: 0 5px;
 }
