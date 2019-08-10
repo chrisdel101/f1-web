@@ -26,6 +26,7 @@ img {
   width: 50%;
   display: flex;
   background-color: whitesmoke;
+  flex-direction: column;
 }
 .team-stats-container,
 .driver-stats-container {
@@ -33,6 +34,10 @@ img {
 }
 .driver-stats-container {
   min-height: 300px;
+}
+.team-stats-container .left-column h5 {
+  text-align: center;
+  font-weight: bold;
 }
 .team-title-container {
   display: flex;
@@ -56,4 +61,7 @@ img {
 }
 .team-table-container {
   padding: 0 5px;
+}
+.stats-columns {
+  display: flex;
 }

@@ -1,66 +1,61 @@
 mixin teamCard(data)
   //- - console.log(data)
   .card.team-card
-    .team-title-container
-      h6.team-title #{capitalize(separator(data.full_team_name, " "))}
-      .drivers
-        div #{data.drivers[0]}
-        div #{data.drivers[0]}
-
     .team-stats-container
       .column.left-column
+        h5.team-title #{capitalize(separator(data.full_team_name, " "))}
         .main-image
           img(src=data.main_image)
       .column.right-column
-        .left-table-container.team-table-container
-          table.stats
-            tbody
-              tr 
-                td
-                  span.stat-key Base: 
-                  span.stat-val #{capitalize(separator(data.base, " "))}
-              tr 
-                td
-                  span.stat-key Power Unit: 
-                  span.stat-val #{capitalize(separator(data.power_unit, " "))}
-              tr 
-                td
-                  span.stat-key Team Chief: 
-                  span.stat-val #{capitalize(separator(data.team_chief, " "))}
-              tr 
-                td
-                  span.stat-key Techical Chief: 
-                  span.stat-val #{capitalize(separator(data.technical_chief, " "))}
-              tr 
-                td
-                  span.stat-key Highest Finish: 
-                  span.stat-val #{capitalize(separator(data.highest_race_finish, " "))}
-        .right-table-container.team-table-container
-          table.stats
-            tbody
-              tr 
-                td
-                  span.stat-key Championships: 
-                  span.stat-val #{capitalize(separator(data.championship_titles, " "))}
-              tr 
-                td
-                  span.stat-key Podiums: 
-                  span.stat-val #{capitalize(separator(data.podium_finishes, " "))}
-              tr 
-                td
-                  span.stat-key Pole Positions: 
-                  span.stat-val #{capitalize(separator(data.pole_positions, " "))}
-              tr 
-                td
-                  span.stat-key First Team Entry: 
-                  span.stat-val #{capitalize(separator(data.first_team_entry, " "))}
-              tr 
-                td
-                  span.stat-key Championship Titles: 
-                  span.stat-val #{capitalize(separator(data.championship_titles, " "))}
-              tr 
-                td
-                  span.stat-key First Team Entry: 
-                  span.stat-val #{capitalize(separator(data.first_team_entry, " "))}
-             
+        .drivers
+          div #{data.drivers[0]}
+          div #{data.drivers[1]}
+        .stats-columns
+          .left-table-container.team-table-container
+            table.stats
+              tbody
+                tr 
+                  td
+                    span.stat-key Base: 
+                    span.stat-val #{capitalize(separator(data.base, " "))}
+                tr 
+                  td
+                    span.stat-key Power Unit: 
+                    span.stat-val #{capitalize(separator(data.power_unit, " "))}
+                tr 
+                  td
+                    span.stat-key Team Chief: 
+                    span.stat-val #{capitalize(separator(data.team_chief, " "))}
+                tr 
+                  td
+                    span.stat-key Techical Chief: 
+                    span.stat-val #{capitalize(separator(data.technical_chief, " "))}
+                tr 
+                  td
+                    span.stat-key Highest Finish: 
+                    span.stat-val #{capitalize(separator(data.highest_race_finish, " "))}
+          .right-table-container.team-table-container
+            table.stats
+              tbody
+                tr 
+                  td
+                    span.stat-key Championships: 
+                    span.stat-val #{capitalize(separator(data.championship_titles, " "))}
+                tr 
+                  td
+                    span.stat-key Podiums: 
+                    span.stat-val #{capitalize(separator(data.podium_finishes, " "))}
+                tr 
+                  td
+                    span.stat-key Pole Positions: 
+                    span.stat-val #{capitalize(separator(data.pole_positions, " "))}
+                tr 
+                  td
+                    span.stat-key First Team Entry: 
+                    span.stat-val #{capitalize(separator(data.first_team_entry, " "))}
+                tr 
+                  td
+                    span.stat-key First Team Entry: 
+                    span.stat-val #{capitalize(separator(data.first_team_entry, " "))}
               
+                
