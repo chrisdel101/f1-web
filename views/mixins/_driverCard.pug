@@ -1,10 +1,12 @@
 mixin driverCard(data)
-  - console.log(data)
+  //- - console.log(data)
   .card.driver-card
     .driver-title-container
       h6.driver-title #{data.driver_name}
       .flag-img-container
         img(src=data.flag_img_url)
+      .team-logo-container
+        img(src=data.logo_url)
     .driver-stats-container
       .column.left-column
         .main-image
@@ -27,12 +29,8 @@ mixin driverCard(data)
                   span.stat-val #{data.team}
               tr 
                 td
-                  span.stat-key Techical Chief: 
-                  span.stat-val #{capitalize(separator(data.technical_chief, " "))}
-              tr 
-                td
-                  span.stat-key Highest Finish: 
-                  span.stat-val #{capitalize(separator(data.highest_race_finish, " "))}
+                  span.stat-key Date of Birth: 
+                  span.stat-val #{data.date_of_birth}
         .right-table-container.driver-table-container
           table.stats
             tbody

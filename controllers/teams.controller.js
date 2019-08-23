@@ -2,6 +2,7 @@ const utils = require('../utils')
 const cache = require('../cache')
 const indexController = require('./index.controller')
 
+// check cache in indexController for data before calling db
 async function handleFormData() {
   const drivers = await indexController.handleDrivers()
   const teams = await indexController.handleTeams()

@@ -8,7 +8,7 @@ module.exports = {
 }
 async function render(ctx, next) {
   const teamsObj = await handleTeams()
-  // console.log('TEAMOBJ', teamsObj)
+  console.log('TEAMOBJ', teamsObj)
   const driversObj = await handleDrivers()
   // console.log('DRIVEOBJ', driversObj)
 
@@ -53,7 +53,7 @@ async function handleTeams() {
       selectName: 'team',
       teamAction: '/team'
     }
-  } catch {
+  } catch(e) {
     console.log('A error in handleTeams', e)
   }
 }

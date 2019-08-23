@@ -25,4 +25,5 @@ block content
     buttonValue: buttonValue,
     buttonField: buttonField 
   })
-  +driverCard(driverData)
+  - const data = Object.assign(teamData,driverData)
+  +driverCard(data)

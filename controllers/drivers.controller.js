@@ -2,6 +2,7 @@ const utils = require('../utils')
 const cache = require('../cache')
 const indexController = require('./index.controller')
 
+// check cache in indexController for data before calling db
 async function handleFormData() {
   const drivers = await indexController.handleDrivers()
   const teams = await indexController.handleTeams()
@@ -15,11 +16,16 @@ async function fetchDriver(ctx, next) {
   const formData = await handleFormData()
   const driversObj = formData.drivers
   const teamsObj = formData.teams
-  console.log('driv', driversObj.selectName)
+  // console.log('driv', driversObj.selectName)
   const driverData = JSON.parse(
     await utils.fetchData(`drivers/${ctx.query.driver}`)
   )
-  console.log(driversObj)
+  // look up drivers team
+  const fetchDriverTeamData = JSON.parse(
+    await utils.fetchData(`teams/${driverData.team_id}`)
+  )
+  console.log(fetchDriverTeamData)
+  // console.log(driversObj)
   await ctx.render('driver', {
     urls: ctx.urls,
     title: ctx.title,
@@ -29,7 +35,6 @@ async function fetchDriver(ctx, next) {
     driverEnums: driversObj.driversArr,
     teamEnums: teamsObj.teamsArr,
     method: 'GET',
-    enctype: 'application/x-www-form-urlencoded',
     buttonField: 'Submit',
     buttonType: 'submit',
     buttonValue: 'submit',
@@ -37,7 +42,8 @@ async function fetchDriver(ctx, next) {
     teamSelectName: teamsObj.selectName,
     driverAction: driversObj.driverAction,
     driverSelectName: driversObj.selectName,
-    driverData: driverData
+    driverData: driverData,
+    teamData: fetchDriverTeamData
   })
 }
 module.exports = {
