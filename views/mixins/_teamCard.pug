@@ -1,15 +1,20 @@
 mixin teamCard(data)
-  - console.log(data)
+  - console.log('DATA',data)
   .card.team-card
     .team-stats-container
       .column.left-column
-        h5.team-title #{capitalize(separator(data.full_team_name, " "))}
+        .team-title
+          h5 #{capitalize(separator(data.full_team_name, " "))}
         .main-image
           img(src=data.main_image)
       .column.right-column
         .drivers
-          div #{data.drivers_scraped[0]}
-          div #{data.drivers_scraped[1]}
+          .driver
+            span #{data.drivers_scraped[0].driver_name}
+            img.flag(src=data.driverFlags[0])
+          .driver 
+            span #{data.drivers_scraped[1].driver_name}
+            img.flag(src=data.driverFlags[1])
         .stats-columns
           .left-table-container.team-table-container
             table.stats

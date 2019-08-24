@@ -36,6 +36,21 @@ img {
   text-align: center;
   font-weight: bold;
 }
+.team-stats-container .drivers {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.team-stats-container .driver span {
+  margin-right: 10px;
+}
+.team-stats-container .driver .flag {
+  max-width: 35px;
+}
+.team-stats-container .drivers {
+  min-height: 60px;
+  margin-bottom: 10px;
+}
 .team-title-container {
   display: flex;
   justify-content: center;
@@ -50,6 +65,13 @@ img {
   font-size: 25px;
   display: flex;
   margin: 0 10px;
+}
+.team-title {
+  font-family: 'Montserat', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
 }
 .driver-logo-container {
   max-width: 150px;
@@ -75,6 +97,7 @@ img {
 }
 .stats-columns {
   display: flex;
+  justify-content: center;
 }
 .flag-img-container {
   max-width: 50px;
