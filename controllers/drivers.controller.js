@@ -1,5 +1,6 @@
 const utils = require('../utils')
 const cache = require('../cache')
+const urls = require('../urls')
 const indexController = require('./index.controller')
 
 // check cache in indexController for data before calling db
@@ -24,7 +25,10 @@ async function fetchDriver(ctx, next) {
   const teamData = JSON.parse(
     await utils.fetchData(`teams/${driverData.team_id}`)
   )
-  // console.log(teamData)
+  // const teamUrl = urls.localDev(`teams/${driverData.team_name_slug}`)
+  const teamUrl = `/team?team=${driverData.team_name_slug}`
+  driverData['teamUrl'] = teamUrl
+  console.log(teamUrl)
   console.log(driverData)
   await ctx.render('driver', {
     urls: ctx.urls,

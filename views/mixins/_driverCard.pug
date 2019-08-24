@@ -11,7 +11,8 @@ mixin driverCard(data)
           img(src=data.main_image)
       .column.right-column
         .driver-logo-container
-          img(src=data.logo_url)
+          a(href=data.teamUrl)
+            img(src=data.logo_url)
         .table-container.driver-table-container
           table.stats
             tbody

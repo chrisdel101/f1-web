@@ -29,7 +29,7 @@ async function fetchTeam(ctx, next) {
     JSON.parse(await utils.fetchData(`drivers/${driver2Slug}`))['flag_img_url']
   ]
   teamData['driverFlags'] = driverFlags
-  console.log('flags', driverFlags)
+  // console.log('flags', driverFlags)
   await ctx.render('team', {
     urls: ctx.urls,
     title: ctx.title,
