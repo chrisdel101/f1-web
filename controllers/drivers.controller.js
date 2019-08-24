@@ -21,11 +21,11 @@ async function fetchDriver(ctx, next) {
     await utils.fetchData(`drivers/${ctx.query.driver}`)
   )
   // look up drivers team
-  const fetchDriverTeamData = JSON.parse(
+  const teamData = JSON.parse(
     await utils.fetchData(`teams/${driverData.team_id}`)
   )
-  console.log(fetchDriverTeamData)
-  // console.log(driversObj)
+  // console.log(teamData)
+  console.log(driverData)
   await ctx.render('driver', {
     urls: ctx.urls,
     title: ctx.title,
@@ -43,7 +43,7 @@ async function fetchDriver(ctx, next) {
     driverAction: driversObj.driverAction,
     driverSelectName: driversObj.selectName,
     driverData: driverData,
-    teamData: fetchDriverTeamData
+    teamData: teamData
   })
 }
 module.exports = {

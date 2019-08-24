@@ -1,5 +1,5 @@
 mixin teamCard(data)
-  //- - console.log(data)
+  - console.log(data)
   .card.team-card
     .team-stats-container
       .column.left-column
@@ -8,8 +8,8 @@ mixin teamCard(data)
           img(src=data.main_image)
       .column.right-column
         .drivers
-          div #{data.drivers[0]}
-          div #{data.drivers[1]}
+          div #{data.drivers_scraped[0]}
+          div #{data.drivers_scraped[1]}
         .stats-columns
           .left-table-container.team-table-container
             table.stats

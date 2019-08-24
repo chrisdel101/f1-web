@@ -37,11 +37,15 @@ mixin driverCard(data)
             tbody
               tr 
                 td
+                  span.stat-key Current Position: 
+                  span.stat-val #{data.position}
+              tr 
+                td
                   span.stat-key Points: 
                   span.stat-val #{data.points}
               tr 
                 td
-                  span.stat-key Number: 
+                  span.stat-key Driver Number: 
                   span.stat-val #{data.driver_number}
               tr 
                 td
