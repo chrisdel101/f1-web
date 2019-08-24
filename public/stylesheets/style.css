@@ -6,9 +6,6 @@ body {
 a {
   color: #00b7ff;
 }
-table {
-  width: 50%;
-}
 img {
   max-width: 100%;
 }
@@ -47,6 +44,16 @@ img {
   display: flex;
   justify-content: space-around;
 }
+.driver-title {
+  align-self: center;
+  font-family: 'Montserat', sans-serif;
+  font-size: 25px;
+  display: flex;
+  margin: 0 10px;
+}
+.driver-logo-container {
+  max-width: 150px;
+}
 .driver-table-container {
   width: 50%;
   padding: 0 5px;
@@ -70,5 +77,5 @@ img {
   display: flex;
 }
 .flag-img-container {
-  max-width: 100px;
+  max-width: 50px;
 }

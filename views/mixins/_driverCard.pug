@@ -2,10 +2,11 @@ mixin driverCard(data)
   //- - console.log(data)
   .card.driver-card
     .driver-title-container
-      h6.driver-title #{data.driver_name}
-      .flag-img-container
-        img(src=data.flag_img_url)
-      .team-logo-container
+      .driver-title
+        h6.driver-title #{data.driver_name}
+        .flag-img-container
+          img(src=data.flag_img_url)
+      .driver-logo-container
         img(src=data.logo_url)
     .driver-stats-container
       .column.left-column
