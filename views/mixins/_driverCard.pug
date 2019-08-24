@@ -1,18 +1,17 @@
 mixin driverCard(data)
   //- - console.log(data)
   .card.driver-card
-    .driver-title-container
-      .driver-title
-        h6.driver-title #{data.driver_name}
-        .flag-img-container
-          img(src=data.flag_img_url)
-      .driver-logo-container
-        img(src=data.logo_url)
     .driver-stats-container
       .column.left-column
+        .driver-title
+          h6  #{data.driver_name}
+          .flag-img-container
+            img(src=data.flag_img_url)
         .main-image
           img(src=data.main_image)
       .column.right-column
+        .driver-logo-container
+          img(src=data.logo_url)
         .left-table-container.driver-table-container
           table.stats
             tbody
