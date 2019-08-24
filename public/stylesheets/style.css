@@ -86,8 +86,8 @@ img {
   margin: 10px 0;
 }
 .driver-table-container {
-  width: 50%;
-  padding: 0 5px;
+  display: flex;
+  justify-content: center;
 }
 .driver-card .card,
 .team-card .card {
