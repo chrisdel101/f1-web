@@ -35,6 +35,7 @@ async function combineDriverDataOnTeam(teamDataObj) {
         if (driver.name_slug === driversDataArr[i].name_slug) {
           driver['flag_img_url'] = driversDataArr[i]['flag_img_url']
           driver['api_call'] = `drivers/${driver.name_slug}`
+          driver['page_url'] = `/driver?driver=${driver.name_slug}`
         }
       }
     })
@@ -51,7 +52,9 @@ async function fetchTeam(ctx, next) {
   const driversObj = formData.drivers
   // list of teams
   const teamsObj = formData.teams
-  const teamData = JSON.parse(await utils.fetchData(`teams/${teamName}`))
+  let teamData = JSON.parse(await utils.fetchData(`teams/${teamName}`))
+  teamData = await combineDriverDataOnTeam(teamData)
+  console.log('TD', teamData)
 
   // console.log('flags', driverFlags)
   await ctx.render('team', {
@@ -71,8 +74,7 @@ async function fetchTeam(ctx, next) {
     teamSelectName: teamsObj.selectName,
     driverAction: driversObj.driverAction,
     driverSelectName: driversObj.selectName,
-    teamData: teamData,
-    driverFlags: driverFlags
+    teamData: teamData
   })
 }
 module.exports = {

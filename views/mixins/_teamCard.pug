@@ -10,11 +10,13 @@ mixin teamCard(data)
       .column.right-column
         .drivers
           .driver
-            span #{data.drivers_scraped[0].driver_name}
-            img.flag(src=data.driverFlags[0])
+            a(href=data.drivers_scraped[0].page_url)
+              span #{data.drivers_scraped[0].driver_name}
+              img.flag(src=data.drivers_scraped[0].flag_img_url)
           .driver 
-            span #{data.drivers_scraped[1].driver_name}
-            img.flag(src=data.driverFlags[1])
+            a(href=data.drivers_scraped[1].page_url)
+              span #{data.drivers_scraped[1].driver_name}
+              img.flag(src=data.drivers_scraped[1].flag_img_url)
         .stats-columns
           .left-table-container.team-table-container
             table.stats
