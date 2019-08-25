@@ -24,10 +24,15 @@ module.exports = {
     } else if (process.env.API_ENV === 'local') {
       // TODO
       return
-    } else if (process.env.API_ENV === 'flask') {
+    } else if (
+      process.env.API_ENV === 'flask' ||
+      process.env.API_ENV === 'test'
+    ) {
+      console.log('test')
       const call = module.exports.httpCall(urls.localDev(params))
+      // console.log('C', call)
       let remoteJson = await call
-      // console.log(remoteJson)
+      // console.log('REM', remoteJson)
       return remoteJson
     }
   },

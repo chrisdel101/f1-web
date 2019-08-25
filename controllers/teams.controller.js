@@ -11,7 +11,38 @@ async function handleFormData() {
     teams
   }
 }
-
+async function combineDriverDataOnTeam(teamDataObj) {
+  try {
+    // get name slug
+    const driver1Slug = teamDataObj.drivers_scraped[0].name_slug
+    const driver2Slug = teamDataObj.drivers_scraped[1].name_slug
+    // call api for driver data
+    const driversDataArr = [
+      JSON.parse(await utils.fetchData(`drivers/${driver1Slug}`)),
+      JSON.parse(await utils.fetchData(`drivers/${driver2Slug}`))
+    ]
+    // console.log(driversDataArr)
+    console.log(teamDataObj)
+    driversDataArr.forEach(driver => {
+      if (driver.name_slug == 1) {
+      }
+    })
+    // loop over drivers on team
+    teamDataObj.drivers_scraped.forEach(driver => {
+      // match to correct fetched obj
+      for (let i = 0; i < driversDataArr.length; i++) {
+        // add fields to correct driver
+        if (driver.name_slug === driversDataArr[i].name_slug) {
+          driver['flag_img_url'] = driversDataArr[i]['flag_img_url']
+          driver['api_call'] = `drivers/${driver.name_slug}`
+        }
+      }
+    })
+    return teamDataObj
+  } catch (e) {
+    return 'Error in combineDriverDataOnTeam', e
+  }
+}
 async function fetchTeam(ctx, next) {
   // get data from form
   let teamName = ctx.query.team
@@ -21,14 +52,7 @@ async function fetchTeam(ctx, next) {
   // list of teams
   const teamsObj = formData.teams
   const teamData = JSON.parse(await utils.fetchData(`teams/${teamName}`))
-  const driver1Slug = teamData.drivers_scraped[0].name_slug
-  const driver2Slug = teamData.drivers_scraped[1].name_slug
-  // get driver flags from api
-  const driverFlags = [
-    JSON.parse(await utils.fetchData(`drivers/${driver1Slug}`))['flag_img_url'],
-    JSON.parse(await utils.fetchData(`drivers/${driver2Slug}`))['flag_img_url']
-  ]
-  teamData['driverFlags'] = driverFlags
+
   // console.log('flags', driverFlags)
   await ctx.render('team', {
     urls: ctx.urls,
@@ -52,5 +76,6 @@ async function fetchTeam(ctx, next) {
   })
 }
 module.exports = {
-  fetchTeam: fetchTeam
+  fetchTeam,
+  combineDriverDataOnTeam
 }
