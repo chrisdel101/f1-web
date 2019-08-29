@@ -25,11 +25,10 @@ async function fetchDriver(ctx, next) {
   const teamData = JSON.parse(
     await utils.fetchData(`teams/${driverData.team_id}`)
   )
-  // const teamUrl = urls.localDev(`teams/${driverData.team_name_slug}`)
   const teamUrl = `/team?team=${driverData.team_name_slug}`
+  // add link to team to driver
   driverData['teamUrl'] = teamUrl
-  console.log(teamUrl)
-  console.log(driverData)
+  console.log('Driver Data', driverData)
   await ctx.render('driver', {
     urls: ctx.urls,
     title: ctx.title,

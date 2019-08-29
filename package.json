@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "DEBUG=f1:* nodemon bin/www",
+    "start": "NODE_ENV=development DEBUG=f1:* nodemon bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
-    "prd": "pm2 start bin/www",
+    "prod": "NODE_ENV=production node bin/www",
     "test": "mocha tests/**/*.test.js"
   },
   "dependencies": {

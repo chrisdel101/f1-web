@@ -22,7 +22,7 @@ async function combineDriverDataOnTeam(teamDataObj) {
       JSON.parse(await utils.fetchData(`drivers/${driver2Slug}`))
     ]
     // console.log(driversDataArr)
-    console.log(teamDataObj)
+    // console.log(teamDataObj)
     driversDataArr.forEach(driver => {
       if (driver.name_slug == 1) {
       }
@@ -54,7 +54,7 @@ async function fetchTeam(ctx, next) {
   const teamsObj = formData.teams
   let teamData = JSON.parse(await utils.fetchData(`teams/${teamName}`))
   teamData = await combineDriverDataOnTeam(teamData)
-  console.log('TD', teamData)
+  console.log('Team Data', teamData)
 
   // console.log('flags', driverFlags)
   await ctx.render('team', {

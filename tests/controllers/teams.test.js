@@ -32,8 +32,6 @@ const teamDataObj = {
   ]
 }
 describe('teams.controllers', function() {
-  describe('runs ', () => {})
-
   it('runs combineDriverData ', async function() {
     const res = await teamsController.combineDriverDataOnTeam(teamDataObj)
     assert(res.drivers_scraped[0].hasOwnProperty('flag_img_url'))
