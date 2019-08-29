@@ -44,9 +44,10 @@ async function combineDriverDataOnTeam(teamDataObj) {
     return 'Error in combineDriverDataOnTeam', e
   }
 }
-async function fetchTeam(ctx, next) {
+async function fetchTeam(ctx) {
   // get data from form
   let teamName = ctx.query.team
+  // console.log('team', teamName)
   const formData = await handleFormData()
   // list of drivers
   const driversObj = formData.drivers
@@ -57,7 +58,7 @@ async function fetchTeam(ctx, next) {
   console.log('TD', teamData)
 
   // console.log('flags', driverFlags)
-  await ctx.render('team', {
+  return await ctx.render('team', {
     urls: ctx.urls,
     title: ctx.title,
     capitalize: utils.capitalize,

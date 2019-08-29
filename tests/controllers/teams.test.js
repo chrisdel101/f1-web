@@ -1,6 +1,7 @@
 const teamsController = require('../../controllers/teams.controller')
 var assert = require('assert')
 process.env.API_ENV = 'test'
+
 const teamDataObj = {
   base: 'Brackley, United Kingdom',
   championship_titles: '5',
@@ -32,11 +33,18 @@ const teamDataObj = {
   ]
 }
 describe('teams.controllers', function() {
-  describe('runs ', () => {})
-
   it('runs combineDriverData ', async function() {
     const res = await teamsController.combineDriverDataOnTeam(teamDataObj)
     assert(res.drivers_scraped[0].hasOwnProperty('flag_img_url'))
     assert(res.drivers_scraped[0].hasOwnProperty('api_call'))
+  })
+  it('runs fetchTeam', async function() {
+    const ctx = {
+      query: {
+        team: 'ferrari'
+      }
+    }
+    const res = await teamsController.fetchTeam(ctx)
+    console.log('res', res)
   })
 })
