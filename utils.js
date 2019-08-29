@@ -14,23 +14,25 @@ module.exports = {
       })
     })
   },
+  httpsCall: async url => {
+    return new Promise((resolve, reject) => {
+      https.get(url, res => {
+        res.setEncoding('utf8')
+        res.on('data', d => {
+          resolve(d)
+        })
+      })
+    })
+  },
   fetchData: async params => {
-    if (process.env.API_ENV === 'remote') {
-      const stageUrl = urls.f12019url(process.env.F1)
-      const call = module.exports.httpCall(stageUrl)
-      let remoteJson = await call
-      remoteJson = JSON.parse(remoteJson)
-      return remoteJson
-    } else if (process.env.API_ENV === 'local') {
-      // TODO
-      return
-    } else if (
-      process.env.API_ENV === 'flask' ||
-      process.env.API_ENV === 'test'
-    ) {
-      console.log('test')
+    if (process.env.NODE_ENV === 'development') {
       const call = module.exports.httpCall(urls.localDev(params))
       // console.log('C', call)
+      let remoteJson = await call
+      // console.log('REM', remoteJson)
+      return remoteJson
+    } else if (process.env.NODE_ENV === 'production') {
+      const call = module.exports.httpsCall(urls.prodUrl(params))
       let remoteJson = await call
       // console.log('REM', remoteJson)
       return remoteJson
