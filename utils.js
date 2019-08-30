@@ -106,13 +106,19 @@ module.exports = {
   takeImage: async ctx => {
     console.log('TEST')
     return 'Test'
-    // const browser = await puppeteer.launch({
-    //   args: ['--no-sandbox', '--disable-setuid-sandbox']
-    // })
-    // const page = await browser.newPage()
-    // await page.goto(`http://localhost:3000/driver/${ctx.params.driver_slug}`)
-    // await page.screenshot({ path: 'example.png' })
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
+    const page = await browser.newPage()
+    if (process.env.NODE_ENV === 'development') {
+      await page.goto(`http://localhost:3000/driver/${ctx.params.driver_slug}`)
+    } else if (process.env.NODE_ENV === 'production') {
+      await page.goto(
+        `https://f1-cards.herokuapp.com/api/driver/${ctx.params.driver_slug}`
+      )
+    }
+    await page.screenshot({ path: 'example.png' })
 
-    // await browser.close()
+    await browser.close()
   }
 }
