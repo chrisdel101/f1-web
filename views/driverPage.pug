@@ -1,31 +1,6 @@
-extends layout
+extends index
+//- include mixins/_select
 
-include mixins/_select
-
-block content
-  //- - console.log(driverAction)
-  h1= title
-  +select({
-    method:method,
-    action: driverAction,
-    enctype: enctype,
-    selectName: driverSelectName,
-    enums: driverEnums, 
-    buttonType: buttonType,
-    buttonValue: buttonValue,
-    buttonField: buttonField 
-  })
-  +select({
-    method:method,
-    action: teamAction,
-    enctype: enctype,
-    selectName: teamSelectName,
-    enums: teamEnums, 
-    buttonType: buttonType,
-    buttonValue: buttonValue,
-    buttonField: buttonField 
-  })
-
-  .driver-card-container  
-    include cards/driverCard
-    block aside
+block append content
+  
+  .text hello

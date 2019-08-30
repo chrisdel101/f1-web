@@ -15,7 +15,6 @@ async function render(ctx, next) {
   await ctx.render('index', {
     title: ctx.title,
     method: 'GET',
-    enctype: 'application/x-www-form-urlencoded',
     driverAction: driversObj.driverAction,
     teamAction: teamsObj.teamAction,
     buttonField: 'Submit',
@@ -53,7 +52,7 @@ async function handleTeams() {
       selectName: 'team',
       teamAction: '/team'
     }
-  } catch(e) {
+  } catch (e) {
     console.log('A error in handleTeams', e)
   }
 }
