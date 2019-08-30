@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer')
 async function takeImage(ctx) {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
-  await page.goto('/driver?driver=kimi-raikkonen')
+  await page.goto(`http://localhost:3000/driver/${ctx.params.driver_slug}`)
   await page.screenshot({ path: 'example.png' })
 
   await browser.close()
@@ -57,7 +57,7 @@ async function renderDriverCard(ctx) {
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
   driverData['logo_url'] = teamData.logo_url
-  console.log('Driver Data', driverData)
+  // console.log('Driver Data', driverData)
   return await ctx.render('driverPage', {
     //  +++ index params +++
     urls: ctx.urls,
@@ -76,8 +76,6 @@ async function renderDriverTemplate(ctx) {
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
   driverData['logo_url'] = teamData.logo_url
-  console.log('DR', driverData)
-  console.log('TM', teamData)
   return await ctx.render('driverPage', {
     //  +++ index params +++
     urls: ctx.urls,
