@@ -2,6 +2,7 @@ const https = require('https')
 const http = require('http')
 const urls = require('./urls')
 const utils = require('./utils')
+const puppeteer = require('puppeteer')
 
 module.exports = {
   httpCall: async url => {
@@ -101,5 +102,13 @@ module.exports = {
       console.log('Error in getSelectedData', e)
       await ctx.render('error', error)
     }
+  },
+  takeImage: async ctx => {
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage()
+    await page.goto(`http://localhost:3000/driver/${ctx.params.driver_slug}`)
+    await page.screenshot({ path: 'example.png' })
+
+    await browser.close()
   }
 }
