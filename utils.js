@@ -104,8 +104,6 @@ module.exports = {
     }
   },
   takeImage: async ctx => {
-    console.log('TEST')
-    return 'Test'
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
@@ -118,7 +116,7 @@ module.exports = {
       )
     }
     await page.screenshot({ path: 'example.png' })
-
     await browser.close()
+    console.log('takeImage complete')
   }
 }
