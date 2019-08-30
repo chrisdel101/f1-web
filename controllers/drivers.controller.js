@@ -56,6 +56,7 @@ async function renderDriverCard(ctx) {
   const teamUrl = `/team?team=${driverData.team_name_slug}`
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
+  driverData['logo_url'] = teamData.logo_url
   console.log('Driver Data', driverData)
   return await ctx.render('driverPage', {
     //  +++ index params +++
@@ -74,6 +75,9 @@ async function renderDriverTemplate(ctx) {
   const teamUrl = `/team?team=${driverData.team_name_slug}`
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
+  driverData['logo_url'] = teamData.logo_url
+  console.log('DR', driverData)
+  console.log('TM', teamData)
   return await ctx.render('driverPage', {
     //  +++ index params +++
     urls: ctx.urls,
@@ -91,7 +95,8 @@ async function renderDriverTemplate(ctx) {
     // +++ ---- +++
     routeName: 'driver',
     driverData: driverData,
-    teamData: teamData
+    teamData: teamData,
+    allData: { ...driverData, ...teamData }
   })
 }
 module.exports = {
