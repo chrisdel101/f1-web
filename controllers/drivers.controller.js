@@ -2,7 +2,16 @@ const utils = require('../utils')
 const cache = require('../cache')
 const urls = require('../urls')
 const indexController = require('./index.controller')
+const puppeteer = require('puppeteer')
 
+async function takeImage(ctx) {
+  const browser = await puppeteer.launch()
+  const page = await browser.newPage()
+  await page.goto('/driver?driver=kimi-raikkonen')
+  await page.screenshot({ path: 'example.png' })
+
+  await browser.close()
+}
 // check cache in indexController for data before calling db
 async function handleFormData() {
   const drivers = await indexController.handleDrivers()
@@ -12,7 +21,7 @@ async function handleFormData() {
     teams
   }
 }
-async function fetchDriver(ctx, next) {
+async function fetchDriver(ctx) {
   const driverSlug = ctx.query.driver
   const formData = await handleFormData()
   const driversObj = formData.drivers
@@ -50,5 +59,6 @@ async function fetchDriver(ctx, next) {
   })
 }
 module.exports = {
-  fetchDriver: fetchDriver
+  fetchDriver,
+  takeImage
 }
