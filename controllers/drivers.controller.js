@@ -21,24 +21,38 @@ async function handleFormData() {
     teams
   }
 }
-async function fetchDriver(ctx) {
+async function fetchDriverAPI(ctx) {
+  // get query params from GET req
   const driverSlug = ctx.query.driver
+  // pass form data from cache to template
   const formData = await handleFormData()
+  // set data to vars
   const driversObj = formData.drivers
   const teamsObj = formData.teams
-  // console.log('driv', driversObj.selectName)
+  // query driver by slug
   const driverData = JSON.parse(
     await utils.fetchData(`drivers/${ctx.query.driver}`)
   )
-  // look up drivers team
+  // look up drivers team by id
   const teamData = JSON.parse(
     await utils.fetchData(`teams/${driverData.team_id}`)
+  )
+  return {
+    driverData,
+    teamData,
+    driversObj,
+    teamsObj
+  }
+}
+async function renderDriverTemplate(ctx) {
+  const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
+    ctx
   )
   const teamUrl = `/team?team=${driverData.team_name_slug}`
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
   console.log('Driver Data', driverData)
-  await ctx.render('driver', {
+  return await ctx.render('driverPage', {
     urls: ctx.urls,
     title: ctx.title,
     capitalize: utils.capitalize,
@@ -59,6 +73,6 @@ async function fetchDriver(ctx) {
   })
 }
 module.exports = {
-  fetchDriver,
+  renderDriverTemplate,
   takeImage
 }
