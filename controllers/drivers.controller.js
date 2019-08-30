@@ -21,18 +21,22 @@ async function handleFormData() {
     teams
   }
 }
-async function fetchDriverAPI(ctx) {
+async function fetchDriverAPI(ctx, render) {
   // get query params from GET req
-  const driverSlug = ctx.query.driver
+  let driverSlug
+  if (render === 'page') {
+    driverSlug = ctx.query.driver
+  } else if (render === 'card') {
+    driverSlug = ctx.params.driver_slug
+  }
+  // console.log('Q', driverSlug)
   // pass form data from cache to template
   const formData = await handleFormData()
   // set data to vars
   const driversObj = formData.drivers
   const teamsObj = formData.teams
   // query driver by slug
-  const driverData = JSON.parse(
-    await utils.fetchData(`drivers/${ctx.query.driver}`)
-  )
+  const driverData = JSON.parse(await utils.fetchData(`drivers/${driverSlug}`))
   // look up drivers team by id
   const teamData = JSON.parse(
     await utils.fetchData(`teams/${driverData.team_id}`)
@@ -44,26 +48,34 @@ async function fetchDriverAPI(ctx) {
     teamsObj
   }
 }
-async function renderDriverTemplate(ctx) {
+async function renderDriverCard(ctx) {
   const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
-    ctx
+    ctx,
+    'card'
   )
   const teamUrl = `/team?team=${driverData.team_name_slug}`
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
   console.log('Driver Data', driverData)
   return await ctx.render('driverPage', {
-    // title: ctx.title,
-    // method: 'GET',
-    // driverAction: driversObj.driverAction,
-    // teamAction: teamsObj.teamAction,
-    // buttonField: 'Submit',
-    // buttonType: 'submit',
-    // buttonValue: 'submit',
-    // driverSelectName: driversObj.selectName,
-    // driverEnums: driversObj.driversArr,
-    // teamSelectName: teamsObj.selectName,
-    // teamsEnums: teamsObj.teamsArr
+    //  +++ index params +++
+    urls: ctx.urls,
+    method: 'GET',
+    routeName: 'driverCard',
+    driverData: driverData,
+    teamData: teamData
+  })
+}
+async function renderDriverTemplate(ctx) {
+  const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
+    ctx,
+    'page'
+  )
+  const teamUrl = `/team?team=${driverData.team_name_slug}`
+  // add link to team to driver
+  driverData['teamUrl'] = teamUrl
+  return await ctx.render('driverPage', {
+    //  +++ index params +++
     urls: ctx.urls,
     method: 'GET',
     title: ctx.title,
@@ -71,19 +83,19 @@ async function renderDriverTemplate(ctx) {
     teamAction: teamsObj.teamAction,
     buttonField: 'Submit',
     buttonType: 'submit',
+    buttonValue: 'submit',
     driverSelectName: driversObj.selectName,
     driverEnums: driversObj.driversArr,
-    teamsEnums: teamsObj.teamsArr,
-    capitalize: utils.capitalize,
-    separator: utils.addSeparator,
-    routeName: 'driver',
-    buttonValue: 'submit',
     teamSelectName: teamsObj.selectName,
+    teamsEnums: teamsObj.teamsArr,
+    // +++ ---- +++
+    routeName: 'driver',
     driverData: driverData,
     teamData: teamData
   })
 }
 module.exports = {
   renderDriverTemplate,
+  renderDriverCard,
   takeImage
 }

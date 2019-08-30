@@ -6,5 +6,6 @@ const teamsController = require('../controllers/teams.controller')
 router.get('/', indexController.render)
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.fetchTeam)
+router.get('/driver/:driver_slug', driversController.renderDriverCard)
 router.get('/api/driver/:driver_slug', driversController.takeImage)
 module.exports = router

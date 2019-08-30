@@ -1,6 +1,10 @@
-extends index
-//- include mixins/_select
-
+- console.log('ROute', routeName)
+if routeName == 'driverCard'
+  include layout.pug
+else
+  include index.pug
+include mixins/_driverCardMixin
 block append content
-  
-  .text hello
+
+  .driver-page 
+    +driverCard(driverData)
