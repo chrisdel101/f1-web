@@ -117,6 +117,5 @@ module.exports = {
     }
     await page.screenshot({ path: 'example.png' })
     await browser.close()
-    console.log('takeImage complete')
   }
 }
