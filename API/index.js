@@ -10,10 +10,16 @@ async function sendImage(ctx) {
   //   send image to body
   ctx.body = fs.createReadStream('./example.png')
   //   unlink/delete file
-  fs.unlink('./example.png', err => {
-    if (err) throw err
-    console.log('path/file.txt was deleted')
-  })
+  try {
+    if (fs.existsSync('./example.png')) {
+      fs.unlink('./example.png', err => {
+        if (err) throw err
+        console.log('path/file.txt was deleted')
+      })
+    }
+  } catch (err) {
+    console.error('No Example.png file exists', err)
+  }
 }
 module.exports = {
   sendImage
