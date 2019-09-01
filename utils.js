@@ -107,6 +107,8 @@ module.exports = {
     try {
       const browser = await puppeteer.launch({
         headless: true,
+        executablePath:
+          '/app/node_modules/puppeteer/.local-chromium/linux-674921/chrome-linux/chrome',
         args: ['--no-sandbox', '--disable-setuid-sandbox']
       })
       const page = await browser.newPage()
