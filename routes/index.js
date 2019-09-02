@@ -31,6 +31,9 @@ router.get('/test', async ctx => {
     try {
       if (fs.existsSync('./example.png')) {
         console.log('Image was taken')
+        ctx.type = `image/png`
+        //   send image to body
+        ctx.body = fs.createReadStream('./example.png')
       } else {
         console.log('Image not taken')
       }
