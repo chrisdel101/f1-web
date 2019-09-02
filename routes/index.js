@@ -11,80 +11,45 @@ router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.fetchTeam)
 router.get('/driver/:driver_slug', driversController.renderDriverCard)
 router.get('/api/driver/:driver_slug', API.sendImage)
-
-router.get('/test', async ctx => {
-  try {
-    if (fs.existsSync('./example.png')) {
-      fs.unlinkSync('./example.png')
-      console.log('Old Image was removed')
-    } else {
-      console.log('Old Image not removed')
-    }
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
-    const page = await browser.newPage()
-    await page.goto('https://example.com')
-    await page.screenshot({ path: 'example.png' })
-
-    await browser.close()
-    try {
-      if (fs.existsSync('./example.png')) {
-        console.log('Image was taken')
-        ctx.type = `image/png`
-        //   send image to body
-        ctx.body = fs.createReadStream('./example.png')
-      } else {
-        console.log('Image not taken')
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  } catch (e) {
-    console.error('An error in take image', e)
-  }
-})
 router.get('/:driver_slug', async ctx => {
   try {
-    if (fs.existsSync('./example.png')) {
-      fs.unlinkSync('./example.png')
-      console.log('Old Image was removed')
-    } else {
-      console.log('Old Image not removed')
-    }
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    })
-    const page = await browser.newPage()
-    if (process.env.NODE_ENV === 'development') {
-      console.log('here')
-      await page.goto(`http://localhost:3000/driver/${ctx.params.driver_slug}`)
-    } else if (process.env.NODE_ENV === 'production') {
-      await page.goto(
-        `https://f1-cards.herokuapp.com/driver/${ctx.params.driver_slug}`
-      )
-    }
-    await page.screenshot({ path: 'example.png' })
-
-    await browser.close()
-    try {
-      if (fs.existsSync('./example.png')) {
-        console.log('Image was taken')
-        ctx.type = `image/png`
-        //   send image to body
-        ctx.body = fs.createReadStream('./example.png')
+    fs.access('example.png', err => {
+      if (!err) {
+        console.log('myfile exists')
+        fs.unlink('./example.png', err => {
+          if (err) throw err
+          console.log('File unlinked')
+        })
       } else {
-        console.log('Image not taken')
+        console.log('myfile does not exist')
       }
-    } catch (err) {
-      console.error(err)
-    }
-  } catch (e) {
-    console.error('An error in take image', e)
+    })
+  } catch (err) {
+    console.error('No Example.png file exists', err)
   }
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  })
+  const page = await browser.newPage()
+  if (process.env.NODE_ENV === 'development') {
+    console.log('here')
+    await page.goto(`http://localhost:3000/driver/${ctx.params.driver_slug}`)
+  } else if (process.env.NODE_ENV === 'production') {
+    await page.goto(
+      `https://f1-cards.herokuapp.com/driver/${ctx.params.driver_slug}`
+    )
+  }
+  await page.screenshot({ path: 'example.png' })
+
+  await browser.close()
+
+  ctx.type = `image/png`
+  //   send image to body
+  ctx.body = fs.createReadStream('./example.png')
 })
 router.get('/test/:driver_slug', async ctx => {
   const image = await API.sendImage(ctx, ctx.params.driver_slug)
+  console.log('image', image)
   ctx.body = image
 })
 module.exports = router
