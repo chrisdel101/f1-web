@@ -2,6 +2,7 @@ const https = require('https')
 const http = require('http')
 const urls = require('./urls')
 const utils = require('./utils')
+const puppeteer = require('puppeteer')
 
 module.exports = {
   httpCall: async url => {
@@ -105,7 +106,9 @@ module.exports = {
   takeImage: async ctx => {
     //
     try {
-      const browser = await puppeteer.launch()
+      const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      })
       console.log('HERE 1')
       const page = await browser.newPage()
       if (process.env.NODE_ENV === 'development') {
@@ -121,7 +124,7 @@ module.exports = {
       await page.screenshot({ path: 'example.png' })
       console.log('here 3')
       await browser.close()
-      console.log('here 4')
+      console.log('here 3')
     } catch (e) {
       console.error('An error occured in takeImage:', e)
       return 'An error occured in takeImage:', e
