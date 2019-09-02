@@ -61,7 +61,7 @@ router.get('/:driver_slug', async ctx => {
       await page.goto(`http://localhost:3000/driver/${ctx.params.driver_slug}`)
     } else if (process.env.NODE_ENV === 'production') {
       await page.goto(
-        `https://f1-cards.herokuapp.com/api/driver/${ctx.params.driver_slug}`
+        `https://f1-cards.herokuapp.com/driver/${ctx.params.driver_slug}`
       )
     }
     await page.screenshot({ path: 'example.png' })
