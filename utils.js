@@ -107,11 +107,9 @@ module.exports = {
     //
     try {
       const browser = await puppeteer.launch({
-        headless: true,
-        executablePath:
-          '/app/node_modules/puppeteer/.local-chromium/linux-674921/chrome-linux/chrome',
         args: ['--no-sandbox', '--disable-setuid-sandbox']
       })
+      console.log('HERE 1')
       const page = await browser.newPage()
       if (process.env.NODE_ENV === 'development') {
         await page.goto(
@@ -121,9 +119,12 @@ module.exports = {
         await page.goto(
           `https://f1-cards.herokuapp.com/api/driver/${ctx.params.driver_slug}`
         )
+        console.log('HERE 2')
       }
       await page.screenshot({ path: 'example.png' })
+      console.log('here 3')
       await browser.close()
+      console.log('here 4')
     } catch (e) {
       console.error('An error occured in takeImage:', e)
       return 'An error occured in takeImage:', e
