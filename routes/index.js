@@ -83,4 +83,8 @@ router.get('/:driver_slug', async ctx => {
     console.error('An error in take image', e)
   }
 })
+router.get('/test/:driver_slug', async ctx => {
+  const image = await API.sendImage(ctx, ctx.params.driver_slug)
+  ctx.body = image
+})
 module.exports = router

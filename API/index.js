@@ -3,6 +3,22 @@ const fs = require('fs')
 var puppeteer = require('puppeteer')
 
 async function sendImage(ctx) {
+  // unlink/delete file
+  try {
+    fs.access('example.png', err => {
+      if (!err) {
+        console.log('myfile exists')
+        fs.unlink('./example.png', err => {
+          if (err) throw err
+          console.log('File unlinked')
+        })
+      } else {
+        console.log('myfile does not exist')
+      }
+    })
+  } catch (err) {
+    console.error('No Example.png file exists', err)
+  }
   try {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -28,18 +44,7 @@ async function sendImage(ctx) {
   //   set content type to image
   ctx.type = `image/png`
   //   send image to body
-  ctx.body = fs.createReadStream('./example.png')
-  //   unlink/delete file
-  try {
-    if (fs.existsSync('./example.png')) {
-      fs.unlink('./example.png', err => {
-        if (err) throw err
-        console.log('path/file.txt was deleted')
-      })
-    }
-  } catch (err) {
-    console.error('No Example.png file exists', err)
-  }
+  return fs.createReadStream('./example.png')
 }
 module.exports = {
   sendImage
