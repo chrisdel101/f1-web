@@ -2,7 +2,6 @@ const https = require('https')
 const http = require('http')
 const urls = require('./urls')
 const utils = require('./utils')
-const puppeteer = require('puppeteer')
 
 module.exports = {
   httpCall: async url => {
