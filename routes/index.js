@@ -40,7 +40,7 @@ router.get('/:driver_slug', async ctx => {
     )
   }
   await page.screenshot({ path: 'example.png' })
-
+  console.log('Image snapped')
   await browser.close()
 
   ctx.type = `image/png`
