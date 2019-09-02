@@ -106,9 +106,7 @@ module.exports = {
   takeImage: async ctx => {
     //
     try {
-      const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-      })
+      const browser = await puppeteer.launch()
       console.log('HERE 1')
       const page = await browser.newPage()
       if (process.env.NODE_ENV === 'development') {
