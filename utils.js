@@ -104,6 +104,7 @@ module.exports = {
     }
   },
   takeImage: async ctx => {
+    //
     try {
       const browser = await puppeteer.launch({
         headless: true,
