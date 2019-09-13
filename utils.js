@@ -2,6 +2,7 @@ const https = require('https')
 const http = require('http')
 const urls = require('./urls')
 const utils = require('./utils')
+const puppeteer = require('puppeteer')
 
 module.exports = {
   httpCall: async url => {
@@ -25,17 +26,24 @@ module.exports = {
     })
   },
   fetchData: async params => {
-    if (process.env.NODE_ENV === 'development') {
-      const call = module.exports.httpCall(urls.localDev(params))
-      // console.log('C', call)
-      let remoteJson = await call
-      // console.log('REM', remoteJson)
-      return remoteJson
-    } else if (process.env.NODE_ENV === 'production') {
-      const call = module.exports.httpsCall(urls.prodUrl(params))
-      let remoteJson = await call
-      // console.log('REM', remoteJson)
-      return remoteJson
+    try {
+      if (
+        process.env.NODE_ENV === 'development' ||
+        process.env.NODE_ENV === 'test'
+      ) {
+        const call = module.exports.httpCall(urls.localDev(params))
+        // console.log('C', call)
+        let remoteJson = await call
+        // console.log('REM', remoteJson)
+        return remoteJson
+      } else if (process.env.NODE_ENV === 'production') {
+        const call = module.exports.httpsCall(urls.prodUrl(params))
+        let remoteJson = await call
+        // console.log('REM', remoteJson)
+        return remoteJson
+      }
+    } catch (e) {
+      console.error('An error in util.fetchData', e)
     }
   },
 
@@ -100,6 +108,33 @@ module.exports = {
     } catch (e) {
       console.log('Error in getSelectedData', e)
       await ctx.render('error', error)
+    }
+  },
+  takeImage: async ctx => {
+    //
+    try {
+      const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      })
+      console.log('HERE 1')
+      const page = await browser.newPage()
+      if (process.env.NODE_ENV === 'development') {
+        await page.goto(
+          `http://localhost:3000/driver/${ctx.params.driver_slug}`
+        )
+      } else if (process.env.NODE_ENV === 'production') {
+        await page.goto(
+          `https://f1-cards.herokuapp.com/api/driver/${ctx.params.driver_slug}`
+        )
+        console.log('HERE 2')
+      }
+      await page.screenshot({ path: 'example.png' })
+      console.log('here 3')
+      await browser.close()
+      console.log('here 3')
+    } catch (e) {
+      console.error('An error occured in takeImage:', e)
+      return 'An error occured in takeImage:', e
     }
   }
 }

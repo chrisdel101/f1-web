@@ -6,10 +6,8 @@ const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
-
 const index = require('./routes/index')
 const users = require('./routes/users')
-const F1 = 'Formula 1'
 const urls = require('./urls')
 const errorHandlers = require('./errorHandlers')
 // error handler
@@ -39,20 +37,20 @@ app.use(async (ctx, next) => {
 })
 
 // uses async arrow functions
-// app.use(async (ctx, next) => {
-//   try {
-//     await next() // next is now a function
-//   } catch (err) {
-//     ctx.body = { message: err.message }
-//     ctx.status = err.status || 500
-//   }
-// })
+app.use(async (ctx, next) => {
+  try {
+    await next() // next is now a function
+  } catch (err) {
+    ctx.body = { message: err.message }
+    ctx.status = err.status || 500
+  }
+})
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 
 // set locals
-app.context.title = F1
+app.context.title = 'Formula 1 Cards Demo'
 app.context.urls = urls
 // // error-handling
 // app.on('error', (err, ctx) => {
