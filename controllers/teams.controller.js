@@ -99,9 +99,10 @@ async function renderTeamTemplate(ctx, next) {
   const allteamsObj = formData.teams
   let teamData = JSON.parse(await utils.fetchData(`teams/${teamName}`))
   teamData = await combineDriverDataOnTeam(teamData)
-  console.log('Team Data', allteamsObj)
+  // console.log('Team Data', allteamsObj)
 
   await ctx.render('teamPage', {
+    //  +++ index params +++
     urls: ctx.urls,
     title: ctx.title,
     driverEnums: allDriversObj.driversArr,

@@ -1,8 +1,13 @@
 //- - console.log('ROute', routeName)
-if routeName == 'driverCard'
+if routeName == 'teamCard'
   include layout.pug
 else
-  - console.log('DD', teamData)
+  //- import index select page
   include index.pug
+  //- include card mixin
 include mixins/_teamCardMixin
+  //- append the card content to page
 block append content
+
+  .driver-page 
+    +teamCard(teamData)

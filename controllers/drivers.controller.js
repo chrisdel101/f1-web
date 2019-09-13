@@ -71,6 +71,7 @@ async function renderDriverTemplate(ctx) {
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
   driverData['logo_url'] = teamData.logo_url
+  // console.log('HELLI', teamsObj.teamsArr)
   return await ctx.render('driverPage', {
     //  +++ index params +++
     urls: ctx.urls,
@@ -84,7 +85,7 @@ async function renderDriverTemplate(ctx) {
     driverSelectName: driversObj.selectName,
     driverEnums: driversObj.driversArr,
     teamSelectName: teamsObj.selectName,
-    teamsEnums: teamsObj.teamsArr,
+    teamEnums: teamsObj.teamsArr,
     // +++ ---- +++
     routeName: 'driver',
     driverData: driverData,
