@@ -1,0 +1,8 @@
+//- - console.log('ROute', routeName)
+if routeName == 'driverCard'
+  include layout.pug
+else
+  - console.log('DD', teamData)
+  include index.pug
+include mixins/_teamCardMixin
+block append content

@@ -1,7 +1,6 @@
 extends layout
 
 include mixins/_select
-
 block content
   h1= title
   +select({
@@ -17,7 +16,7 @@ block content
     method:method,
     action: teamAction,
     selectName: teamSelectName,
-    enums: teamsEnums, 
+    enums: teamEnums, 
     buttonType: buttonType,
     buttonValue: buttonValue,
     buttonField: buttonField 

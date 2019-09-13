@@ -8,9 +8,10 @@ var puppeteer = require('puppeteer')
 
 router.get('/', indexController.render)
 router.get('/driver', driversController.renderDriverTemplate)
-router.get('/team', teamsController.fetchTeam)
+router.get('/team', teamsController.renderTeamTemplate)
 router.get('/driver/:driver_slug', driversController.renderDriverCard)
-router.get('/team/:team_slug', driversController.renderDriverCard)
+router.get('/team/:team_slug', teamsController.renderTeamCard)
+router.get('/testapi/team/:team_slug', teamsController.fetchTeamAPI)
 // doesn't work when moved out of route
 router.get('/api/driver/:driver_slug', async ctx => {
   try {

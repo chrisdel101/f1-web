@@ -39,4 +39,16 @@ describe('teams.controllers', function() {
       assert(res.drivers_scraped[0].hasOwnProperty('api_call'))
     })
   })
+  describe('fetchTeamAPI()', function() {
+    it.only('call team API with card render', function() {
+      const fakeCtx = {
+        params: {
+          team_slug: 'mercedes'
+        }
+      }
+      return teamsController.fetchTeamAPI(fakeCtx, 'card').then(res => {
+        console.log(res)
+      })
+    })
+  })
 })

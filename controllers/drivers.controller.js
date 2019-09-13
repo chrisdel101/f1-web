@@ -16,6 +16,7 @@ async function handleFormData() {
 async function fetchDriverAPI(ctx, render) {
   // get query params from GET req
   let driverSlug
+  // get the input params diff depending on type
   if (render === 'page') {
     driverSlug = ctx.query.driver
   } else if (render === 'card') {

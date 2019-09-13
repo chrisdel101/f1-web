@@ -1,10 +1,11 @@
-- console.log('ROute', routeName)
-if routeName == 'driverCard'
-  include layout.pug
-else
-  include index.pug
-include mixins/_driverCardMixin
+//- - console.log('ROute', routeName)
+include index.pug
+//- if routeName === 'driverCard'
+//-   include layout.pug
+//- else
+//- include mixins/_driverCardMixin
+  - console.log('HERE NOW')
 block append content
 
-  .driver-page 
-    +driverCard(driverData)
+  //- .driver-page 
+  //-   +driverCard(driverData)
