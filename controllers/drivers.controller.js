@@ -12,6 +12,7 @@ async function handleFormData() {
     teams
   }
 }
+// fetchs the driver info from the api to use in render func
 async function fetchDriverAPI(ctx, render) {
   // get query params from GET req
   let driverSlug
@@ -39,6 +40,7 @@ async function fetchDriverAPI(ctx, render) {
     teamsObj
   }
 }
+// use driver api data to rendercard only
 async function renderDriverCard(ctx) {
   const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
     ctx,
@@ -58,6 +60,7 @@ async function renderDriverCard(ctx) {
     teamData: teamData
   })
 }
+// use driver api data to render full template
 async function renderDriverTemplate(ctx) {
   const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
     ctx,

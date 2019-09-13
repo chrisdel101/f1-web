@@ -10,6 +10,8 @@ router.get('/', indexController.render)
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.fetchTeam)
 router.get('/driver/:driver_slug', driversController.renderDriverCard)
+router.get('/team/:team_slug', driversController.renderDriverCard)
+// doesn't work when moved out of route
 router.get('/api/driver/:driver_slug', async ctx => {
   try {
     fs.access('example.png', err => {
@@ -36,6 +38,42 @@ router.get('/api/driver/:driver_slug', async ctx => {
   } else if (process.env.NODE_ENV === 'production') {
     await page.goto(
       `https://f1-cards.herokuapp.com/driver/${ctx.params.driver_slug}`
+    )
+  }
+  await page.screenshot({ path: 'example.png' })
+  console.log('Image snapped')
+  await browser.close()
+
+  ctx.type = `image/png`
+  //   send image to body
+  ctx.body = fs.createReadStream('./example.png')
+})
+router.get('/api/team/:team_slug', async ctx => {
+  try {
+    fs.access('example.png', err => {
+      if (!err) {
+        console.log('myfile exists')
+        fs.unlink('./example.png', err => {
+          if (err) throw err
+          console.log('File unlinked')
+        })
+      } else {
+        console.log('myfile does not exist')
+      }
+    })
+  } catch (err) {
+    console.error('No Example.png file exists', err)
+  }
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  })
+  const page = await browser.newPage()
+  if (process.env.NODE_ENV === 'development') {
+    console.log('here')
+    await page.goto(`http://localhost:3000/team/${ctx.params.team_slug}`)
+  } else if (process.env.NODE_ENV === 'production') {
+    await page.goto(
+      `https://f1-cards.herokuapp.com/team/${ctx.params.team_slug}`
     )
   }
   await page.screenshot({ path: 'example.png' })

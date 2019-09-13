@@ -26,17 +26,24 @@ module.exports = {
     })
   },
   fetchData: async params => {
-    if (process.env.NODE_ENV === 'development') {
-      const call = module.exports.httpCall(urls.localDev(params))
-      // console.log('C', call)
-      let remoteJson = await call
-      // console.log('REM', remoteJson)
-      return remoteJson
-    } else if (process.env.NODE_ENV === 'production') {
-      const call = module.exports.httpsCall(urls.prodUrl(params))
-      let remoteJson = await call
-      // console.log('REM', remoteJson)
-      return remoteJson
+    try {
+      if (
+        process.env.NODE_ENV === 'development' ||
+        process.env.NODE_ENV === 'test'
+      ) {
+        const call = module.exports.httpCall(urls.localDev(params))
+        // console.log('C', call)
+        let remoteJson = await call
+        // console.log('REM', remoteJson)
+        return remoteJson
+      } else if (process.env.NODE_ENV === 'production') {
+        const call = module.exports.httpsCall(urls.prodUrl(params))
+        let remoteJson = await call
+        // console.log('REM', remoteJson)
+        return remoteJson
+      }
+    } catch (e) {
+      console.error('An error in util.fetchData', e)
     }
   },
 

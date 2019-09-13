@@ -44,6 +44,33 @@ async function combineDriverDataOnTeam(teamDataObj) {
     return 'Error in combineDriverDataOnTeam', e
   }
 }
+async function fetchDriverAPI(ctx, render) {
+  // get query params from GET req
+  let driverSlug
+  if (render === 'page') {
+    driverSlug = ctx.query.driver
+  } else if (render === 'card') {
+    driverSlug = ctx.params.driver_slug
+  }
+  // console.log('Q', driverSlug)
+  // pass form data from cache to template
+  const formData = await handleFormData()
+  // set data to vars
+  const driversObj = formData.drivers
+  const teamsObj = formData.teams
+  // query driver by slug
+  const driverData = JSON.parse(await utils.fetchData(`drivers/${driverSlug}`))
+  // look up drivers team by id
+  const teamData = JSON.parse(
+    await utils.fetchData(`teams/${driverData.team_id}`)
+  )
+  return {
+    driverData,
+    teamData,
+    driversObj,
+    teamsObj
+  }
+}
 async function fetchTeam(ctx, next) {
   // get data from form
   let teamName = ctx.query.team
