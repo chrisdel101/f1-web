@@ -71,33 +71,32 @@ async function fetchTeamAPI(ctx, render) {
 }
 // use driver api data to rendercard only
 async function renderTeamCard(ctx) {
-  const { teamData, allDriversObj, allteamsObj } = await fetchDriverAPI(
-    ctx,
-    'card'
-  )
+  let { teamData, allDriversObj, allteamsObj } = await fetchTeamAPI(ctx, 'card')
   const teamUrl = `/team?team=${teamData.team_name_slug}`
   // add link to team to driver
   teamData['teamUrl'] = teamUrl
-  driverData['logo_url'] = teamData.logo_url
-  // console.log('Driver Data', driverData)
+  teamData = await combineDriverDataOnTeam(teamData)
+  // driverData['logo_url'] = teamData.logo_url
+  console.log('Team Data', teamData)
   return await ctx.render('teamPage', {
     //  +++ index params +++
     urls: ctx.urls,
     method: 'GET',
-    routeName: 'driverCard',
-    driverData: driverData,
+    routeName: 'teamCard',
+    // driverData: driverData,
     teamData: teamData
   })
 }
+// use team api data to render full template
 async function renderTeamTemplate(ctx, next) {
+  let { teamData, allDriversObj, allteamsObj } = await fetchTeamAPI(ctx, 'page')
   // get data from form
   let teamName = ctx.query.team
   const formData = await handleFormData()
   // list of drivers
-  const allDriversObj = formData.drivers
+  // const allDriversObj = formData.drivers
   // list of teams
-  const allteamsObj = formData.teams
-  let teamData = JSON.parse(await utils.fetchData(`teams/${teamName}`))
+  // const allteamsObj = formData.teams
   teamData = await combineDriverDataOnTeam(teamData)
   // console.log('Team Data', allteamsObj)
 

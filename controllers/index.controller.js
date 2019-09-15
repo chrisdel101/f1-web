@@ -23,7 +23,7 @@ async function render(ctx, next) {
     driverSelectName: driversObj.selectName,
     driverEnums: driversObj.driversArr,
     teamSelectName: teamsObj.selectName,
-    teamsEnums: teamsObj.teamsArr
+    teamEnums: teamsObj.teamsArr
   })
 }
 async function handleDrivers() {
