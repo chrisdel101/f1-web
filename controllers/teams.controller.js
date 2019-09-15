@@ -75,15 +75,14 @@ async function renderTeamCard(ctx) {
   const teamUrl = `/team?team=${teamData.team_name_slug}`
   // add link to team to driver
   teamData['teamUrl'] = teamUrl
+  // add driver data to team obj
   teamData = await combineDriverDataOnTeam(teamData)
-  // driverData['logo_url'] = teamData.logo_url
-  console.log('Team Data', teamData)
+  // console.log('Team Data', teamData)
   return await ctx.render('teamPage', {
     //  +++ index params +++
     urls: ctx.urls,
     method: 'GET',
     routeName: 'teamCard',
-    // driverData: driverData,
     teamData: teamData
   })
 }
@@ -92,14 +91,9 @@ async function renderTeamTemplate(ctx, next) {
   let { teamData, allDriversObj, allteamsObj } = await fetchTeamAPI(ctx, 'page')
   // get data from form
   let teamName = ctx.query.team
-  const formData = await handleFormData()
-  // list of drivers
-  // const allDriversObj = formData.drivers
-  // list of teams
-  // const allteamsObj = formData.teams
+  // add driver data to team obj
   teamData = await combineDriverDataOnTeam(teamData)
   // console.log('Team Data', allteamsObj)
-
   await ctx.render('teamPage', {
     //  +++ index params +++
     urls: ctx.urls,
