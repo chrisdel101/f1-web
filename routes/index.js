@@ -7,6 +7,7 @@ var fs = require('fs')
 var puppeteer = require('puppeteer')
 
 router.get('/', indexController.render)
+router.get('/reset-cache', indexController.resetCache)
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.renderTeamTemplate)
 router.get('/driver/:driver_slug', driversController.renderDriverCard)
