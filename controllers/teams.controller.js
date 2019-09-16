@@ -45,7 +45,7 @@ async function combineDriverDataOnTeam(teamDataObj) {
   }
 }
 async function fetchTeamAPI(ctx, render) {
-  console.log('CTX', ctx)
+  // console.log('CTX', ctx)
   // get query params from GET req
   let teamSlug
   if (render === 'page') {
