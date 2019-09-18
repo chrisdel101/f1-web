@@ -29,7 +29,6 @@ async function sendImage(ctx, type) {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
-    console.log('HERE 1')
     const page = await browser.newPage()
     if (process.env.NODE_ENV === 'development') {
       if (type === 'team') {
@@ -51,9 +50,7 @@ async function sendImage(ctx, type) {
       }
     }
     await page.screenshot({ path: 'example.png' })
-    console.log('here 3')
     await browser.close()
-    console.log('here 3')
   } catch (e) {
     console.error('An error occured in takeImage:', e)
     return 'An error occured in takeImage:', e
