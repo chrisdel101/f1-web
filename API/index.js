@@ -30,6 +30,11 @@ async function sendImage(ctx, type) {
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
     const page = await browser.newPage()
+    await page.setViewport({
+      width: 800,
+      height: 600,
+      deviceScaleFactor: 1
+    })
     if (process.env.NODE_ENV === 'development') {
       if (type === 'team') {
         await page.goto(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
