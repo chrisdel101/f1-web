@@ -31,7 +31,7 @@ async function sendImage(ctx, type) {
     })
     const page = await browser.newPage()
     await page.setViewport({
-      width: 800,
+      width: 900,
       height: 600,
       deviceScaleFactor: 1
     })
