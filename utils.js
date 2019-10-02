@@ -107,19 +107,19 @@ module.exports = {
       // console.log('ent', cache)
       // console.log('rou', cache[route])
       // console.log('len', cache[route] && cache[route].length)
-      // if cache param add to cache
+      // route matches key in cache - if exists
       if (cache && (cache[route] && cache[route].length)) {
-        console.log(`get ${route} from cache`)
+        if (process.env.NODE_ENV === 'testing') {
+          console.log(`get ${route} from cache`)
+        }
         dataObj = cache[route]
         // else get data from DB
       } else {
         dataObj = JSON.parse(await module.exports.fetchData(route))
-        // console.log('below', dataObj)
       }
       return dataObj
     } catch (e) {
-      console.log('Error in getSelectedData', e)
-      await ctx.render('error', error)
+      console.error('Error in getSelectedData', e)
     }
   },
   viewCache: (ctx, type) => {

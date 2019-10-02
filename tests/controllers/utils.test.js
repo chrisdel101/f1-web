@@ -2,8 +2,63 @@ const assert = require('assert')
 const utils = require('../../utils')
 const indexController = require('../../controllers/index.controller')
 let cache = require('../../cache')
+const sinon = require('sinon')
 
 describe('utils tests', () => {
+  describe.only('getSelectedData()', () => {
+    it('returns drivers data from cache', async function() {
+      const fakeCache = {
+        drivers: [
+          { name: 'Test Driver1', name_slug: 'test-driver1' },
+          { name: 'Test Driver2', name_slug: 'test-driver2' }
+        ]
+      }
+      sinon.spy(utils, 'fetchData')
+      const result = await utils.getSelectData(fakeCache, 'drivers')
+      //   check not called from DB
+      assert(utils.fetchData.notCalled)
+      assert.deepEqual(result, fakeCache.drivers)
+      utils.fetchData.restore()
+    })
+    it('returns drivers team from cache', async function() {
+      const fakeCache = {
+        teams: [
+          { name: 'Test Team1', name_slug: 'test-team1' },
+          { name: 'Test Team2', name_slug: 'test-team2' }
+        ]
+      }
+      sinon.spy(utils, 'fetchData')
+      const result = await utils.getSelectData(fakeCache, 'teams')
+      //   check not called from DB
+      assert(utils.fetchData.notCalled)
+      assert.deepEqual(result, fakeCache.teams)
+      utils.fetchData.restore()
+    })
+    it('attempt fetch drivers from DB - incorrect cache key returns error', async function() {
+      const fakeCache = {
+        teams: [
+          { name: 'Test Team1', name_slug: 'test-team1' },
+          { name: 'Test Team2', name_slug: 'test-team2' }
+        ]
+      }
+      sinon.spy(utils, 'fetchData')
+      const result = await utils.getSelectData(fakeCache, 'blarg')
+      //   check not called from DB
+      assert.throws(() => {
+        throw new SyntaxError()
+      })
+      utils.fetchData.restore()
+    })
+    it('attempt fetch drivers from DB - incorrect cache key returns error', async function() {
+      const fakeCache = {}
+      sinon.spy(utils, 'fetchData')
+      //   get from DB
+      const result = await utils.getSelectData(fakeCache, 'teams')
+      //   check is called from DB
+      assert(utils.fetchData.calledOnce)
+      utils.fetchData.restore()
+    })
+  })
   describe('isObjEmpty()', () => {
     it('returns true on empty obj', function() {
       const res = utils.isObjEmpty({})
@@ -19,19 +74,16 @@ describe('utils tests', () => {
       // check cache is empty
       cache = {}
       assert(utils.isObjEmpty(cache))
-      //   console.log('before', cache)
     })
     afterEach(function() {
       // check cache is empty
       cache = {}
       assert(utils.isObjEmpty(cache))
-      //   console.log('after', cache)
     })
     it('handleDrivers - checks that cache is not empty after call', async function() {
       let drivers = await indexController.handleDrivers()
       let viewCache = utils.viewCache({})
       assert(!utils.isObjEmpty(viewCache))
-      assert(!viewCache.hasOwnProperty('teams'))
     })
     it('handleDrivers - checks that has drivers key', async function() {
       let drivers = await indexController.handleDrivers()
@@ -44,18 +96,16 @@ describe('utils tests', () => {
       assert(viewCache.hasOwnProperty('teams'))
     })
   })
-  describe.only('resetCache()', () => {
+  describe('resetCache()', () => {
     beforeEach(function() {
       // check cache is empty
       cache = {}
       assert(utils.isObjEmpty(cache))
-      //   console.log('before', cache)
     })
     afterEach(function() {
       // check cache is empty
       cache = {}
       assert(utils.isObjEmpty(cache))
-      //   console.log('after', cache)
     })
     it('resetCache resets drivers cache', async function() {
       let drivers = await indexController.handleDrivers()
@@ -83,7 +133,7 @@ describe('utils tests', () => {
       assert(!viewCache.hasOwnProperty('teams'))
       assert(utils.isObjEmpty(viewCache))
     })
-    it.only('resetCache full cache', async function() {
+    it('resetCache full cache', async function() {
       let drivers = await indexController.handleDrivers()
       let teams = await indexController.handleTeams()
       let viewCache = utils.viewCache()
