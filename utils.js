@@ -3,8 +3,15 @@ const http = require('http')
 const urls = require('./urls')
 const utils = require('./utils')
 const puppeteer = require('puppeteer')
+let cache = require('./cache')
 
 module.exports = {
+  isObjEmpty: obj => {
+    if (Object.keys(obj).length === 0 && obj.constructor === Object) {
+      return true
+    }
+    return false
+  },
   httpCall: async url => {
     return new Promise((resolve, reject) => {
       http.get(url, res => {
@@ -89,6 +96,9 @@ module.exports = {
       newName += splitName[i]
     }
   },
+  // takes the cache to store
+  // take a route i.e. /drivers to get from
+  // returns the data from the cache
   getSelectData: async (cache, route) => {
     try {
       let dataObj
@@ -97,17 +107,63 @@ module.exports = {
       // console.log('ent', cache)
       // console.log('rou', cache[route])
       // console.log('len', cache[route] && cache[route].length)
-      if (cache[route] && cache[route].length) {
-        // console.log('here')
+      // if cache param add to cache
+      if (cache && (cache[route] && cache[route].length)) {
+        console.log(`get ${route} from cache`)
         dataObj = cache[route]
+        // else get data from DB
       } else {
-        // console.log('below')
         dataObj = JSON.parse(await module.exports.fetchData(route))
+        // console.log('below', dataObj)
       }
       return dataObj
     } catch (e) {
       console.log('Error in getSelectedData', e)
       await ctx.render('error', error)
+    }
+  },
+  viewCache: (ctx, type) => {
+    try {
+      if (ctx && (ctx.params && ctx.params.type)) {
+        type = ctx.params.type
+      }
+      if (type === 'teams') {
+        if (!cache.teams) {
+          return {}
+        }
+        return cache.teams
+      } else if (type === 'drivers') {
+        if (!cache.drivers) {
+          return {}
+        }
+        return cache.drivers
+      } else {
+        return cache
+      }
+    } catch (e) {
+      console.error('An error in viewCache', e)
+    }
+  },
+  resetCache: type => {
+    try {
+      if (type === 'teams') {
+        if (!cache.teams) {
+          return {}
+        }
+        delete cache.teams
+        return cache
+      } else if (type === 'drivers') {
+        if (!cache.drivers) {
+          return {}
+        }
+        delete cache.drivers
+        return cache
+      } else {
+        cache = {}
+        return cache
+      }
+    } catch (e) {
+      console.error('An error in viewCache', e)
     }
   },
   takeImage: async ctx => {

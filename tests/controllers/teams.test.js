@@ -1,6 +1,5 @@
 const teamsController = require('../../controllers/teams.controller')
 var assert = require('assert')
-process.env.NODE_ENV = 'test'
 const teamDataObj = {
   base: 'Brackley, United Kingdom',
   championship_titles: '5',
@@ -40,7 +39,7 @@ describe('teams.controllers', function() {
     })
   })
   describe('fetchTeamAPI()', function() {
-    it.only('call team API with card render', function() {
+    it('call team API with card render', function() {
       const fakeCtx = {
         params: {
           team_slug: 'mercedes'

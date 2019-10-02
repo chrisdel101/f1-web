@@ -1,5 +1,5 @@
 mixin driverCard(data)
-  - console.log('mixin', data)
+  //- - console.log('mixin', data)
   .card.driver-card
     .driver-stats-container
       .column.left-column
@@ -14,7 +14,7 @@ mixin driverCard(data)
           a(href=data.teamUrl)
             img(src=data.logo_url)
         .table-container.driver-table-container
-          table.stats
+          table.stats 
             tbody
               tr 
                 td

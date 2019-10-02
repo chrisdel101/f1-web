@@ -5,13 +5,13 @@ module.exports = {
   cache,
   handleDrivers,
   handleTeams,
-  resetCache
+  freshFetch
 }
 async function render(ctx, next) {
   const teamsObj = await handleTeams()
-  console.log('TEAMOBJ', teamsObj)
+  // console.log('ALL TEAMOBJ on index render', teamsObj)
   const driversObj = await handleDrivers()
-  // console.log('DRIVEOBJ', driversObj)
+  // console.log('ALL DRIVEROBJ on index render', driversObj)
 
   await ctx.render('index', {
     title: ctx.title,
@@ -30,8 +30,10 @@ async function render(ctx, next) {
 // gets driver data and caches it
 async function handleDrivers(manualFetch = false) {
   try {
+    // if not manual fetch get from cache
     if (!manualFetch) {
       const driversArr = await utils.getSelectData(cache, 'drivers')
+      // console.log('ARR here', driversArr)
       // add to cache
       cache.drivers = driversArr
       return {
@@ -39,7 +41,18 @@ async function handleDrivers(manualFetch = false) {
         selectName: 'driver',
         driverAction: '/driver'
       }
+      // else get from DB
     } else {
+      const driversArr = await utils.getSelectData(null, 'drivers')
+      // console.log('DB', driversArr)
+      // add to cache
+      cache.teams = driversArr
+      // console.log('CA', driversArr)
+      return {
+        driversArr: driversArr,
+        selectName: 'driver',
+        driverAction: '/driver'
+      }
     }
   } catch (e) {
     console.log('A error in handleDrivers', e)
@@ -60,18 +73,28 @@ async function handleTeams(manualFetch = false) {
         teamAction: '/team'
       }
     } else {
+      const teamsArr = await utils.getSelectData(null, 'teams')
+      // add to cache
+      cache.teams = teamsArr
+      // console.log('CA', teamsArr)
+      return {
+        teamsArr: teamsArr,
+        selectName: 'team',
+        teamAction: '/team'
+      }
     }
   } catch (e) {
     console.log('A error in handleTeams', e)
   }
 }
-// reset the cache manually
-async function resetCache() {
+// fetch from DB manually - skip cache
+async function freshFetch() {
+  console.log('reset')
   try {
     await module.exports.handleDrivers(true)
     await module.exports.handleTeams(true)
-    console.log('Cache reset')
+    console.log('freshFetch')
   } catch (e) {
-    console.log('error in resetCache', e)
+    console.log('error in freshFetch', e)
   }
 }
