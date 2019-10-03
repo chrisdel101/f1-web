@@ -109,9 +109,9 @@ module.exports = {
       // console.log('len', cache[route] && cache[route].length)
       // route matches key in cache - if exists
       if (cache && (cache[route] && cache[route].length)) {
-        if (process.env.NODE_ENV === 'testing') {
-          console.log(`get ${route} from cache`)
-        }
+        // if (process.env.NODE_ENV === 'testing') {
+        console.log(`get ${route} from cache`)
+        // }
         dataObj = cache[route]
         // else get data from DB
       } else {

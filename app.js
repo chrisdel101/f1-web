@@ -7,7 +7,6 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const index = require('./routes/index')
-const users = require('./routes/users')
 const urls = require('./urls')
 const errorHandlers = require('./errorHandlers')
 // error handler
@@ -47,7 +46,6 @@ app.use(async (ctx, next) => {
 })
 // routes
 app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
 
 // set locals
 app.context.title = 'Formula 1 Cards Demo'

@@ -5,7 +5,7 @@ let cache = require('../../cache')
 const sinon = require('sinon')
 
 describe('utils tests', () => {
-  describe.only('getSelectedData()', () => {
+  describe('getSelectedData()', () => {
     it('returns drivers data from cache', async function() {
       const fakeCache = {
         drivers: [

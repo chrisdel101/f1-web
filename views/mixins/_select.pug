@@ -1,13 +1,15 @@
 mixin select(data)
   //- - console.log('SELECT',data)
   form(method=data.method action=data.action)
-    .select
-      select(name=data.selectName)
-        each d in data.enums 
-          //- - console.log("DD"  ,d)
-          option(value=d.name_slug) #{d.name}
-      button.btn.btn-primary(type=data.buttonType value=data.buttonValue) #{data.buttonField}
+    .row
+      .select.col-sm-8.col-md-6.pink
+        select(name=data.selectName)
+          each d in data.enums 
+            //- - console.log("DD"  ,d)
+            option(value=d.name_slug) #{d.name}
+      .col-sm-4.col-md-6.blue
+        button.btn.btn-primary(type=data.buttonType value=data.buttonValue) #{data.buttonField}
         
-           
             
+              
       

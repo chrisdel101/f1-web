@@ -2,7 +2,8 @@ extends layout
 
 include mixins/_select
 block content
-  h1= title
+  .title
+    h1= title
   //- - console.log('TEAM', teamsEnums)
   +select({
     method:method,

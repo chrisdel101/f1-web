@@ -9,6 +9,16 @@ a {
 img {
   max-width: 100%;
 }
+.title {
+  text-align: center;
+}
+.pink {
+  background-color: pink;
+}
+.blue {
+  background-color: blue;
+  /* min-width: 100%; */
+}
 .main-image {
   max-width: 100%;
 }
