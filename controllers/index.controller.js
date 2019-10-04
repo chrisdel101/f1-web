@@ -21,6 +21,8 @@ async function render(ctx, next) {
     buttonField: 'Submit',
     buttonType: 'submit',
     buttonValue: 'submit',
+    driverFormText: ctx.driverFormText,
+    teamFormText: ctx.teamFormText,
     driverSelectName: driversObj.selectName,
     driverEnums: driversObj.driversArr,
     teamSelectName: teamsObj.selectName,
@@ -37,6 +39,7 @@ async function handleDrivers(manualFetch = false) {
       // add to cache
       cache.drivers = driversArr
       return {
+        formText: 'Choose a Driver',
         driversArr: driversArr,
         selectName: 'driver',
         driverAction: '/driver'
@@ -49,6 +52,7 @@ async function handleDrivers(manualFetch = false) {
       cache.teams = driversArr
       // console.log('CA', driversArr)
       return {
+        formText: 'Choose a Driver',
         driversArr: driversArr,
         selectName: 'driver',
         driverAction: '/driver'
@@ -68,6 +72,7 @@ async function handleTeams(manualFetch = false) {
       cache.teams = teamsArr
       // console.log('CA', teamsArr)
       return {
+        formText: 'Choose a Team',
         teamsArr: teamsArr,
         selectName: 'team',
         teamAction: '/team'
@@ -78,6 +83,7 @@ async function handleTeams(manualFetch = false) {
       cache.teams = teamsArr
       // console.log('CA', teamsArr)
       return {
+        formText: 'Choose a Team',
         teamsArr: teamsArr,
         selectName: 'team',
         teamAction: '/team'

@@ -86,7 +86,9 @@ async function renderDriverTemplate(ctx) {
     driverEnums: driversObj.driversArr,
     teamSelectName: teamsObj.selectName,
     teamEnums: teamsObj.teamsArr,
-    // +++ ---- +++
+    driverFormText: ctx.driverFormText,
+    teamFormText: ctx.teamFormText,
+    // +++ mixin data  +++
     routeName: 'driver',
     driverData: driverData,
     teamData: teamData,

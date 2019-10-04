@@ -10,15 +10,22 @@ img {
   max-width: 100%;
 }
 .title {
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   text-align: center;
 }
-.pink {
-  background-color: pink;
+.select-text {
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
 }
-.blue {
-  background-color: blue;
-  /* min-width: 100%; */
+.driver-select {
+  border-bottom: solid gray;
+  margin-bottom: 15px;
 }
+.driver-select,
+.team-select {
+  margin-top: 10px;
+  min-height: 100px;
+}
+
 .main-image {
   max-width: 100%;
 }
@@ -120,4 +127,18 @@ img {
 }
 .flag-img-container {
   max-width: 50px;
+}
+/* on smallest size */
+@media (max-width: 576px) {
+  .center {
+    display: flex;
+    justify-content: center;
+  }
+  .select-text {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .btn-container {
+    margin-top: 10px;
+  }
 }

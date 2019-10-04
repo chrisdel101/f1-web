@@ -108,7 +108,9 @@ async function renderTeamTemplate(ctx, next) {
     teamAction: allteamsObj.teamAction,
     teamSelectName: allteamsObj.selectName,
     driverSelectName: allDriversObj.selectName,
-    // +++ ---- +++
+    driverFormText: ctx.driverFormText,
+    teamFormText: ctx.teamFormText,
+    // +++ mixin data  +++
     routeName: 'team',
     teamData: teamData
   })

@@ -50,6 +50,8 @@ app.use(index.routes(), index.allowedMethods())
 // set locals
 app.context.title = 'Formula 1 Cards Demo'
 app.context.urls = urls
+app.context.driverFormText = 'Choose a Driver'
+app.context.teamFormText = 'Choose a Team'
 // // error-handling
 // app.on('error', (err, ctx) => {
 //   console.error('server error', err, ctx)
