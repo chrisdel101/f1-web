@@ -1,0 +1,59 @@
+mixin driverCardMixinSm(data)
+  //- - console.log('mixin', data)
+  .card.driver-card
+    .driver-title
+      h6  #{data.driver_name}
+      .flag-img-container
+        img(src=data.flag_img_url)
+    .main-image
+      img(src=data.main_image)
+    .driver-stats-container
+      .driver-logo-container
+        a(href=data.teamUrl)
+          img(src=data.logo_url)
+      .table-container.driver-table-container
+        table.stats 
+          tbody
+            tr 
+              td
+                span.stat-key Current Position: 
+                span.stat-val #{data.position}
+            tr 
+              td
+                span.stat-key Points: 
+                span.stat-val #{data.points}
+            tr 
+              td
+                span.stat-key Place of Birth: 
+                span.stat-val #{data.place_of_birth}
+            tr 
+              td
+                span.stat-key Country: 
+                span.stat-val #{data.country}
+            tr 
+              td
+                span.stat-key Team: 
+                span.stat-val #{data.team}
+            tr 
+              td
+                span.stat-key Date of Birth: 
+                span.stat-val #{data.date_of_birth}
+  
+            tr 
+              td
+                span.stat-key Driver Number: 
+                span.stat-val #{data.driver_number}
+            tr 
+              td
+                span.stat-key Podiums: 
+                span.stat-val #{data.podiums}
+            tr 
+              td
+                span.stat-key Championships: 
+                span.stat-val #{data.world_championships}
+            tr 
+              td
+                span.stat-key Highest Grid Place: 
+                span.stat-val #{data.highest_grid_position}
+             
+              

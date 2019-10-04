@@ -3,10 +3,10 @@ if routeName == 'driverCard'
   include layout.pug
 else
   include index.pug
-include mixins/_driverCardMixin
+include mixins/_driverCardMixinLg
+include mixins/_driverCardMixinSm
   //- - console.log('HERE NOW')
 block append content
 
   .driver-page 
- 
-+driverCardMixinLg(driverData)
+    +driverCardMixinSm(driverData)

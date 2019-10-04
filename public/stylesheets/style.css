@@ -115,7 +115,6 @@ img {
 }
 .stat-key,
 .stat-val {
-  font-size: 13px;
   white-space: nowrap;
 }
 .team-table-container {
@@ -140,5 +139,9 @@ img {
   }
   .btn-container {
     margin-top: 10px;
+  }
+  .driver-card .driver-stats-container {
+    flex-direction: column;
+    background-color: whitesmoke;
   }
 }
