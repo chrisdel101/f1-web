@@ -144,4 +144,41 @@ img {
     flex-direction: column;
     background-color: whitesmoke;
   }
+  .team-card .team-stats-container {
+    flex-direction: column;
+    background-color: whitesmoke;
+  }
+}
+.driver-card-container-sm {
+  display: none;
+}
+.driver-card-container-lg {
+  display: flex;
+}
+.team-card-container-sm {
+  display: none;
+}
+.team-card-container-lg {
+  display: flex;
+}
+@media (max-width: 700px) {
+  body {
+    background-color: pink !important;
+  }
+  .team-stats-container,
+  .driver-stats-container {
+    flex-direction: column;
+  }
+  .driver-card-container-sm {
+    display: flex;
+  }
+  .driver-card-container-lg {
+    display: none;
+  }
+  .team-card-container-sm {
+    display: flex;
+  }
+  .team-card-container-lg {
+    display: none;
+  }
 }

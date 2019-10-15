@@ -5,9 +5,13 @@ else
   //- import index select page
   include index.pug
   //- include card mixin
-include mixins/_teamCardMixin
+include mixins/_teamCardMixinLg
+include mixins/_teamCardMixinSm
   //- append the card content to page
 block append content
 
-  .driver-page 
-    +teamCard(teamData)
+  .team-page
+    .team-card-container-sm
+      +teamCardMixinSm(teamData)
+    .team-card-container-lg
+      +teamCardMixinLg(teamData)

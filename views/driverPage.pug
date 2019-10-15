@@ -9,4 +9,7 @@ include mixins/_driverCardMixinSm
 block append content
 
   .driver-page 
-    +driverCardMixinSm(driverData)
+    .driver-card-container-sm
+      +driverCardMixinSm(driverData)
+    .driver-card-container-lg
+      +driverCardMixinLg(driverData)
