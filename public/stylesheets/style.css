@@ -42,28 +42,28 @@ img {
   background-color: whitesmoke;
   flex-direction: column;
 }
-.team-stats-container,
+.team-inner-container,
 .driver-stats-container {
   display: flex;
 }
 .driver-stats-container {
   min-height: 300px;
 }
-.team-stats-container .left-column h5 {
+.team-inner-container .left-column h5 {
   text-align: center;
 }
-.team-stats-container .drivers {
+.team-inner-container .drivers {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-.team-stats-container .driver span {
+.team-inner-container .driver span {
   margin-right: 10px;
 }
-.team-stats-container .driver .flag {
+.team-inner-container .driver .flag {
   max-width: 35px;
 }
-.team-stats-container .drivers {
+.team-inner-container .drivers {
   min-height: 60px;
   margin-bottom: 10px;
 }
@@ -95,6 +95,7 @@ img {
   justify-content: center;
   align-items: center;
   min-height: 60px;
+  text-align: center;
 }
 .driver-logo-container {
   min-height: 60px;
@@ -113,10 +114,10 @@ img {
 .stat-key {
   font-weight: bold;
 }
-.stat-key,
+/* .stat-key,
 .stat-val {
   white-space: nowrap;
-}
+} */
 .team-table-container {
   padding: 0 5px;
 }
@@ -144,7 +145,7 @@ img {
     flex-direction: column;
     background-color: whitesmoke;
   }
-  .team-card .team-stats-container {
+  .team-card .team-inner-container {
     flex-direction: column;
     background-color: whitesmoke;
   }
@@ -161,16 +162,20 @@ img {
 .team-card-container-lg {
   display: flex;
 }
+/* shift from lg to sm card at 700px */
 @media (max-width: 700px) {
-  body {
-    background-color: pink !important;
-  }
-  .team-stats-container,
+  .team-inner-container,
   .driver-stats-container {
     flex-direction: column;
   }
   .driver-card-container-sm {
     display: flex;
+  }
+  .team-card-container-sm .drivers {
+    font-size: 18px;
+  }
+  .team-card-container-sm .drivers .driver {
+    margin: 5px 0;
   }
   .driver-card-container-lg {
     display: none;
@@ -180,5 +185,29 @@ img {
   }
   .team-card-container-lg {
     display: none;
+  }
+}
+@media (max-width: 1000px) {
+  .team-card-container-lg .stats-columns {
+    flex-direction: column;
+    font-size: 14px;
+    align-self: center;
+  }
+}
+@media (max-width: 900px) {
+  .team-card-container-lg .stats-columns {
+    /* flex-direction: column; */
+    font-size: 12px;
+    /* align-self: center; */
+  }
+}
+@media (max-width: 800px) {
+  .team-card-container-lg .stats-columns {
+    /* flex-direction: column; */
+    font-size: 10px;
+    /* align-self: center; */
+  }
+  .team-inner-container .drivers {
+    flex-direction: column;
   }
 }
