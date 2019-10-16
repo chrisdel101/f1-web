@@ -31,14 +31,38 @@ async function sendImage(ctx, type) {
     })
     const page = await browser.newPage()
     if (process.env.NODE_ENV === 'development') {
+      const urlParts = ctx.path.split('/')
+      // if calling mobile size
       if (type === 'team') {
-        await page.setViewport({
-          width: 900,
-          height: 600,
-          deviceScaleFactor: 1
-        })
+        if (urlParts[2] === 'mobile') {
+          await page.setViewport({
+            width: 400,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        } else {
+          console.log('HERE')
+          await page.setViewport({
+            width: 900,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        }
         await page.goto(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
       } else if (type === 'driver') {
+        if (urlParts[2] === 'mobile') {
+          await page.setViewport({
+            width: 600,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        } else {
+          await page.setViewport({
+            width: 900,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        }
         await page.goto(
           `http://localhost:3000/${type}/${ctx.params.driver_slug}`
         )
@@ -59,7 +83,7 @@ async function sendImage(ctx, type) {
         )
       }
     }
-    await page.screenshot({ path: 'example.png' })
+    await page.screenshot({ path: 'example.png', fullPage: true })
     await browser.close()
   } catch (e) {
     console.error('An error occured in takeImage:', e)

@@ -11,22 +11,32 @@ router.get('/', indexController.render)
 router.get('/fresh-fetch', indexController.freshFetch)
 router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', ctx => {
-  utils.viewCache(ctx)
+  console.log(utils.viewCache(ctx))
 })
 
-// render full template
+// render full template with query params
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.renderTeamTemplate)
-// render just cards
+// render cards
 router.get('/driver/:driver_slug', driversController.renderDriverCard)
 router.get('/team/:team_slug', teamsController.renderTeamCard)
-// send image to messenger
+// API - take images of cards
+// moblie size
+router.get('/api/mobile/driver/:driver_slug', async ctx => {
+  return API.sendImage(ctx, 'driver').then(res => {
+    return (ctx.body = res)
+  })
+})
+router.get('/api/mobile/team/:team_slug', async ctx => {
+  return API.sendImage(ctx, 'driver').then(res => {
+    return (ctx.body = res)
+  })
+})
 router.get('/api/driver/:driver_slug', async ctx => {
   return API.sendImage(ctx, 'driver').then(res => {
     return (ctx.body = res)
   })
 })
-// / send image to messenger
 router.get('/api/team/:team_slug', async ctx => {
   return API.sendImage(ctx, 'team').then(res => {
     return (ctx.body = res)

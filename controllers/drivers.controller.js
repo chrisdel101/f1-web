@@ -41,25 +41,34 @@ async function fetchDriverAPI(ctx, render) {
     teamsObj
   }
 }
+async function openMobileCard(ctx) {
+  console.log('HERE')
+  return renderDriverCard(ctx)
+}
 // use driver api data to rendercard only
 async function renderDriverCard(ctx) {
-  const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
-    ctx,
-    'card'
-  )
-  const teamUrl = `/team?team=${driverData.team_name_slug}`
-  // add link to team to driver
-  driverData['teamUrl'] = teamUrl
-  driverData['logo_url'] = teamData.logo_url
-  // console.log('Driver Data', driverData)
-  return await ctx.render('driverPage', {
-    //  +++ index params +++
-    urls: ctx.urls,
-    method: 'GET',
-    routeName: 'driverCard',
-    driverData: driverData,
-    teamData: teamData
-  })
+  try {
+    const urlParts = ctx.path.split('/')
+    const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
+      ctx,
+      'card'
+    )
+    const teamUrl = `/team?team=${driverData.team_name_slug}`
+    // add link to team to driver
+    driverData['teamUrl'] = teamUrl
+    driverData['logo_url'] = teamData.logo_url
+    console.log('Driver Data', driverData)
+    return await ctx.render('driverPage', {
+      //  +++ index params +++
+      urls: ctx.urls,
+      method: 'GET',
+      routeName: 'driverCard',
+      driverData: driverData,
+      teamData: teamData
+    })
+  } catch (e) {
+    console.error('An error in renderDriverCard', e)
+  }
 }
 // use driver api data to render full template
 async function renderDriverTemplate(ctx) {
@@ -97,5 +106,6 @@ async function renderDriverTemplate(ctx) {
 }
 module.exports = {
   renderDriverTemplate,
-  renderDriverCard
+  renderDriverCard,
+  openMobileCard
 }
