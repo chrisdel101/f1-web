@@ -28,7 +28,7 @@ router.get('/api/mobile/driver/:driver_slug', async ctx => {
   })
 })
 router.get('/api/mobile/team/:team_slug', async ctx => {
-  return API.sendImage(ctx, 'driver').then(res => {
+  return API.sendImage(ctx, 'team').then(res => {
     return (ctx.body = res)
   })
 })

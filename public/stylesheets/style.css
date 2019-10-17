@@ -114,10 +114,6 @@ img {
 .stat-key {
   font-weight: bold;
 }
-/* .stat-key,
-.stat-val {
-  white-space: nowrap;
-} */
 .team-table-container {
   padding: 0 5px;
 }
@@ -209,5 +205,10 @@ img {
   }
   .team-inner-container .drivers {
     flex-direction: column;
+  }
+  .team-inner-container .driver span {
+    margin-right: 10px;
+    min-width: 150px;
+    float: left;
   }
 }

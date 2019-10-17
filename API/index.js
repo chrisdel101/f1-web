@@ -41,9 +41,8 @@ async function sendImage(ctx, type) {
             deviceScaleFactor: 1
           })
         } else {
-          console.log('HERE')
           await page.setViewport({
-            width: 900,
+            width: 1000,
             height: 600,
             deviceScaleFactor: 1
           })
