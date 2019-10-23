@@ -9,21 +9,37 @@ async function sendImage(ctx, type) {
     console.error('Incorrect type in sendImage API')
     return
   }
-  // unlink/delete file
+  const urlParts = ctx.path.split('/')
+  console.log(urlParts)
   try {
-    fs.access('example.png', err => {
-      if (!err) {
-        console.log('myfile exists')
-        fs.unlink('./example.png', err => {
-          if (err) throw err
-          console.log('File unlinked')
-        })
-      } else {
-        console.log('myfile does not exist')
-      }
-    })
+    // access checks if file exists - takes path
+    if (process.env.NODE_ENV === 'testing') {
+      fs.access('./tests/api/test.png', err => {
+        if (!err) {
+          console.log('myfile exists')
+          fs.unlink('./tests/api/test.png', err => {
+            if (err) throw err
+            console.log('File unlinked')
+          })
+        } else {
+          console.log('myfile does not exist')
+        }
+      })
+    } else {
+      fs.access('./example.png', err => {
+        if (!err) {
+          console.log('myfile exists')
+          fs.unlink('./example.png', err => {
+            if (err) throw err
+            console.log('File unlinked')
+          })
+        } else {
+          console.log('myfile does not exist')
+        }
+      })
+    }
   } catch (err) {
-    console.error('No Example.png file exists', err)
+    console.error('Unlinking file error', err)
   }
   try {
     const browser = await puppeteer.launch({
@@ -31,10 +47,8 @@ async function sendImage(ctx, type) {
     })
     const page = await browser.newPage()
     if (process.env.NODE_ENV === 'development') {
-      const urlParts = ctx.path.split('/')
-      // if calling mobile size
       if (type === 'team') {
-        if (urlParts[2] === 'mobile') {
+        if (ctx.path.includes('api/mobile')) {
           await page.setViewport({
             width: 400,
             height: 600,
@@ -49,7 +63,7 @@ async function sendImage(ctx, type) {
         }
         await page.goto(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
       } else if (type === 'driver') {
-        if (urlParts[2] === 'mobile') {
+        if (ctx.path.includes('api/mobile')) {
           await page.setViewport({
             width: 600,
             height: 600,
@@ -68,19 +82,82 @@ async function sendImage(ctx, type) {
       }
     } else if (process.env.NODE_ENV === 'production') {
       if (type === 'team') {
-        await page.setViewport({
-          width: 1000,
-          height: 600,
-          deviceScaleFactor: 1
-        })
+        if (ctx.path.includes('api/mobile')) {
+          await page.setViewport({
+            width: 400,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        } else {
+          await page.setViewport({
+            width: 1000,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        }
         await page.goto(
           `https://f1-cards.herokuapp.com/${type}/${ctx.params.team_slug}`
         )
       } else if (type === 'driver') {
+        if (ctx.path.includes('api/mobile')) {
+          await page.setViewport({
+            width: 600,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        } else {
+          await page.setViewport({
+            width: 900,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        }
         await page.goto(
           `https://f1-cards.herokuapp.com/${type}/${ctx.params.driver_slug}`
         )
       }
+    } else if (process.env.NODE_ENV === 'testing') {
+      if (type === 'driver') {
+        if (ctx.path.includes('api/mobile')) {
+          await page.setViewport({
+            width: 600,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        } else {
+          await page.setViewport({
+            width: 900,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        }
+        // console.log(`http://localhost:3000/${type}/${ctx.params.driver_slug}`)
+        await page.goto(
+          `http://localhost:3000/${type}/${ctx.params.driver_slug}`
+        )
+      } else if (type === 'team') {
+        if (ctx.path.includes('api/mobile')) {
+          await page.setViewport({
+            width: 400,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        } else {
+          await page.setViewport({
+            width: 1000,
+            height: 600,
+            deviceScaleFactor: 1
+          })
+        }
+        // console.log(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
+        await page.goto(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
+      }
+      await page.screenshot({
+        path: './tests/api/test.png',
+        fullPage: true
+      })
+      await browser.close()
+      return
     }
     await page.screenshot({ path: 'example.png', fullPage: true })
     await browser.close()

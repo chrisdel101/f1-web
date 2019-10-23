@@ -14,31 +14,39 @@ async function handleFormData() {
 }
 // fetchs the driver info from the api to use in render func
 async function fetchDriverAPI(ctx, render) {
-  // get query params from GET req
-  let driverSlug
-  // get the input params diff depending on type
-  if (render === 'page') {
-    driverSlug = ctx.query.driver
-  } else if (render === 'card') {
-    driverSlug = ctx.params.driver_slug
-  }
-  // console.log('Q', driverSlug)
-  // pass form data from cache to template
-  const formData = await handleFormData()
-  // set data to vars
-  const driversObj = formData.drivers
-  const teamsObj = formData.teams
-  // query driver by slug
-  const driverData = JSON.parse(await utils.fetchData(`drivers/${driverSlug}`))
-  // look up drivers team by id
-  const teamData = JSON.parse(
-    await utils.fetchData(`teams/${driverData.team_id}`)
-  )
-  return {
-    driverData,
-    teamData,
-    driversObj,
-    teamsObj
+  try {
+    // get query params from GET req
+    let driverSlug
+    // get the input params diff depending on type
+    if (render === 'page') {
+      driverSlug = ctx.query.driver
+    } else if (render === 'card') {
+      driverSlug = ctx.params.driver_slug
+    }
+    // console.log('Q', driverSlug)
+    // pass form data from cache to template
+    const formData = await handleFormData()
+    // set data to vars
+    const driversObj = formData.drivers
+    const teamsObj = formData.teams
+    // query driver by slug
+    const driverData = JSON.parse(
+      await utils.fetchData(`drivers/${driverSlug}`)
+    )
+    // look up drivers team by id
+    console.log('dd', `teams/${driverData.team_id}`)
+    const teamData = JSON.parse(
+      await utils.fetchData(`teams/${driverData.team_id}`)
+    )
+    console.log('dd', teamData)
+    return {
+      driverData,
+      teamData,
+      driversObj,
+      teamsObj
+    }
+  } catch (e) {
+    console.error('An error in driverController.fetchDriverAPI()', e)
   }
 }
 async function openMobileCard(ctx) {
@@ -53,6 +61,7 @@ async function renderDriverCard(ctx) {
       ctx,
       'card'
     )
+
     const teamUrl = `/team?team=${driverData.team_name_slug}`
     // add link to team to driver
     driverData['teamUrl'] = teamUrl
