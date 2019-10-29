@@ -8,3 +8,19 @@ html
   body
     .container
       block content
+      
+      //- div(class="fb-messengermessageus", messenger_app_id="428256864460216" 
+      //-   page_id="<PAGE_ID>"
+      //-   color="<blue | white>"
+      //-   size="<standard | large | xlarge>">
+      //- </div>
+    script.
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId            : '428256864460216'
+          autoLogAppEvents : true,
+          xfbml            : true,
+          version          : 'v4.0'
+        })
+      }
+      script(async defer src="https://connect.facebook.net/en_US/sdk.js")
