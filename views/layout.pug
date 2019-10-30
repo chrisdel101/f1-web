@@ -8,6 +8,10 @@ html
   body
     .container
       block content
+      - console.log(process.env.API_ENV)
+    .messenger-button
+      div(class="fb-messengermessageus" messenger_app_id=`${process.env.API_ID}` page_id=`${process.env.PAGE_ID}` color="blue" size="large")
+
     script. 
       window.fbAsyncInit = function() {
         FB.init({
