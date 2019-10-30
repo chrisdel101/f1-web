@@ -13,7 +13,9 @@ router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', ctx => {
   console.log(utils.viewCache(ctx))
 })
-
+router.get('/favico.ico', (req, res) => {
+  res.sendStatus(404)
+})
 // render full template with query params
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.renderTeamTemplate)
