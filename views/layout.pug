@@ -13,7 +13,6 @@ html
   body
     .nav-container
       +navbar(driverData)
-    .container
       block content
       .messenger-button
         div(class="fb-messengermessageus" messenger_app_id=`${process.env.API_ID}` page_id=`${process.env.PAGE_ID}` color="blue" size="large")

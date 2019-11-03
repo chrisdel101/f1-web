@@ -16,7 +16,25 @@ img {
   font-family: 'Lobster', cursive;
   text-align: center;
 }
-
+.index-hero {
+  background-image: url('/images/max.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  min-height: 600px;
+}
+.index-hero h1 {
+  font-size: 3.5rem;
+}
+.index-hero h5 {
+  font-size: 1.75rem;
+}
+.index-title-container {
+  margin-top: 50px;
+  color: peachpuff;
+}
 .index-main {
   background-color: whitesmoke;
 }
@@ -157,6 +175,15 @@ ul.navbar-nav {
 }
 /* on smallest size */
 @media (max-width: 576px) {
+  .index-hero {
+    min-height: 400px;
+  }
+  .index-hero h1 {
+    font-size: 2.5rem;
+  }
+  .index-hero h5 {
+    font-size: 1.25rem;
+  }
   .center {
     display: flex;
     justify-content: center;
