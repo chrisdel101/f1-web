@@ -7,10 +7,8 @@ var API = require('../API/index')
 var fs = require('fs')
 var puppeteer = require('puppeteer')
 
-router.get('/', indexController.render)
-router.get('/demo', (ctx, next) => {
-  return ctx.render('demo')
-})
+router.get('/', indexController.renderIndex)
+router.get('/demo', indexController.renderDemo)
 router.get('/fresh-fetch', indexController.freshFetch)
 router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', ctx => {

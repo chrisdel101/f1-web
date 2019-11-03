@@ -8,6 +8,10 @@ a {
 img {
   max-width: 100%;
 }
+.driver-page,
+.team-page {
+  padding: 0 50px;
+}
 .title {
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   text-align: center;
@@ -123,9 +127,19 @@ img {
 .flag-img-container {
   max-width: 50px;
 }
-#navbarSupportedContent ul.navbar-nav {
-  align-items: flex-end;
-  margin-right: 20px;
+#navbarSupportedContent {
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  margin-right: 10px;
+  width: 100px;
+  text-align: center;
+}
+ul.navbar-nav {
+  background: rgba(0, 0, 0, 0.4);
+}
+.navbar-nav li a {
+  color: white;
 }
 .nav-container .icon-img {
   margin-left: 20px;
