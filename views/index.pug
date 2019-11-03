@@ -1,33 +1,20 @@
 extends layout
 
-include mixins/_select
 block content
-  .title
-    h1= title
-  .driver-select
-    h6.select-text= driverFormText
-    +select({
-      method:method,
-      action: driverAction,
-      selectName: driverSelectName,
-      enums: driverEnums, 
-      buttonType: buttonType,
-      buttonValue: buttonValue,
-      buttonField: buttonField,
-      driverText: driverText
-    }) 
-  .team-select
-    h6.select-text=  teamFormText
-    +select({
-      method:method,
-      action: teamAction,
-      selectName: teamSelectName,
-      enums: teamEnums, 
-      buttonType: buttonType,
-      buttonValue: buttonValue,
-      buttonField: buttonField,
-      teamText:teamText
-    }) 
-   
+  .index-hero
+    .title-container
+      h1.title= title
+      //- h5.sub-title= subTitle
+      h5.title On Messenger
+      
+
+  main.index-main
+    h2.title How it Works
+    div= description
+    ul
+      li Visit us on Messenger
+      li Pick the teams and drivers you want to hear about. 
+      li Subscribe and your Formula 1 cards will automatically arrive before every grand-prix weekend.
+  
 
 

@@ -48,7 +48,8 @@ app.use(async (ctx, next) => {
 app.use(index.routes(), index.allowedMethods())
 
 // set locals
-app.context.title = 'Formula 1 Cards Demo'
+app.context.title = 'Formula 1 Cards'
+app.context.subTitle = `Like baseball cards for Formula 1`
 app.context.urls = urls
 app.context.driverFormText = 'Choose a Driver'
 app.context.teamFormText = 'Choose a Team'

@@ -8,13 +8,21 @@ a {
 img {
   max-width: 100%;
 }
-.driver-page,
-.team-page {
-  padding: 0 50px;
-}
 .title {
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   text-align: center;
+}
+.sub-title {
+  font-family: 'Lobster', cursive;
+  text-align: center;
+}
+
+.index-main {
+  background-color: whitesmoke;
+}
+.driver-page,
+.team-page {
+  padding: 0 50px;
 }
 .select-text {
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
@@ -136,7 +144,7 @@ img {
   text-align: center;
 }
 ul.navbar-nav {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.8);
 }
 .navbar-nav li a {
   color: white;

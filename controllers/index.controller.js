@@ -16,6 +16,8 @@ async function renderIndex(ctx, next) {
 
   await ctx.render('index', {
     title: ctx.title,
+    subTitle: ctx.subTitle,
+    description: `Subscribe to Formula 1 cards and we'll automatically send you updates of your favorite teams and drivers every race weekend.`,
     method: 'GET',
     driverAction: driversObj.driverAction,
     teamAction: teamsObj.teamAction,
@@ -35,7 +37,6 @@ async function renderDemo(ctx, next) {
   // console.log('ALL TEAMOBJ on index render', teamsObj)
   const driversObj = await handleDrivers()
   // console.log('ALL DRIVEROBJ on index render', driversObj)
-
   await ctx.render('index', {
     title: ctx.title,
     method: 'GET',
