@@ -23,7 +23,7 @@ img {
   background-position: center;
   display: flex;
   justify-content: center;
-  min-height: 600px;
+  min-height: 500px;
 }
 .index-hero h1 {
   font-size: 3.5rem;
