@@ -1,0 +1,33 @@
+extends layout
+
+include mixins/_select
+block content
+  .title
+    h1= title
+  .driver-select
+    h6.select-text= driverFormText
+    +select({
+      method:method,
+      action: driverAction,
+      selectName: driverSelectName,
+      enums: driverEnums, 
+      buttonType: buttonType,
+      buttonValue: buttonValue,
+      buttonField: buttonField,
+      driverText: driverText
+    }) 
+  .team-select
+    h6.select-text=  teamFormText
+    +select({
+      method:method,
+      action: teamAction,
+      selectName: teamSelectName,
+      enums: teamEnums, 
+      buttonType: buttonType,
+      buttonValue: buttonValue,
+      buttonField: buttonField,
+      teamText:teamText
+    }) 
+   
+
+

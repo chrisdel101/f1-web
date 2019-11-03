@@ -8,15 +8,15 @@ var fs = require('fs')
 var puppeteer = require('puppeteer')
 
 router.get('/', indexController.render)
+router.get('/demo', (ctx, next) => {
+  return ctx.render('demo')
+})
 router.get('/fresh-fetch', indexController.freshFetch)
 router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', ctx => {
   console.log(utils.viewCache(ctx))
 })
-router.get('/favico.ico', (req, res) => {
-  res.sendStatus(404)
-})
-// render full template with query params
+// render full template with query params- like POST
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.renderTeamTemplate)
 // render cards
