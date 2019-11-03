@@ -15,7 +15,7 @@ html
       +navbar(driverData)
       block content
       .messenger-button
-        div(class="fb-messengermessageus" messenger_app_id=`${process.env.API_ID}` page_id=`${process.env.PAGE_ID}` color="blue" size="large")
+        div(class="fb-messengermessageus" messenger_app_id=`${process.env.APP_ID}` page_id=`${process.env.PAGE_ID}` color="blue" size="large")
     script. 
       window.fbAsyncInit = function() {
         FB.init({
