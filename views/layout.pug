@@ -15,7 +15,9 @@ html
       +navbar(driverData)
       block content
       .messenger-button
-        div(class="fb-messengermessageus" messenger_app_id=`${process.env.APP_ID}` page_id=`${process.env.PAGE_ID}` color="blue" size="large")
+        //- div(class="fb-messengermessageus" messenger_app_id=`${process.env.APP_ID}` page_id=`${process.env.PAGE_ID}` color="blue" size="large")
+        div
+          a(href="http://m.me/107628650610694?ref=test") link
     script. 
       window.fbAsyncInit = function() {
         FB.init({
