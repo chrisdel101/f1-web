@@ -5,6 +5,10 @@ block content
     .index-title-container
       h3.sub-title= subTitle
       h5.title On Messenger
+    button(type="button" class="btn btn-outline-secondary messenger-btn")
+        a(href=`http://m.me/${process.env.PAGE_ID}?ref=test`)
+        i.fab.fa-facebook-messenger.fa-2x
+        //- 0084FF
       
 
   main.index-main.container

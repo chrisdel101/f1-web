@@ -25,8 +25,11 @@ img {
   background-attachment: fixed;
   background-position: center;
   display: flex;
-  justify-content: center;
   min-height: 600px;
+  color: peachpuff;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  flex-direction: column;
 }
 .index-hero h1 {
   font-size: 3.5rem;
@@ -36,12 +39,12 @@ img {
 }
 .index-title-container {
   padding-top: 50px;
-  color: peachpuff;
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 100%;
 }
 .index-main {
   background-color: whitesmoke;
+}
+.messenger-btn i {
+  color: #0084ff;
 }
 .driver-page,
 .team-page {
