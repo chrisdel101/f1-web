@@ -1,21 +1,21 @@
 extends layout
-
+include mixins/_messengerButtonMixin
 block content
   .index-hero
     .index-title-container
       h3.sub-title= subTitle
       h5.title On Messenger
-    button(type="button" class="btn btn-outline-secondary messenger-btn")
-        a(href=`http://m.me/${process.env.PAGE_ID}?ref=test`)
-        i.fab.fa-facebook-messenger.fa-2x
-        //- 0084FF
-      
+    +messengerButton()
+  //- button(type="button" class="btn btn-lg btn-light messenger-btn")
 
+  //- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
+      <div>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
   main.index-main.container
     h2.title How it Works
-    div= description
-    ul
+  
+    ol.how-it-works
       li Visit us on Messenger
+        +messengerButton()
       li Pick the teams and drivers you want to hear about. 
       li Subscribe and your Formula 1 cards will automatically arrive before every grand-prix weekend.
   

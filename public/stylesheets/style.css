@@ -43,8 +43,25 @@ img {
 .index-main {
   background-color: whitesmoke;
 }
+
+.messenger-btn {
+  width: 100px;
+  align-self: center;
+  border-width: 2.5px !important;
+}
+.messenger-btn:hover {
+  background-color: white;
+}
 .messenger-btn i {
+  color: white;
+}
+/* .messenger-btn i {
   color: #0084ff;
+} */
+.how-it-works li {
+  border: black solid 1px;
+  border-radius: 5px;
+  min-height: 50px;
 }
 .driver-page,
 .team-page {
@@ -175,12 +192,7 @@ ul.navbar-nav {
 .navbar-nav li a {
   color: white;
 }
-.nav-container .icon-img {
-  margin-left: 20px;
-}
-.nav-container .icon-img {
-  margin-left: 20px;
-}
+
 /* add after it hits this*/
 @media (min-width: 576px) {
   .navbar .title {
