@@ -67,6 +67,11 @@ img {
 .team-page {
   padding: 0 50px;
 }
+.team-card-page,
+.driver-card-page {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
 .select-text {
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
 }

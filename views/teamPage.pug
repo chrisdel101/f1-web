@@ -1,17 +1,26 @@
 //- - console.log('ROute', routeName)
-if routeName == 'teamCard'
-  include layout.pug
-else
-  //- import index select page
-  include index.pug
-  //- include card mixin
+block content
+  if routeName == 'teamCard'
+    //set hidenav to true
+    block vars
+    - let hideNav = true
+    include layout.pug
+  else
+    include demo.pug
 include mixins/_teamCardMixinLg
 include mixins/_teamCardMixinSm
   //- append the card content to page
 block append content
-
-  .team-page
-    .team-card-container-sm
-      +teamCardMixinSm(teamData)
-    .team-card-container-lg
+  //add class on card-only page
+  if addClass === 'team-card-page'
+    .team-page.team-card-page
+      .team-card-container-sm
+        +teamCardMixinSm(teamData)
+      .team-card-container-lg
       +teamCardMixinLg(teamData)
+  else
+    .team-page
+      .team-card-container-sm
+        +teamCardMixinSm(teamData)
+      .team-card-container-lg
+        +teamCardMixinLg(teamData)

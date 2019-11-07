@@ -14,6 +14,7 @@ router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', ctx => {
   console.log(utils.viewCache(ctx))
 })
+router.get('/demo', indexController.renderDemo)
 // render full template with query params- like POST
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.renderTeamTemplate)
@@ -21,7 +22,7 @@ router.get('/team', teamsController.renderTeamTemplate)
 router.get('/driver/:driver_slug', driversController.renderDriverCard)
 router.get('/team/:team_slug', teamsController.renderTeamCard)
 // API - take images of cards
-// moblie size
+// moblie size - uses puppeteer viewport to get
 router.get('/api/mobile/driver/:driver_slug', async ctx => {
   return API.sendImage(ctx, 'driver').then(res => {
     return (ctx.body = res)

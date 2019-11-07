@@ -37,7 +37,7 @@ async function renderDemo(ctx, next) {
   // console.log('ALL TEAMOBJ on index render', teamsObj)
   const driversObj = await handleDrivers()
   // console.log('ALL DRIVEROBJ on index render', driversObj)
-  await ctx.render('index', {
+  await ctx.render('demo', {
     title: ctx.title,
     method: 'GET',
     driverAction: driversObj.driverAction,

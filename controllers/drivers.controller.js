@@ -71,6 +71,7 @@ async function renderDriverCard(ctx) {
       //  +++ index params +++
       urls: ctx.urls,
       method: 'GET',
+      addClass: 'driver-card-page',
       routeName: 'driverCard',
       driverData: driverData,
       teamData: teamData

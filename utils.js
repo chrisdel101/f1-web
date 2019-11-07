@@ -145,6 +145,7 @@ module.exports = {
     }
   },
   resetCache: type => {
+    // console.log('here')
     try {
       if (type === 'teams') {
         if (!cache.teams) {
@@ -160,6 +161,7 @@ module.exports = {
         return cache
       } else {
         cache = {}
+        console.log('Cache cleared: ', cache)
         return cache
       }
     } catch (e) {

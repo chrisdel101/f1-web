@@ -1,15 +1,25 @@
-//- - console.log('ROute', allData)
-if routeName == 'driverCard'
-  include layout.pug
-else
-  include index.pug
-include mixins/_driverCardMixinLg
-include mixins/_driverCardMixinSm
-  //- - console.log('HERE NOW')
-block append content
-
-  .driver-page 
-    .driver-card-container-sm
-      +driverCardMixinSm(driverData)
-    .driver-card-container-lg
-      +driverCardMixinLg(driverData)
+block content
+  if routeName == 'driverCard'
+    //set hidenav to true
+    block vars
+    - let hideNav = true
+    include layout.pug
+  else
+    include demo.pug
+  include mixins/_driverCardMixinLg
+  include mixins/_driverCardMixinSm
+    //- - console.log('HERE NOW')
+  block append content
+    //add class on card-only page
+    if addClass === 'driver-card-page'
+      .driver-page.driver-card-page
+        .driver-card-container-sm
+          +driverCardMixinSm(driverData)
+        .driver-card-container-lg
+          +driverCardMixinLg(driverData)
+    else
+      .driver-page
+        .driver-card-container-sm
+          +driverCardMixinSm(driverData)
+        .driver-card-container-lg
+          +driverCardMixinLg(driverData)

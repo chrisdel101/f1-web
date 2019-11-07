@@ -82,6 +82,7 @@ async function renderTeamCard(ctx) {
     //  +++ index params +++
     urls: ctx.urls,
     method: 'GET',
+    addClass: 'team-card-page',
     routeName: 'teamCard',
     teamData: teamData
   })
