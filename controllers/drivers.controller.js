@@ -34,11 +34,11 @@ async function fetchDriverAPI(ctx, render) {
       await utils.fetchData(`drivers/${driverSlug}`)
     )
     // look up drivers team by id
-    console.log('dd', `teams/${driverData.team_id}`)
+    // console.log('dd', `teams/${driverData.team_id}`)
     const teamData = JSON.parse(
       await utils.fetchData(`teams/${driverData.team_id}`)
     )
-    console.log('dd', teamData)
+    // console.log('dd', teamData)
     return {
       driverData,
       teamData,
@@ -49,9 +49,17 @@ async function fetchDriverAPI(ctx, render) {
     console.error('An error in driverController.fetchDriverAPI()', e)
   }
 }
-async function openMobileCard(ctx) {
-  console.log('HERE')
-  return renderDriverCard(ctx)
+// async function openMobileCard(ctx) {
+//   return renderDriverCard(ctx)
+// }
+async function renderAllDriversList(ctx) {
+  try {
+    const { driversObj } = await fetchDriverAPI(ctx, null)
+    console.log(driversObj)
+    return await ctx.render('allDrivers', driversObj)
+  } catch (e) {
+    console.error('Error in renderAllDriversList', e)
+  }
 }
 // use driver api data to rendercard only
 async function renderDriverCard(ctx) {
@@ -117,5 +125,6 @@ async function renderDriverTemplate(ctx) {
 module.exports = {
   renderDriverTemplate,
   renderDriverCard,
-  openMobileCard
+  // openMobileCard,
+  renderAllDriversList
 }

@@ -60,7 +60,7 @@ async function handleDrivers(manualFetch = false) {
     if (!manualFetch) {
       const driversArr = await utils.getSelectData(cache, 'drivers')
       // console.log('ARR here', driversArr)
-      // add to cache
+      console.log('from cache')
       cache.drivers = driversArr
       return {
         formText: 'Choose a Driver',
@@ -103,6 +103,7 @@ async function handleTeams(manualFetch = false) {
       }
     } else {
       const teamsArr = await utils.getSelectData(null, 'teams')
+      console.log('not from cache')
       // add to cache
       cache.teams = teamsArr
       // console.log('CA', teamsArr)

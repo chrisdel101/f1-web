@@ -6,15 +6,16 @@ var utils = require('../utils')
 var API = require('../API/index')
 var fs = require('fs')
 var puppeteer = require('puppeteer')
-
-router.get('/', indexController.renderIndex)
-router.get('/demo', indexController.renderDemo)
-router.get('/fresh-fetch', indexController.freshFetch)
+// cache related
 router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', ctx => {
   console.log(utils.viewCache(ctx))
 })
+router.get('/fresh-fetch', indexController.freshFetch)
+// ---------templates
+router.get('/', indexController.renderIndex)
 router.get('/demo', indexController.renderDemo)
+router.get('/drivers', driversController.renderAllDriversList)
 // render full template with query params- like POST
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.renderTeamTemplate)
