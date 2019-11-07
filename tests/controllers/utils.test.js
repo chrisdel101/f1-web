@@ -14,7 +14,7 @@ describe('utils tests', () => {
         ]
       }
       sinon.spy(utils, 'fetchData')
-      const result = await utils.getSelectData(fakeCache, 'drivers')
+      const result = await utils.getAndCacheData(fakeCache, 'drivers')
       //   check not called from DB
       assert(utils.fetchData.notCalled)
       assert.deepEqual(result, fakeCache.drivers)
@@ -28,7 +28,7 @@ describe('utils tests', () => {
         ]
       }
       sinon.spy(utils, 'fetchData')
-      const result = await utils.getSelectData(fakeCache, 'teams')
+      const result = await utils.getAndCacheData(fakeCache, 'teams')
       //   check not called from DB
       assert(utils.fetchData.notCalled)
       assert.deepEqual(result, fakeCache.teams)
@@ -42,7 +42,7 @@ describe('utils tests', () => {
         ]
       }
       sinon.spy(utils, 'fetchData')
-      const result = await utils.getSelectData(fakeCache, 'blarg')
+      const result = await utils.getAndCacheData(fakeCache, 'blarg')
       //   check not called from DB
       assert.throws(() => {
         throw new SyntaxError()
@@ -53,7 +53,7 @@ describe('utils tests', () => {
       const fakeCache = {}
       sinon.spy(utils, 'fetchData')
       //   get from DB
-      const result = await utils.getSelectData(fakeCache, 'teams')
+      const result = await utils.getAndCacheData(fakeCache, 'teams')
       //   check is called from DB
       assert(utils.fetchData.calledOnce)
       utils.fetchData.restore()

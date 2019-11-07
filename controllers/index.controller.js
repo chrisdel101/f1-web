@@ -58,7 +58,7 @@ async function handleDrivers(manualFetch = false) {
   try {
     // if not manual fetch get from cache
     if (!manualFetch) {
-      const driversArr = await utils.getSelectData(cache, 'drivers')
+      const driversArr = await utils.getAndCacheData(cache, 'drivers')
       // console.log('ARR here', driversArr)
       console.log('from cache')
       cache.drivers = driversArr
@@ -70,7 +70,7 @@ async function handleDrivers(manualFetch = false) {
       }
       // else get from DB
     } else {
-      const driversArr = await utils.getSelectData(null, 'drivers')
+      const driversArr = await utils.getAndCacheData(null, 'drivers')
       // console.log('DB', driversArr)
       // add to cache
       cache.teams = driversArr
@@ -91,7 +91,7 @@ async function handleTeams(manualFetch = false) {
   try {
     if (!manualFetch) {
       // extract just the names
-      const teamsArr = await utils.getSelectData(cache, 'teams')
+      const teamsArr = await utils.getAndCacheData(cache, 'teams')
       // add to cache
       cache.teams = teamsArr
       // console.log('CA', teamsArr)
@@ -102,7 +102,7 @@ async function handleTeams(manualFetch = false) {
         teamAction: '/team'
       }
     } else {
-      const teamsArr = await utils.getSelectData(null, 'teams')
+      const teamsArr = await utils.getAndCacheData(null, 'teams')
       console.log('not from cache')
       // add to cache
       cache.teams = teamsArr

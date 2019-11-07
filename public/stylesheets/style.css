@@ -66,6 +66,7 @@ img {
 .driver-page,
 .team-page {
   padding: 0 50px;
+  margin-bottom: 50px;
 }
 .team-card-page,
 .driver-card-page {
@@ -102,10 +103,10 @@ img {
   flex-direction: column;
 }
 .team-inner-container,
-.driver-stats-container {
+.driver-inner-container {
   display: flex;
 }
-.driver-stats-container {
+.driver-inner-container {
   min-height: 300px;
 }
 .team-inner-container .left-column h5 {
@@ -220,7 +221,7 @@ ul.navbar-nav {
   .btn-container {
     margin-top: 10px;
   }
-  .driver-card .driver-stats-container {
+  .driver-card .driver-inner-container {
     flex-direction: column;
     background-color: whitesmoke;
   }
@@ -244,7 +245,7 @@ ul.navbar-nav {
 /* shift from lg to sm card at 700px */
 @media (max-width: 700px) {
   .team-inner-container,
-  .driver-stats-container {
+  .driver-inner-container {
     flex-direction: column;
   }
   .driver-card-container-sm {
