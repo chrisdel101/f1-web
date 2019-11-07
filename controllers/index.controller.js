@@ -4,14 +4,14 @@ module.exports = {
   renderDemo,
   renderIndex,
   cache,
-  handleDrivers,
-  handleTeams,
+  handleDriversCache,
+  handleTeamsCache,
   freshFetch
 }
 async function renderIndex(ctx, next) {
-  const teamsObj = await handleTeams()
+  const teamsObj = await handleTeamsCache()
   // console.log('ALL TEAMOBJ on index render', teamsObj)
-  const driversObj = await handleDrivers()
+  const driversObj = await handleDriversCache()
   // console.log('ALL DRIVEROBJ on index render', driversObj)
 
   await ctx.render('index', {
@@ -33,9 +33,9 @@ async function renderIndex(ctx, next) {
   })
 }
 async function renderDemo(ctx, next) {
-  const teamsObj = await handleTeams()
+  const teamsObj = await handleTeamsCache()
   // console.log('ALL TEAMOBJ on index render', teamsObj)
-  const driversObj = await handleDrivers()
+  const driversObj = await handleDriversCache()
   // console.log('ALL DRIVEROBJ on index render', driversObj)
   await ctx.render('demo', {
     title: ctx.title,
@@ -54,11 +54,16 @@ async function renderDemo(ctx, next) {
   })
 }
 // gets driver data and caches it
-async function handleDrivers(manualFetch = false) {
+async function handleDriversCache(driversCache, route, manualFetch = false) {
   try {
     // if not manual fetch get from cache
     if (!manualFetch) {
-      const driversArr = await utils.getAndCacheData(cache, 'drivers')
+      if (driversCache[route]) {
+        if (utils.verifyTimeStamp(timeStamp, 864000)) {
+          console.log('driversC', driversCache)
+        }
+      }
+      const driversArr = await utils.getData(cache, 'drivers')
       // console.log('ARR here', driversArr)
       console.log('from cache')
       cache.drivers = driversArr
@@ -70,7 +75,7 @@ async function handleDrivers(manualFetch = false) {
       }
       // else get from DB
     } else {
-      const driversArr = await utils.getAndCacheData(null, 'drivers')
+      const driversArr = await utils.getData(null, 'drivers')
       // console.log('DB', driversArr)
       // add to cache
       cache.teams = driversArr
@@ -83,15 +88,15 @@ async function handleDrivers(manualFetch = false) {
       }
     }
   } catch (e) {
-    console.log('A error in handleDrivers', e)
+    console.log('A error in handleDriversCache', e)
   }
 }
 // / gets driver data and caches it
-async function handleTeams(manualFetch = false) {
+async function handleTeamsCache(manualFetch = false) {
   try {
     if (!manualFetch) {
       // extract just the names
-      const teamsArr = await utils.getAndCacheData(cache, 'teams')
+      const teamsArr = await utils.getData(cache, 'teams')
       // add to cache
       cache.teams = teamsArr
       // console.log('CA', teamsArr)
@@ -102,7 +107,7 @@ async function handleTeams(manualFetch = false) {
         teamAction: '/team'
       }
     } else {
-      const teamsArr = await utils.getAndCacheData(null, 'teams')
+      const teamsArr = await utils.getData(null, 'teams')
       console.log('not from cache')
       // add to cache
       cache.teams = teamsArr
@@ -115,15 +120,15 @@ async function handleTeams(manualFetch = false) {
       }
     }
   } catch (e) {
-    console.log('A error in handleTeams', e)
+    console.log('A error in handleTeamsCache', e)
   }
 }
 // fetch from DB manually - skip cache
 async function freshFetch() {
   console.log('reset')
   try {
-    await module.exports.handleDrivers(true)
-    await module.exports.handleTeams(true)
+    await module.exports.handleDriversCache(true)
+    await module.exports.handleTeamsCache(true)
     console.log('freshFetch')
   } catch (e) {
     console.log('error in freshFetch', e)

@@ -4,8 +4,8 @@ const urls = require('../urls')
 const indexController = require('./index.controller')
 
 // check cache in indexController for data before calling db
-async function handleFormData() {
-  const drivers = await indexController.handleDrivers()
+async function handleCacheData() {
+  const drivers = await indexController.handleDriversCache()
   const teams = await indexController.handleTeams()
   return {
     drivers,
@@ -25,7 +25,7 @@ async function fetchDriverAPI(ctx, render) {
     }
     // console.log('Q', driverSlug)
     // pass form data from cache to template
-    const formData = await handleFormData()
+    const formData = await handleCacheData()
     // set data to vars
     const driversObj = formData.drivers
     const teamsObj = formData.teams

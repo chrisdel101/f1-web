@@ -14,7 +14,7 @@ describe('utils tests', () => {
         ]
       }
       sinon.spy(utils, 'fetchData')
-      const result = await utils.getAndCacheData(fakeCache, 'drivers')
+      const result = await utils.getData(fakeCache, 'drivers')
       //   check not called from DB
       assert(utils.fetchData.notCalled)
       assert.deepEqual(result, fakeCache.drivers)
@@ -28,7 +28,7 @@ describe('utils tests', () => {
         ]
       }
       sinon.spy(utils, 'fetchData')
-      const result = await utils.getAndCacheData(fakeCache, 'teams')
+      const result = await utils.getData(fakeCache, 'teams')
       //   check not called from DB
       assert(utils.fetchData.notCalled)
       assert.deepEqual(result, fakeCache.teams)
@@ -42,7 +42,7 @@ describe('utils tests', () => {
         ]
       }
       sinon.spy(utils, 'fetchData')
-      const result = await utils.getAndCacheData(fakeCache, 'blarg')
+      const result = await utils.getData(fakeCache, 'blarg')
       //   check not called from DB
       assert.throws(() => {
         throw new SyntaxError()
@@ -53,7 +53,7 @@ describe('utils tests', () => {
       const fakeCache = {}
       sinon.spy(utils, 'fetchData')
       //   get from DB
-      const result = await utils.getAndCacheData(fakeCache, 'teams')
+      const result = await utils.getData(fakeCache, 'teams')
       //   check is called from DB
       assert(utils.fetchData.calledOnce)
       utils.fetchData.restore()
@@ -80,13 +80,13 @@ describe('utils tests', () => {
       cache = {}
       assert(utils.isObjEmpty(cache))
     })
-    it('handleDrivers - checks that cache is not empty after call', async function() {
-      let drivers = await indexController.handleDrivers()
+    it('handleDriversCache - checks that cache is not empty after call', async function() {
+      let drivers = await indexController.handleDriversCache()
       let viewCache = utils.viewCache({})
       assert(!utils.isObjEmpty(viewCache))
     })
-    it('handleDrivers - checks that has drivers key', async function() {
-      let drivers = await indexController.handleDrivers()
+    it('handleDriversCache - checks that has drivers key', async function() {
+      let drivers = await indexController.handleDriversCache()
       let viewCache = utils.viewCache({})
       assert(viewCache.hasOwnProperty('drivers'))
     })
@@ -108,7 +108,7 @@ describe('utils tests', () => {
       assert(utils.isObjEmpty(cache))
     })
     it('resetCache resets drivers cache', async function() {
-      let drivers = await indexController.handleDrivers()
+      let drivers = await indexController.handleDriversCache()
       let viewCache = utils.viewCache(null, 'drivers')
       //   check array of drivers
       assert(Array.isArray(viewCache))
@@ -134,7 +134,7 @@ describe('utils tests', () => {
       assert(utils.isObjEmpty(viewCache))
     })
     it('resetCache full cache', async function() {
-      let drivers = await indexController.handleDrivers()
+      let drivers = await indexController.handleDriversCache()
       let teams = await indexController.handleTeams()
       let viewCache = utils.viewCache()
       //   check cache was filled

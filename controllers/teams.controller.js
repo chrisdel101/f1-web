@@ -4,7 +4,7 @@ const indexController = require('./index.controller')
 
 // check cache in indexController for data before calling db
 async function handleFormData() {
-  const drivers = await indexController.handleDrivers()
+  const drivers = await indexController.handleDriversCache()
   const teams = await indexController.handleTeams()
   return {
     drivers,

@@ -4,8 +4,21 @@ const urls = require('./urls')
 const utils = require('./utils')
 const puppeteer = require('puppeteer')
 let cache = require('./cache')
+const moment = require('moment')
 
 module.exports = {
+  // check if timestamp is older than mins entered
+  verifyTimeStamp: (timeStamp, mins) => {
+    // console.log('verify')
+    const d1 = new moment(timeStamp)
+    const d2 = new moment()
+    // subract time1 from time 2
+    const diff = moment.duration(d2.diff(d1)).asMinutes()
+    // console.log('diff', diff)
+    // console.log('mins', mins)
+    // less than 30 mins true, else false
+    return diff < mins ? true : false
+  },
   isObjEmpty: obj => {
     if (Object.keys(obj).length === 0 && obj.constructor === Object) {
       return true
@@ -60,12 +73,15 @@ module.exports = {
   // takes the cache to store
   // take a route i.e. /drivers to get from
   // returns the data from the cache
-  getAndCacheData: async (cache, route) => {
+  getData: async (cache, route) => {
+    // JUST fetchs data - does not handle caching
     try {
       let dataObj
       // route matches key in cache - if exists
+      // return from cache
+      // console.log(route)
       if (cache && (cache[route] && cache[route].length)) {
-        // if (process.env.NODE_ENV === 'testing') {
+        // ADD TIMESTAMP next
         console.log(`get ${route} from cache`)
         // }
         dataObj = cache[route]
