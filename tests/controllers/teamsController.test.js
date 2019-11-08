@@ -54,7 +54,7 @@ describe('teams.controllers', function() {
       })
     })
   })
-  describe.only('handleTeamsCache()', () => {
+  describe('handleTeamsCache()', () => {
     it('handleTeamsCache gets data from API - not in cache ', function() {
       sinon.spy(utils, 'fetchData')
       const currentTimeStamp = new Date().getTime()
