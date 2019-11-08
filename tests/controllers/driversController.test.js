@@ -5,8 +5,8 @@ const sinon = require('sinon')
 const assert = require('assert')
 
 describe('driversController', () => {
-  describe('handleDriversCache()', () => {
-    it('handleDriversCache gets data from API - not in cache ', function() {
+  describe.only('handleDriversCache()', () => {
+    it.only('handleDriversCache gets data from API - not in cache ', function() {
       sinon.spy(utils, 'fetchData')
       const currentTimeStamp = new Date().getTime()
       return driversController
@@ -22,7 +22,10 @@ describe('driversController', () => {
       const oldTimeStamp = new Date('Nov 04 2019').getTime()
       cache.testCache = {
         drivers: {
+          driverAction: '/driver',
           driversArr: [],
+          formText: 'Choose a Driver',
+          selectName: 'driver',
           timestamp: oldTimeStamp
         }
       }
@@ -30,6 +33,7 @@ describe('driversController', () => {
       return driversController
         .handleDriversCache(cache.testCache, 30)
         .then(res => {
+          // console.log(res)
           assert.notDeepEqual(res, cache.testCache.drivers)
           assert(utils.fetchData.calledOnce)
           utils.fetchData.restore()
@@ -40,7 +44,10 @@ describe('driversController', () => {
       const oldTimeStamp = new Date().getTime()
       cache.testCache = {
         drivers: {
-          driversArr: [
+          driverAction: '/driver',
+          formText: 'Choose a Driver',
+          selectName: 'driver',
+          driverEnums: [
             {
               name: 'Some Name',
               name_slug: 'some_name'

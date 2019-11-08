@@ -8,6 +8,7 @@ module.exports = {
   cache,
   freshFetch
 }
+
 async function renderIndex(ctx, next) {
   await ctx.render('index', {
     subTitle: ctx.subTitle
@@ -49,3 +50,74 @@ async function freshFetch() {
     console.log('error in freshFetch', e)
   }
 }
+
+// // gets driver data and caches it
+// async function handleDriversCache(driversCache, route, manualFetch = false) {
+//   try {
+//     // if not manual fetch get from cache
+//     if (!manualFetch) {
+//       if (driversCache[route]) {
+//         if (utils.verifyTimeStamp(timeStamp, 864000)) {
+//           console.log('driversC', driversCache)
+//         }
+//       }
+//       const driversArr = await utils.getData(cache, 'drivers')
+//       // console.log('ARR here', driversArr)
+//       console.log('from cache')
+//       cache.drivers = driversArr
+//       return {
+//         formText: 'Choose a Driver',
+//         driversArr: driversArr,
+//         selectName: 'driver',
+//         driverAction: '/driver'
+//       }
+//       // else get from DB
+//     } else {
+//       const driversArr = await utils.getData(null, 'drivers')
+//       // console.log('DB', driversArr)
+//       // add to cache
+//       cache.teams = driversArr
+//       // console.log('CA', driversArr)
+//       return {
+//         formText: 'Choose a Driver',
+//         driversArr: driversArr,
+//         selectName: 'driver',
+//         driverAction: '/driver'
+//       }
+//     }
+//   } catch (e) {
+//     console.log('A error in handleDriversCache', e)
+//   }
+// }
+// // / gets driver data and caches it
+// async function handleTeamsCache(manualFetch = false) {
+//   try {
+//     if (!manualFetch) {
+//       // extract just the names
+//       const teamsArr = await utils.getData(cache, 'teams')
+//       // add to cache
+//       cache.teams = teamsArr
+//       // console.log('CA', teamsArr)
+//       return {
+//         formText: 'Choose a Team',
+//         teamsArr: teamsArr,
+//         selectName: 'team',
+//         teamAction: '/team'
+//       }
+//     } else {
+//       const teamsArr = await utils.getData(null, 'teams')
+//       console.log('not from cache')
+//       // add to cache
+//       cache.teams = teamsArr
+//       // console.log('CA', teamsArr)
+//       return {
+//         formText: 'Choose a Team',
+//         teamsArr: teamsArr,
+//         selectName: 'team',
+//         teamAction: '/team'
+//       }
+//     }
+//   } catch (e) {
+//     console.log('A error in handleTeamsCache', e)
+//   }
+// }
