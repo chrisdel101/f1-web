@@ -20,6 +20,7 @@ async function renderDemo(ctx, next) {
     // console.log('ALL TEAMOBJ on index render', teamsObj)
     const driversObj = await driversController.handleDriversCache(cache, 1440)
     // console.log('ALL DRIVEROBJ on index render', driversObj)
+    console.log('blah', teamsObj)
     await ctx.render('demo', {
       title: ctx.title,
       method: 'GET',
@@ -28,8 +29,10 @@ async function renderDemo(ctx, next) {
       buttonField: 'Submit',
       buttonType: 'submit',
       buttonValue: 'submit',
-      driverFormText: ctx.driverFormText,
-      teamFormText: ctx.teamFormText,
+      driverFormText: ctx.driverText,
+      teamText: ctx.teamText,
+      driverText: driversObj.driverText,
+      teamText: teamsObj.teamText,
       driverSelectName: driversObj.selectName,
       driverEnums: driversObj.driversArr,
       teamSelectName: teamsObj.selectName,

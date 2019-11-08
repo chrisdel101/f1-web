@@ -12,6 +12,7 @@ describe('driversController', () => {
       return driversController
         .handleDriversCache(cache.testCache, currentTimeStamp)
         .then(res => {
+          console.log('res', res)
           assert.notDeepEqual(res, cache.testCache.drivers)
           assert(utils.fetchData.calledOnce)
           utils.fetchData.restore()

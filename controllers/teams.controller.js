@@ -14,7 +14,7 @@ async function handleTeamsCache(cache, expiryTime, manualFetch = false) {
           teamsArr: teamsArr,
           timestamp: new Date().getTime()
         }
-        return teamsArr
+        return this.addDataToTeamsObj(cache['teams'])
         // if drivers exists but timestamp, older than 24 hours, fails - add it
       } else if (
         cache.hasOwnProperty('teams') &&
@@ -26,7 +26,7 @@ async function handleTeamsCache(cache, expiryTime, manualFetch = false) {
           teamsArr: teamsArr,
           timeStamp: new Date().getTime()
         }
-        return teamsArr
+        return this.addDataToTeamsObj(cache['teams'])
         // if drivers exists but timestamp pass - use cache
       } else if (
         cache.hasOwnProperty('teams') &&
@@ -34,13 +34,24 @@ async function handleTeamsCache(cache, expiryTime, manualFetch = false) {
       ) {
         // if less than 24 hours old - time stamp passes-  get from cache
         console.log('handleTeamsCache() - FROM CACHE')
-        return cache['teams']
+        return this.addDataToTeamsObj(cache['teams'])
       }
     } else if (manualFetch) {
       console.log('manual fetch')
     }
   } catch (e) {
     console.log('A error in handleTeamsCache', e)
+  }
+}
+// add relevant data for form submission to the driver reponse obj
+function addDataToTeamsObj(teamsObj) {
+  try {
+    teamsObj.teamText = 'Choose a Team'
+    teamsObj.selectName = 'team'
+    teamsObj.teamAction = '/team'
+    return teamsObj
+  } catch (e) {
+    console.error('An error in addDataToTeamsObj', e)
   }
 }
 // check cache in indexController for data before calling db
@@ -158,6 +169,7 @@ async function renderTeamTemplate(ctx, next) {
   })
 }
 module.exports = {
+  addDataToTeamsObj,
   renderTeamTemplate,
   renderTeamCard,
   fetchTeamAPI,
