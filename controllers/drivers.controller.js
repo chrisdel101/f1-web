@@ -4,8 +4,7 @@ const urls = require('../urls')
 const indexController = require('./index.controller')
 
 // gets driver data and caches it
-async function handleDriversCache(cache, timestamp, manualFetch = false) {
-  console.log(cache.hasOwnProperty('drivers'))
+async function handleDriversCache(cache, expiryTime, manualFetch = false) {
   try {
     if (!manualFetch) {
       // if drivers not in cache - add it
@@ -14,17 +13,17 @@ async function handleDriversCache(cache, timestamp, manualFetch = false) {
         console.log('handleDriversCache() - NOT FROM CACHE')
         cache['drivers'] = {
           driversArr: driversArr,
-          timeStamp: new Date().getTime()
+          timestamp: new Date().getTime()
         }
         return driversArr
-        // if drivers exists but timestamp fails - add it
+        // if drivers exists but timestamp, older than 24 hours, fails - add it
       } else if (
         cache.hasOwnProperty('drivers') &&
-        !utils.verifyTimeStamp(cache['drivers'].timestamp)
+        !utils.verifyTimeStamp(cache['drivers'].timestamp, expiryTime)
       ) {
         const driversArr = JSON.parse(await utils.fetchData('drivers'))
         console.log('handleDriversCache() - NOT FROM CACHE')
-        driversCache['drivers'] = {
+        cache['drivers'] = {
           driversArr: driversArr,
           timeStamp: new Date().getTime()
         }
@@ -32,12 +31,11 @@ async function handleDriversCache(cache, timestamp, manualFetch = false) {
         // if drivers exists but timestamp pass - use cache
       } else if (
         cache.hasOwnProperty('drivers') &&
-        utils.verifyTimeStamp(cache['drivers'].timestamp)
+        utils.verifyTimeStamp(cache['drivers'].timestamp, expiryTime)
       ) {
         // if less than 24 hours old - time stamp passes-  get from cache
         console.log('handleDriversCache() - FROM CACHE')
-        const driversArr = cache['drivers']
-        return driversArr
+        return cache['drivers']
       }
     } else if (manualFetch) {
       console.log('manual fetch')

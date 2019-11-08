@@ -29,6 +29,7 @@
   "devDependencies": {
     "mocha": "^6.2.0",
     "nodemon": "^1.19.2",
+    "rewire": "^4.0.1",
     "sinon": "^7.5.0"
   }
 }

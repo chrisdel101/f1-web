@@ -9,7 +9,7 @@ const moment = require('moment')
 module.exports = {
   // check if timestamp is older than mins entered
   verifyTimeStamp: (timeStamp, mins) => {
-    // console.log('verify')
+    // console.log('verify', timeStamp)
     const d1 = new moment(timeStamp)
     const d2 = new moment()
     // subract time1 from time 2
@@ -52,7 +52,7 @@ module.exports = {
         process.env.NODE_ENV === 'testing'
       ) {
         const call = module.exports.httpCall(urls.localDev(params))
-        console.log('C', call)
+        // console.log('C', call)
         let remoteJson = await call
         // console.log('REM', remoteJson)
         return remoteJson
