@@ -5,6 +5,20 @@ let cache = require('../../cache')
 const sinon = require('sinon')
 
 describe('utils tests', () => {
+  describe('verifyTimeStamp', function() {
+    it('verifyTimeStamp returns false when timestamp is older than expiry param', function() {
+      const randomTimeStamp = new Date('Nov 05 2019 21:49:28').getTime()
+      // 24 hours in mins
+      const res = utils.verifyTimeStamp(randomTimeStamp, 1440)
+      assert(!res)
+    })
+    it('verifyTimeStamp returns true when timestamp within expirity time', function() {
+      const randomTimeStamp = new Date().getTime()
+      // 24 hours in mins
+      const res = utils.verifyTimeStamp(randomTimeStamp, 1440)
+      assert(res)
+    })
+  })
   describe('getSelectedData()', () => {
     it('returns drivers data from cache', async function() {
       const fakeCache = {

@@ -49,10 +49,10 @@ module.exports = {
     try {
       if (
         process.env.NODE_ENV === 'development' ||
-        process.env.NODE_ENV === 'test'
+        process.env.NODE_ENV === 'testing'
       ) {
         const call = module.exports.httpCall(urls.localDev(params))
-        // console.log('C', call)
+        console.log('C', call)
         let remoteJson = await call
         // console.log('REM', remoteJson)
         return remoteJson

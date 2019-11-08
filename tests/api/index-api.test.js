@@ -13,7 +13,7 @@ describe('API tests', () => {
       // console.log(res)
     })
   })
-  it.only('sendImage takes mobile driver image', async function() {
+  it('sendImage takes mobile driver image', async function() {
     const mockCtx = {
       path: 'https://f1-cards.herokuapp.com/api/team/mercedes',
       params: {

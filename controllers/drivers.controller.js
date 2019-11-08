@@ -3,6 +3,49 @@ const cache = require('../cache')
 const urls = require('../urls')
 const indexController = require('./index.controller')
 
+// gets driver data and caches it
+async function handleDriversCache(cache, timestamp, manualFetch = false) {
+  console.log(cache.hasOwnProperty('drivers'))
+  try {
+    if (!manualFetch) {
+      // if drivers not in cache - add it
+      if (!cache.hasOwnProperty('drivers')) {
+        const driversArr = JSON.parse(await utils.fetchData('drivers'))
+        console.log('handleDriversCache() - NOT FROM CACHE')
+        cache['drivers'] = {
+          driversArr: driversArr,
+          timeStamp: new Date().getTime()
+        }
+        return driversArr
+        // if drivers exists but timestamp fails - add it
+      } else if (
+        cache.hasOwnProperty('drivers') &&
+        !utils.verifyTimeStamp(cache['drivers'].timestamp)
+      ) {
+        const driversArr = JSON.parse(await utils.fetchData('drivers'))
+        console.log('handleDriversCache() - NOT FROM CACHE')
+        driversCache['drivers'] = {
+          driversArr: driversArr,
+          timeStamp: new Date().getTime()
+        }
+        return driversArr
+        // if drivers exists but timestamp pass - use cache
+      } else if (
+        cache.hasOwnProperty('drivers') &&
+        utils.verifyTimeStamp(cache['drivers'].timestamp)
+      ) {
+        // if less than 24 hours old - time stamp passes-  get from cache
+        console.log('handleDriversCache() - FROM CACHE')
+        const driversArr = cache['drivers']
+        return driversArr
+      }
+    } else if (manualFetch) {
+      console.log('manual fetch')
+    }
+  } catch (e) {
+    console.log('A error in handleDriversCache', e)
+  }
+}
 // check cache in indexController for data before calling db
 async function handleCacheData() {
   const drivers = await indexController.handleDriversCache()
@@ -125,6 +168,6 @@ async function renderDriverTemplate(ctx) {
 module.exports = {
   renderDriverTemplate,
   renderDriverCard,
-  // openMobileCard,
+  handleDriversCache,
   renderAllDriversList
 }
