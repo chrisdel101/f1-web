@@ -1,5 +1,9 @@
 const teamsController = require('../../controllers/teams.controller')
 var assert = require('assert')
+const cache = require('../../cache')
+const utils = require('../../utils')
+const sinon = require('sinon')
+
 const teamDataObj = {
   base: 'Brackley, United Kingdom',
   championship_titles: '5',
@@ -47,6 +51,61 @@ describe('teams.controllers', function() {
       }
       return teamsController.fetchTeamAPI(fakeCtx, 'card').then(res => {
         console.log(res)
+      })
+    })
+  })
+  describe.only('handleTeamsCache()', () => {
+    it('handleTeamsCache gets data from API - not in cache ', function() {
+      sinon.spy(utils, 'fetchData')
+      const currentTimeStamp = new Date().getTime()
+      return teamsController
+        .handleTeamsCache(cache.testCache, currentTimeStamp)
+        .then(res => {
+          assert.notDeepEqual(res, cache.testCache.teams)
+          assert(utils.fetchData.calledOnce)
+          utils.fetchData.restore()
+        })
+    })
+    it('handleTeamsCache gets data from API - fails timestamp', function() {
+      // add fake driver key
+      const oldTimeStamp = new Date('Nov 04 2019').getTime()
+      cache.testCache = {
+        drivers: {
+          driversArr: [
+            {
+              name: 'Some Name',
+              name_slug: 'some_name'
+            }
+          ],
+          timestamp: oldTimeStamp
+        }
+      }
+      sinon.spy(utils, 'fetchData')
+      return teamsController.handleTeamsCache(cache.testCache, 30).then(res => {
+        assert.notDeepEqual(res, cache.testCache.teams)
+        assert(utils.fetchData.calledOnce)
+        utils.fetchData.restore()
+      })
+    })
+    it('handleTeamsCache gets data from cache - passes timestamp', function() {
+      // add fake driver key
+      const oldTimeStamp = new Date().getTime()
+      cache.testCache = {
+        teams: {
+          teamsArr: [
+            {
+              name: 'Some Name',
+              name_slug: 'some_name'
+            }
+          ],
+          timestamp: oldTimeStamp
+        }
+      }
+      sinon.spy(utils, 'fetchData')
+      return teamsController.handleTeamsCache(cache.testCache, 30).then(res => {
+        assert.deepEqual(res, cache.testCache.teams)
+        assert(utils.fetchData.notCalled)
+        utils.fetchData.restore()
       })
     })
   })

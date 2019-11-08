@@ -2,6 +2,47 @@ const utils = require('../utils')
 const cache = require('../cache')
 const indexController = require('./index.controller')
 
+// gets driver data and caches it
+async function handleTeamsCache(cache, expiryTime, manualFetch = false) {
+  try {
+    if (!manualFetch) {
+      // if drivers not in cache - add it
+      if (!cache.hasOwnProperty('teams')) {
+        const teamsArr = JSON.parse(await utils.fetchData('teams'))
+        console.log('handleTeamsCache() - NOT FROM CACHE')
+        cache['teams'] = {
+          teamsArr: teamsArr,
+          timestamp: new Date().getTime()
+        }
+        return teamsArr
+        // if drivers exists but timestamp, older than 24 hours, fails - add it
+      } else if (
+        cache.hasOwnProperty('teams') &&
+        !utils.verifyTimeStamp(cache['teams'].timestamp, expiryTime)
+      ) {
+        const teamsArr = JSON.parse(await utils.fetchData('teams'))
+        console.log('handleDriversCache() - NOT FROM CACHE')
+        cache['teams'] = {
+          teamsArr: teamsArr,
+          timeStamp: new Date().getTime()
+        }
+        return teamsArr
+        // if drivers exists but timestamp pass - use cache
+      } else if (
+        cache.hasOwnProperty('teams') &&
+        utils.verifyTimeStamp(cache['teams'].timestamp, expiryTime)
+      ) {
+        // if less than 24 hours old - time stamp passes-  get from cache
+        console.log('handleTeamsCache() - FROM CACHE')
+        return cache['teams']
+      }
+    } else if (manualFetch) {
+      console.log('manual fetch')
+    }
+  } catch (e) {
+    console.log('A error in handleTeamsCache', e)
+  }
+}
 // check cache in indexController for data before calling db
 async function handleFormData() {
   const drivers = await indexController.handleDriversCache()
@@ -120,5 +161,6 @@ module.exports = {
   renderTeamTemplate,
   renderTeamCard,
   fetchTeamAPI,
-  combineDriverDataOnTeam
+  combineDriverDataOnTeam,
+  handleTeamsCache
 }
