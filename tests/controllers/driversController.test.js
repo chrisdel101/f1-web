@@ -6,16 +6,28 @@ const assert = require('assert')
 
 describe('driversController', () => {
   describe.only('handleDriversCache()', () => {
-    it.only('handleDriversCache gets data from API - not in cache ', function() {
+    it('handleDriversCache gets data from API - not in cache ', function() {
       sinon.spy(utils, 'fetchData')
       const currentTimeStamp = new Date().getTime()
       return driversController
         .handleDriversCache(cache.testCache, currentTimeStamp)
         .then(res => {
-          console.log('res', res)
-          assert.notDeepEqual(res, cache.testCache.drivers)
           assert(utils.fetchData.calledOnce)
           utils.fetchData.restore()
+          // reassign empty cache value
+          cache.testCache = utils.resetCache(null, cache.testCache)
+        })
+    })
+    it('handleDriversCache is empty and adds to cache', function() {
+      const currentTimeStamp = new Date().getTime()
+      // no drivers key in cache
+      assert(!cache.testCache.hasOwnProperty('drivers'))
+      return driversController
+        .handleDriversCache(cache.testCache, currentTimeStamp)
+        .then(res => {
+          // key added to cache
+          assert(cache.testCache.hasOwnProperty('drivers'))
+          cache.testCache = utils.resetCache(null, cache.testCache)
         })
     })
     it('handleDriversCache gets data from API - fails timestamp', function() {
@@ -34,10 +46,9 @@ describe('driversController', () => {
       return driversController
         .handleDriversCache(cache.testCache, 30)
         .then(res => {
-          // console.log(res)
-          assert.notDeepEqual(res, cache.testCache.drivers)
           assert(utils.fetchData.calledOnce)
           utils.fetchData.restore()
+          cache.testCache = utils.resetCache(null, cache.testCache)
         })
     })
     it('handleDriversCache gets data from cache - passes timestamp', function() {
@@ -61,8 +72,7 @@ describe('driversController', () => {
       return driversController
         .handleDriversCache(cache.testCache, 30)
         .then(res => {
-          console.log(res)
-          console.log(cache)
+          // should match exact cache value
           assert.deepEqual(res, cache.testCache.drivers)
           assert(utils.fetchData.notCalled)
           utils.fetchData.restore()

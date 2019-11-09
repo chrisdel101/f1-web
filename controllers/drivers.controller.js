@@ -49,7 +49,6 @@ async function handleDriversCache(cache, expiryTime, manualFetch = false) {
 function addDataToDriversObj(driversObj) {
   try {
     driversObj.driverText = 'Choose a Driver'
-    driversObj.driverEnums = driversObj.driversArr
     driversObj.selectName = 'driver'
     driversObj.driverAction = '/driver'
     return driversObj

@@ -3,7 +3,7 @@ const http = require('http')
 const urls = require('./urls')
 const utils = require('./utils')
 const puppeteer = require('puppeteer')
-let cache = require('./cache')
+let globalCache = require('./cache')
 const moment = require('moment')
 
 module.exports = {
@@ -116,8 +116,13 @@ module.exports = {
       console.error('An error in viewCache', e)
     }
   },
-  resetCache: type => {
-    // console.log('here')
+  resetCache: (type, passInCache = {}) => {
+    // use global cache
+    let cache = globalCache
+    // if cache passed in use that
+    if (!module.exports.isObjEmpty(passInCache)) {
+      cache = passInCache
+    }
     try {
       if (type === 'teams') {
         if (!cache.teams) {

@@ -6,6 +6,8 @@ var utils = require('../utils')
 var API = require('../API/index')
 var fs = require('fs')
 var puppeteer = require('puppeteer')
+let cache = require('../cache')
+
 // cache related
 router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', ctx => {

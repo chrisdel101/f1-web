@@ -20,7 +20,6 @@ async function renderDemo(ctx, next) {
     // console.log('ALL TEAMOBJ on index render', teamsObj)
     const driversObj = await driversController.handleDriversCache(cache, 1440)
     // console.log('ALL DRIVEROBJ on index render', driversObj)
-    console.log('blah', teamsObj)
     await ctx.render('demo', {
       title: ctx.title,
       method: 'GET',
