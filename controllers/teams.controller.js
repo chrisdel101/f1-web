@@ -47,8 +47,8 @@ async function handleTeamsCache(cache, expiryTime, manualFetch = false) {
 function addDataToTeamsObj(teamsObj) {
   try {
     teamsObj.teamText = 'Choose a Team'
-    teamsObj.selectName = 'team'
-    teamsObj.teamAction = '/team'
+    teamsObj.selectName = 'driver'
+    teamsObj.teamAction = '/driver'
     return teamsObj
   } catch (e) {
     console.error('An error in addDataToTeamsObj', e)

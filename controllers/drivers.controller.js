@@ -67,7 +67,7 @@ async function handleCacheData() {
   }
 }
 // fetchs the driver info from the api to use in render func
-async function  (ctx, render) {
+async function fetchDriverAPI(ctx, render) {
   try {
     // get query params from GET req
     let driverSlug
@@ -131,7 +131,7 @@ async function renderDriverCard(ctx) {
       ctx,
       'card'
     )
-    console.log(driversObj)
+
     const teamUrl = `/team?team=${driverData.team_name_slug}`
     // add link to team to driver
     driverData['teamUrl'] = teamUrl
@@ -152,35 +152,39 @@ async function renderDriverCard(ctx) {
 }
 // use driver api data to render full template
 async function renderDriverTemplate(ctx) {
-  const { driverData, teamData, driversObj, teamsObj } = await  (
+  const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
     ctx,
     'page'
   )
+  // console.log(driverData)
+  Promise.resolve(driversObj).then(res => {
+    console.log(res)
+  })
+  return
+  // console.log(driverData)
+  if (!driverData) {
+    throw new ReferenceError('renderDriverTemplate.driverData() is undefined')
+  } else if (!teamData) {
+    throw new ReferenceError('renderDriverTemplate.teamData() is undefined')
+  } else if (!driversObj) {
+    throw new ReferenceError('renderDriverTemplate.driversObj() is undefined')
+  } else if (!teamsObj) {
+    throw new ReferenceError('renderDriverTemplate.teamsObj() is undefined')
+  }
   const teamUrl = `/team?team=${driverData.team_name_slug}`
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
   driverData['logo_url'] = teamData.logo_url
   // console.log('HELLI', teamsObj.teamsArr)
   console.log({
-    urls: ctx.urls,
-    method: 'GET',
-    title: ctx.title,
     driverAction: driversObj.driverAction,
     teamAction: teamsObj.teamAction,
-    buttonField: 'Submit',
-    buttonType: 'submit',
-    buttonValue: 'submit',
     driverSelectName: driversObj.selectName,
     driverEnums: driversObj.driversArr,
     teamSelectName: teamsObj.selectName,
     teamEnums: teamsObj.teamsArr,
-    driverFormText: ctx.driverFormText,
-    teamFormText: ctx.teamFormText,
-    // +++ mixin data  +++
-    routeName: 'driver',
-    driverData: driverData,
-    teamData: teamData,
-    allData: { ...driverData, ...teamData }
+    driverFormText: driversObj.driverText,
+    teamFormText: teamsObj.teamText
   })
   return await ctx.render('driverPage', {
     //  +++ index params +++
@@ -206,7 +210,7 @@ async function renderDriverTemplate(ctx) {
   })
 }
 module.exports = {
-    ,
+  fetchDriverAPI,
   addDataToDriversObj,
   renderDriverTemplate,
   renderDriverCard,

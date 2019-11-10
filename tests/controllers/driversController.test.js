@@ -80,15 +80,14 @@ describe('driversController', () => {
         })
     })
   })
-  describe.only('fetchDriverAPI()', () => {
-    it.only('fetchDriverAPI returns non-empty team/driver objs - type = card ', function() {
+  describe('fetchDriverAPI()', () => {
+    it('fetchDriverAPI returns non-empty team/driver objs - type = card ', function() {
       const ctx = {
         params: {
           driver_slug: 'some-driver'
         }
       }
       return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-        console.log(res.driversObj)
         assert(res.driversObj)
         assert(res.teamsObj)
       })
@@ -100,6 +99,18 @@ describe('driversController', () => {
         }
       }
       return driversController.fetchDriverAPI(ctx, 'page').then(res => {
+        assert(res.driversObj)
+        assert(res.teamsObj)
+      })
+    })
+    it.only('fetchDriverAPI returns non-empty team/driver objs - type = page ', function() {
+      const ctx = {
+        query: {
+          driver: 'some-driver'
+        }
+      }
+      return driversController.fetchDriverAPI(ctx, 'page').then(res => {
+        // console.log(res.driversObj)
         assert(res.driversObj)
         assert(res.teamsObj)
       })
@@ -150,6 +161,45 @@ describe('driversController', () => {
         assert(utils.fetchData.called)
         utils.fetchData.restore()
       })
+    })
+  })
+  describe('renderDriverTemplate()', () => {
+    it.only('', function() {
+      const ctx = {
+        query: {
+          driver: 'lewis-hamilton'
+        }
+      }
+      return driversController.renderDriverTemplate(ctx).then(res => {
+        // console.log(res)
+      })
+    })
+  })
+  // TODO
+  it.skip('calls fake endpoint', function() {
+    // { request:
+    //   { method: 'GET',
+    //     url: '/driver?driver=alexander-albon',
+    //     header:
+    //      { host: 'localhost:3000',
+    //        'user-agent': 'curl/7.54.0',
+    //        accept: '*/*' } },
+    //  response:
+    //   { status: 404,
+    //     message: 'Not Found',
+    //     header: [Object: null prototype] {} },
+    //  app: { subdomainOffset: 2, proxy: false, env: 'development' },
+    //  originalUrl: '/driver?driver=alexander-albon',
+    //  req: '<original node req>',
+    //  res: '<original node res>',
+    //  socket: '<original node socket>' }
+    const ctx = {
+      query: {
+        driver: 'some-driver'
+      }
+    }
+    return driversController.renderDriverTemplate(ctx).then(res => {
+      console.log(res)
     })
   })
 })
