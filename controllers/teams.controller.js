@@ -1,61 +1,13 @@
-const main = require('./main.controller')
-console.log('d', main)
-// const driversController = require('./drivers.controller')
+const cacheController = require('./cache.controller')
 const cache = require('../cache')
 const utils = require('../utils')
+module.exports = {
+  renderTeamTemplate,
+  renderTeamCard,
+  fetchTeamAPI,
+  combineDriverDataOnTeam
+}
 
-// gets driver data and caches it
-async function handleTeamsCache(cache, expiryTime, manualFetch = false) {
-  try {
-    if (!manualFetch) {
-      // if drivers not in cache - add it
-      if (!cache.hasOwnProperty('teams')) {
-        const teamsArr = JSON.parse(await utils.fetchData('teams'))
-        console.log('handleTeamsCache() - NOT FROM CACHE')
-        cache['teams'] = {
-          teamsArr: teamsArr,
-          timestamp: new Date().getTime()
-        }
-        return this.addDataToTeamsObj(cache['teams'])
-        // if drivers exists but timestamp, older than 24 hours, fails - add it
-      } else if (
-        cache.hasOwnProperty('teams') &&
-        !utils.verifyTimeStamp(cache['teams'].timestamp, expiryTime)
-      ) {
-        const teamsArr = JSON.parse(await utils.fetchData('teams'))
-        console.log('handleDriversCache() - NOT FROM CACHE')
-        cache['teams'] = {
-          teamsArr: teamsArr,
-          timeStamp: new Date().getTime()
-        }
-        return this.addDataToTeamsObj(cache['teams'])
-        // if drivers exists but timestamp pass - use cache
-      } else if (
-        cache.hasOwnProperty('teams') &&
-        utils.verifyTimeStamp(cache['teams'].timestamp, expiryTime)
-      ) {
-        // if less than 24 hours old - time stamp passes-  get from cache
-        console.log('handleTeamsCache() - FROM CACHE')
-        return this.addDataToTeamsObj(cache['teams'])
-      }
-    } else if (manualFetch) {
-      console.log('manual fetch')
-    }
-  } catch (e) {
-    console.log('A error in handleTeamsCache', e)
-  }
-}
-// add relevant data for form submission to the driver reponse obj
-function addDataToTeamsObj(teamsObj) {
-  try {
-    teamsObj.teamText = 'Choose a Team'
-    teamsObj.selectName = 'driver'
-    teamsObj.teamAction = '/driver'
-    return teamsObj
-  } catch (e) {
-    console.error('An error in addDataToTeamsObj', e)
-  }
-}
 // check cache in indexController for data before calling db
 async function handleFormData() {
   const drivers = await indexController.handleDriversCache()
@@ -100,7 +52,7 @@ async function combineDriverDataOnTeam(teamDataObj) {
 }
 async function fetchTeamAPI(ctx, render) {
   try {
-    console.log('CTX', driversController)
+    console.log('cacheC', cacheController)
     // get query params from GET req
     let teamSlug
     if (render === 'page') {
@@ -109,8 +61,8 @@ async function fetchTeamAPI(ctx, render) {
       teamSlug = ctx.params.team_slug
     }
     // pass form data from cache to template
-    const driversObj = driversController.handleDriversCache(cache, 1440)
-    const teamsObj = module.exports.handleTeamsCache(cache, 1440)
+    const driversObj = cacheController.handleDriversCache(cache, 1440)
+    const teamsObj = cacheController.handleTeamsCache(cache, 1440)
     // if slug exist - this is only on card
     if (teamSlug) {
       // query driver by slug
@@ -179,12 +131,4 @@ async function renderTeamTemplate(ctx, next) {
     routeName: 'team',
     teamData: teamData
   })
-}
-module.exports = {
-  addDataToTeamsObj,
-  renderTeamTemplate,
-  renderTeamCard,
-  fetchTeamAPI,
-  combineDriverDataOnTeam,
-  handleTeamsCache
 }

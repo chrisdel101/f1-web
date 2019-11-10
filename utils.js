@@ -1,7 +1,6 @@
 const https = require('https')
 const http = require('http')
 const urls = require('./urls')
-const utils = require('./utils')
 const puppeteer = require('puppeteer')
 let globalCache = require('./cache')
 const moment = require('moment')

@@ -1,11 +1,10 @@
 const utils = require('../utils')
 const cache = require('../cache')
-const { driversController, teamsController } = require('./main.controller')
+const cacheController = require('./cache.controller')
+// const teamsController = require('./teams.controller')
 
 // const teamsController = require('./teams.controller')
 module.exports = {
-  driversController,
-  teamsController,
   renderDemo,
   renderIndex,
   cache,
@@ -19,9 +18,9 @@ async function renderIndex(ctx, next) {
 }
 async function renderDemo(ctx, next) {
   try {
-    const teamsObj = await teamsController.handleTeamsCache(cache, 1440)
+    const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
     // console.log('ALL TEAMOBJ on index render', teamsObj)
-    const driversObj = await driversController.handleDriversCache(cache, 1440)
+    const driversObj = await cacheController.handleDriversCache(cache, 1440)
     // console.log('ALL DRIVEROBJ on index render', driversObj)
     await ctx.render('demo', {
       title: ctx.title,
@@ -48,8 +47,8 @@ async function renderDemo(ctx, next) {
 async function freshFetch() {
   console.log('reset')
   try {
-    await module.exports.driversController.handleDriversCache(true)
-    await module.exports.teamsController.handleTeamsCache(true)
+    await module.exports.cacheController.handleDriversCache(true)
+    await module.exports.cacheController.handleTeamsCache(true)
     console.log('freshFetch')
   } catch (e) {
     console.log('error in freshFetch', e)

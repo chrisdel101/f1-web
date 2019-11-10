@@ -1,5 +1,6 @@
 const driversController = require('../../controllers/drivers.controller')
 const teamsController = require('../../controllers/teams.controller')
+const cacheController = require('../../controllers/cache.controller')
 const cache = require('../../cache')
 const utils = require('../../utils')
 const sinon = require('sinon')
@@ -80,7 +81,7 @@ describe('driversController', () => {
         })
     })
   })
-  describe('fetchDriverAPI()', () => {
+  describe.only('fetchDriverAPI()', () => {
     it('fetchDriverAPI returns non-empty team/driver objs - type = card ', function() {
       const ctx = {
         params: {
@@ -127,15 +128,15 @@ describe('driversController', () => {
       })
     })
     it('fetchDriverAPI calls handleDriversCache()', function() {
-      sinon.spy(driversController, 'handleDriversCache')
+      sinon.spy(cacheController, 'handleDriversCache')
       const ctx = {
         params: {
           driver_slug: 'some-driver'
         }
       }
       return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-        assert(driversController.handleDriversCache.calledOnce)
-        driversController.handleDriversCache.restore()
+        assert(cacheController.handleDriversCache.calledOnce)
+        cacheController.handleDriversCache.restore()
       })
     })
     it('fetchDriverAPI calls handleTeamsCache() type = card', function() {
@@ -144,10 +145,10 @@ describe('driversController', () => {
           driver_slug: 'some-driver'
         }
       }
-      sinon.spy(teamsController, 'handleTeamsCache')
+      sinon.spy(cacheController, 'handleTeamsCache')
       return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-        assert(teamsController.handleTeamsCache.calledOnce)
-        teamsController.handleTeamsCache.restore()
+        assert(cacheController.handleTeamsCache.calledOnce)
+        cacheController.handleTeamsCache.restore()
       })
     })
     it('fetchDriverAPI calls fetchData() - type = card', function() {

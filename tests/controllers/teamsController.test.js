@@ -1,7 +1,5 @@
-const {
-  driversController,
-  teamsController
-} = require('../../controllers/main.controller')
+const driversController = require('../../controllers/drivers.controller')
+const teamsController = require('../../controllers/teams.controller')
 var assert = require('assert')
 const cache = require('../../cache')
 const utils = require('../../utils')
@@ -37,7 +35,7 @@ const teamDataObj = {
     'https://www.formula1.com//content/fom-website/en/drivers/valtteri-bottas/_jcr_content/countryFlag.img.gif/1423762801690.gif'
   ]
 }
-describe.only('teams.controllers', function() {
+describe('teams.controllers', function() {
   describe('combineDriverDataOnTeam()', function() {
     it('runs combineDriverData ', async function() {
       const res = await teamsController.combineDriverDataOnTeam(teamDataObj)
@@ -128,8 +126,8 @@ describe.only('teams.controllers', function() {
       })
     })
   })
-  describe.only('fetchTeamAPI()', () => {
-    it.only('fetchTeamAPI returns non-empty team/driver objs - type = card ', function() {
+  describe('fetchTeamAPI()', () => {
+    it('fetchTeamAPI returns non-empty team/driver objs - type = card ', function() {
       const ctx = {
         params: {
           driver_slug: 'some-team'
