@@ -4,6 +4,42 @@ const urls = require('../urls')
 const indexController = require('./index.controller')
 const teamsController = require('./teams.controller')
 
+function compileTemplateResObj(
+  ctx,
+  driversObj,
+  teamsObj,
+  driverData,
+  teamData
+) {
+  // call team endpoint
+  const teamUrl = `/team?team=${driverData.team_name_slug}`
+  // add link to team to driver
+  driverData['teamUrl'] = teamUrl
+  driverData['logo_url'] = teamData.logo_url
+
+  return {
+    //  +++ index params +++
+    urls: ctx.urls,
+    method: 'GET',
+    title: ctx.title,
+    driverAction: driversObj.driverAction,
+    teamAction: teamsObj.teamAction,
+    buttonField: 'Submit',
+    buttonType: 'submit',
+    buttonValue: 'submit',
+    driverSelectName: driversObj.selectName,
+    driverEnums: driversObj.driversArr,
+    teamSelectName: teamsObj.selectName,
+    teamEnums: teamsObj.teamsArr,
+    driverFormText: ctx.driverFormText,
+    teamFormText: ctx.teamFormText,
+    // +++ mixin data  +++
+    routeName: 'driver',
+    driverData: driverData,
+    teamData: teamData,
+    allData: { ...driverData, ...teamData }
+  }
+}
 // gets driver data and caches it
 // takes a cache - acceess driversObj which has driversArr inside
 async function handleDriversCache(cache, expiryTime, manualFetch = false) {
@@ -152,15 +188,13 @@ async function renderDriverCard(ctx) {
 }
 // use driver api data to render full template
 async function renderDriverTemplate(ctx) {
-  const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
-    ctx,
-    'page'
-  )
-  // console.log(driverData)
-  Promise.resolve(driversObj).then(res => {
-    console.log(res)
-  })
-  return
+  // console.log(ctx)
+  const {
+    driverData,
+    teamData,
+    driversObj,
+    teamsObj
+  } = await module.exports.fetchDriverAPI(ctx, 'page')
   // console.log(driverData)
   if (!driverData) {
     throw new ReferenceError('renderDriverTemplate.driverData() is undefined')
@@ -170,46 +204,22 @@ async function renderDriverTemplate(ctx) {
     throw new ReferenceError('renderDriverTemplate.driversObj() is undefined')
   } else if (!teamsObj) {
     throw new ReferenceError('renderDriverTemplate.teamsObj() is undefined')
-  }
-  const teamUrl = `/team?team=${driverData.team_name_slug}`
-  // add link to team to driver
-  driverData['teamUrl'] = teamUrl
-  driverData['logo_url'] = teamData.logo_url
-  // console.log('HELLI', teamsObj.teamsArr)
-  console.log({
-    driverAction: driversObj.driverAction,
-    teamAction: teamsObj.teamAction,
-    driverSelectName: driversObj.selectName,
-    driverEnums: driversObj.driversArr,
-    teamSelectName: teamsObj.selectName,
-    teamEnums: teamsObj.teamsArr,
-    driverFormText: driversObj.driverText,
-    teamFormText: teamsObj.teamText
-  })
-  return await ctx.render('driverPage', {
-    //  +++ index params +++
-    urls: ctx.urls,
-    method: 'GET',
-    title: ctx.title,
-    driverAction: driversObj.driverAction,
-    teamAction: teamsObj.teamAction,
-    buttonField: 'Submit',
-    buttonType: 'submit',
-    buttonValue: 'submit',
-    driverSelectName: driversObj.selectName,
-    driverEnums: driversObj.driversArr,
-    teamSelectName: teamsObj.selectName,
-    teamEnums: teamsObj.teamsArr,
-    driverFormText: ctx.driverFormText,
-    teamFormText: ctx.teamFormText,
-    // +++ mixin data  +++
-    routeName: 'driver',
-    driverData: driverData,
-    teamData: teamData,
-    allData: { ...driverData, ...teamData }
+  } // console.log(driverData)
+  return await Promise.resolve(driversObj).then(driversObj => {
+    return Promise.resolve(teamsObj).then(teamsObj => {
+      const resObj = module.exports.compileTemplateResObj(
+        ctx,
+        driversObj,
+        teamsObj,
+        driverData,
+        teamData
+      )
+      return ctx.render('driverPage', resObj)
+    })
   })
 }
 module.exports = {
+  compileTemplateResObj,
   fetchDriverAPI,
   addDataToDriversObj,
   renderDriverTemplate,

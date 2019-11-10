@@ -103,7 +103,7 @@ describe('driversController', () => {
         assert(res.teamsObj)
       })
     })
-    it.only('fetchDriverAPI returns non-empty team/driver objs - type = page ', function() {
+    it('fetchDriverAPI returns non-empty team/driver objs - type = page ', function() {
       const ctx = {
         query: {
           driver: 'some-driver'
@@ -163,15 +163,72 @@ describe('driversController', () => {
       })
     })
   })
-  describe('renderDriverTemplate()', () => {
-    it.only('', function() {
-      const ctx = {
+  describe.only('renderDriverTemplate()', () => {
+    it('renderDriverTemplate gets fetchDriverAPI() data successfully', function() {
+      const mockCtx = {
         query: {
           driver: 'lewis-hamilton'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
         }
       }
-      return driversController.renderDriverTemplate(ctx).then(res => {
-        // console.log(res)
+      sinon.spy(driversController, 'fetchDriverAPI')
+      return Promise.resolve(
+        driversController.renderDriverTemplate(mockCtx)
+      ).then(res => {
+        assert(driversController.fetchDriverAPI.calledOnce)
+        // resolve promise from inner function
+        return Promise.resolve(
+          driversController.fetchDriverAPI.returnValues[0]
+        ).then(res => {
+          assert(res.hasOwnProperty('driverData'))
+          assert(res.hasOwnProperty('teamData'))
+          assert(res.hasOwnProperty('teamsObj'))
+          assert(res.hasOwnProperty('driversObj'))
+          assert(
+            !utils.isObjEmpty(res.driverData) &&
+              !utils.isObjEmpty(res.teamData) &&
+              !utils.isObjEmpty(res.teamsObj) &&
+              !utils.isObjEmpty(res.driversObj)
+          )
+          driversController.fetchDriverAPI.restore()
+        })
+      })
+    })
+    it('renderDriverTemplate returns correct template response object', function() {
+      const mockCtx = {
+        query: {
+          driver: 'lewis-hamilton'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+      sinon.spy(driversController, 'compileTemplateResObj')
+      return driversController.renderDriverTemplate(mockCtx).then(res => {
+        // res obj that is sent with render
+        const resObjOutput =
+          driversController.compileTemplateResObj.returnValues[0]
+        return driversController.fetchDriverAPI(mockCtx, 'page').then(res => {
+          const { driverData, teamData, driversObj, teamsObj } = res
+          return Promise.resolve(driversObj).then(driversObj => {
+            return Promise.resolve(teamsObj).then(teamsObj => {
+              const template = driversController.compileTemplateResObj(
+                mockCtx,
+                driversObj,
+                teamsObj,
+                driverData,
+                teamData
+              )
+              // compare direct call to template comiler and value given inside here
+              // they should be equal if functions are all correct
+              assert.deepEqual(resObjOutput, template)
+            })
+          })
+        })
       })
     })
   })
