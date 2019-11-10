@@ -1,8 +1,11 @@
 const utils = require('../utils')
 const cache = require('../cache')
-const driversController = require('./drivers.controller')
-const teamsController = require('./teams.controller')
+const { driversController, teamsController } = require('./main.controller')
+
+// const teamsController = require('./teams.controller')
 module.exports = {
+  driversController,
+  teamsController,
   renderDemo,
   renderIndex,
   cache,

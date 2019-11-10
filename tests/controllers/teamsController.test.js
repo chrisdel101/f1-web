@@ -1,4 +1,7 @@
-const teamsController = require('../../controllers/teams.controller')
+const {
+  driversController,
+  teamsController
+} = require('../../controllers/main.controller')
 var assert = require('assert')
 const cache = require('../../cache')
 const utils = require('../../utils')
@@ -34,7 +37,7 @@ const teamDataObj = {
     'https://www.formula1.com//content/fom-website/en/drivers/valtteri-bottas/_jcr_content/countryFlag.img.gif/1423762801690.gif'
   ]
 }
-describe('teams.controllers', function() {
+describe.only('teams.controllers', function() {
   describe('combineDriverDataOnTeam()', function() {
     it('runs combineDriverData ', async function() {
       const res = await teamsController.combineDriverDataOnTeam(teamDataObj)
@@ -132,6 +135,7 @@ describe('teams.controllers', function() {
           driver_slug: 'some-team'
         }
       }
+
       return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
         assert(res.driversObj)
         assert(res.teamsObj)
@@ -143,7 +147,7 @@ describe('teams.controllers', function() {
           driver: 'some-driver'
         }
       }
-      return driversController.fetchTeamAPI(ctx, 'page').then(res => {
+      return teamsController.fetchTeamAPI(ctx, 'page').then(res => {
         assert(res.driversObj)
         assert(res.teamsObj)
       })
@@ -154,7 +158,7 @@ describe('teams.controllers', function() {
           driver: 'some-driver'
         }
       }
-      return driversController.fetchTeamAPI(ctx, 'page').then(res => {
+      return teamsController.fetchTeamAPI(ctx, 'page').then(res => {
         // console.log(res.driversObj)
         assert(res.driversObj)
         assert(res.teamsObj)
@@ -167,7 +171,7 @@ describe('teams.controllers', function() {
           driver: 'some-driver'
         }
       }
-      return driversController.fetchTeamAPI(ctx, 'page').then(res => {
+      return teamsController.fetchTeamAPI(ctx, 'page').then(res => {
         console.log(res)
       })
     })
@@ -178,7 +182,7 @@ describe('teams.controllers', function() {
           driver_slug: 'some-driver'
         }
       }
-      return driversController.fetchTeamAPI(ctx, 'card').then(res => {
+      return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
         assert(driversController.handleDriversCache.calledOnce)
         driversController.handleDriversCache.restore()
       })
@@ -190,7 +194,7 @@ describe('teams.controllers', function() {
         }
       }
       sinon.spy(teamsController, 'handleTeamsCache')
-      return driversController.fetchTeamAPI(ctx, 'card').then(res => {
+      return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
         assert(teamsController.handleTeamsCache.calledOnce)
         teamsController.handleTeamsCache.restore()
       })
@@ -202,7 +206,7 @@ describe('teams.controllers', function() {
         }
       }
       sinon.spy(utils, 'fetchData')
-      return driversController.fetchTeamAPI(ctx, 'card').then(res => {
+      return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
         assert(utils.fetchData.called)
         utils.fetchData.restore()
       })

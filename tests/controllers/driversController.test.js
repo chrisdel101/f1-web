@@ -163,7 +163,7 @@ describe('driversController', () => {
       })
     })
   })
-  describe.only('renderDriverTemplate()', () => {
+  describe('renderDriverTemplate()', () => {
     it('renderDriverTemplate gets fetchDriverAPI() data successfully', function() {
       const mockCtx = {
         query: {

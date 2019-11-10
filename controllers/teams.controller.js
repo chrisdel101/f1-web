@@ -1,6 +1,8 @@
-const utils = require('../utils')
+const main = require('./main.controller')
+console.log('d', main)
+// const driversController = require('./drivers.controller')
 const cache = require('../cache')
-const indexController = require('./index.controller')
+const utils = require('../utils')
 
 // gets driver data and caches it
 async function handleTeamsCache(cache, expiryTime, manualFetch = false) {
@@ -97,30 +99,40 @@ async function combineDriverDataOnTeam(teamDataObj) {
   }
 }
 async function fetchTeamAPI(ctx, render) {
-  // console.log('CTX', ctx)
-  // get query params from GET req
-  let teamSlug
-  if (render === 'page') {
-    teamSlug = ctx.query.team
-  } else if (render === 'card') {
-    teamSlug = ctx.params.team_slug
-  }
-  // pass form data from cache to template
-  const formData = await handleFormData()
-  // set data to vars
-  const allDriversObj = formData.drivers
-  const allteamsObj = formData.teams
-  // console.log(allDriversObj)
-  // console.log(allteamsObj)
-  // look up team by slug
-  const teamData = JSON.parse(await utils.fetchData(`teams/${teamSlug}`))
-  // console.log({ driverData, teamData, allDriversObj, allteamsObj })
-  return {
-    teamData,
-    allDriversObj,
-    allteamsObj
+  try {
+    console.log('CTX', driversController)
+    // get query params from GET req
+    let teamSlug
+    if (render === 'page') {
+      teamSlug = ctx.query.team
+    } else if (render === 'card') {
+      teamSlug = ctx.params.team_slug
+    }
+    // pass form data from cache to template
+    const driversObj = driversController.handleDriversCache(cache, 1440)
+    const teamsObj = module.exports.handleTeamsCache(cache, 1440)
+    // if slug exist - this is only on card
+    if (teamSlug) {
+      // query driver by slug
+      const teamData = JSON.parse(await utils.fetchData(`drivers/${teamSlug}`))
+      // look up drivers team by id
+      return {
+        teamData,
+        driversObj,
+        teamsObj
+      }
+      // else on template
+    } else {
+      return {
+        driversObj,
+        teamsObj
+      }
+    }
+  } catch (e) {
+    console.error('Error in fetchTeamAPI', e)
   }
 }
+
 // use driver api data to rendercard only
 async function renderTeamCard(ctx) {
   let { teamData, allDriversObj, allteamsObj } = await fetchTeamAPI(ctx, 'card')

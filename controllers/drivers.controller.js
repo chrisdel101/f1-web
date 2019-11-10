@@ -1,8 +1,8 @@
 const utils = require('../utils')
 const cache = require('../cache')
 const urls = require('../urls')
-const indexController = require('./index.controller')
-const teamsController = require('./teams.controller')
+const { indexController, teamsController } = require('./main.controller')
+// console.log(mainController)
 
 function compileTemplateResObj(
   ctx,
@@ -113,13 +113,10 @@ async function fetchDriverAPI(ctx, render) {
     } else if (render === 'card') {
       driverSlug = ctx.params.driver_slug
     }
-    // console.log('Q', driverSlug)
     // pass form data from cache to template
-    // const formData = await handleCacheData()
-    // set data to vars
     const driversObj = module.exports.handleDriversCache(cache, 1440)
     const teamsObj = teamsController.handleTeamsCache(cache, 1440)
-    // if slug exist - only on card
+    // if slug exist - this is only on card
     if (driverSlug) {
       // query driver by slug
       const driverData = JSON.parse(
@@ -136,6 +133,7 @@ async function fetchDriverAPI(ctx, render) {
         driversObj,
         teamsObj
       }
+      // else on template
     } else {
       return {
         driversObj,
