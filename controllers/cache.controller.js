@@ -14,8 +14,8 @@ exports.addDataToDriversObj = driversObj => {
 exports.addDataToTeamsObj = teamsObj => {
   try {
     teamsObj.teamText = 'Choose a Team'
-    teamsObj.selectName = 'driver'
-    teamsObj.teamAction = '/driver'
+    teamsObj.selectName = 'team'
+    teamsObj.teamAction = '/team'
     return teamsObj
   } catch (e) {
     console.error('An error in addDataToTeamsObj', e)

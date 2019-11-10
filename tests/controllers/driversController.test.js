@@ -81,7 +81,7 @@ describe('driversController', () => {
         })
     })
   })
-  describe.only('fetchDriverAPI()', () => {
+  describe('fetchDriverAPI()', () => {
     it('fetchDriverAPI returns non-empty team/driver objs - type = card ', function() {
       const ctx = {
         params: {
@@ -100,18 +100,6 @@ describe('driversController', () => {
         }
       }
       return driversController.fetchDriverAPI(ctx, 'page').then(res => {
-        assert(res.driversObj)
-        assert(res.teamsObj)
-      })
-    })
-    it('fetchDriverAPI returns non-empty team/driver objs - type = page ', function() {
-      const ctx = {
-        query: {
-          driver: 'some-driver'
-        }
-      }
-      return driversController.fetchDriverAPI(ctx, 'page').then(res => {
-        // console.log(res.driversObj)
         assert(res.driversObj)
         assert(res.teamsObj)
       })

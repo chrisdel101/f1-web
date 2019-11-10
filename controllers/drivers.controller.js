@@ -5,13 +5,13 @@ const cacheController = require('./cache.controller')
 // console.log(mainController)
 
 module.exports = {
-  compileTemplateResObj,
+  compileDriverTemplateResObj,
   fetchDriverAPI,
   renderDriverTemplate,
   renderDriverCard,
   renderAllDriversList
 }
-function compileTemplateResObj(
+function compileDriverTemplateResObj(
   ctx,
   driversObj,
   teamsObj,
@@ -81,10 +81,7 @@ async function fetchDriverAPI(ctx, render) {
       }
       // else on template
     } else {
-      return {
-        driversObj,
-        teamsObj
-      }
+      throw new ReferenceError('fetchDriverAPI must have driver_slug')
     }
     // console.log('dd', teamData)
   } catch (e) {
@@ -139,7 +136,7 @@ async function renderDriverTemplate(ctx) {
     driversObj,
     teamsObj
   } = await module.exports.fetchDriverAPI(ctx, 'page')
-  // console.log(driverData)
+  console.log(driverData)
   if (!driverData) {
     throw new ReferenceError('renderDriverTemplate.driverData() is undefined')
   } else if (!teamData) {
@@ -152,7 +149,7 @@ async function renderDriverTemplate(ctx) {
   // resolve inner promises given by fetchDriverAPI()
   return await Promise.resolve(driversObj).then(driversObj => {
     return Promise.resolve(teamsObj).then(teamsObj => {
-      const options = module.exports.compileTemplateResObj(
+      const options = module.exports.compileDriverTemplateResObj(
         ctx,
         driversObj,
         teamsObj,
