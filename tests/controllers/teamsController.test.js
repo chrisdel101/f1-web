@@ -61,37 +61,52 @@ describe('teams.controllers', function() {
       return teamsController
         .handleTeamsCache(cache.testCache, currentTimeStamp)
         .then(res => {
-          assert.notDeepEqual(res, cache.testCache.teams)
           assert(utils.fetchData.calledOnce)
           utils.fetchData.restore()
+          // reassign empty cache value
+          cache.testCache = utils.resetCache(null, cache.testCache)
+        })
+    })
+    it('handleTeamsCache is empty and adds to cache', function() {
+      const currentTimeStamp = new Date().getTime()
+      // no drivers key in cache
+      assert(!cache.testCache.hasOwnProperty('teams'))
+      return teamsController
+        .handleTeamsCache(cache.testCache, currentTimeStamp)
+        .then(res => {
+          // key added to cache
+          assert(cache.testCache.hasOwnProperty('teams'))
+          cache.testCache = utils.resetCache(null, cache.testCache)
         })
     })
     it('handleTeamsCache gets data from API - fails timestamp', function() {
       // add fake driver key
       const oldTimeStamp = new Date('Nov 04 2019').getTime()
       cache.testCache = {
-        drivers: {
-          driversArr: [
-            {
-              name: 'Some Name',
-              name_slug: 'some_name'
-            }
-          ],
+        teams: {
+          teamAction: '/team',
+          teamsArr: [],
+          formText: 'Choose a Team',
+          selectName: 'team',
           timestamp: oldTimeStamp
         }
       }
       sinon.spy(utils, 'fetchData')
       return teamsController.handleTeamsCache(cache.testCache, 30).then(res => {
-        assert.notDeepEqual(res, cache.testCache.teams)
         assert(utils.fetchData.calledOnce)
         utils.fetchData.restore()
+        cache.testCache = utils.resetCache(null, cache.testCache)
       })
     })
     it('handleTeamsCache gets data from cache - passes timestamp', function() {
       // add fake driver key
+      console.log('cache', cache.testCache)
       const oldTimeStamp = new Date().getTime()
       cache.testCache = {
         teams: {
+          teamAction: '/team',
+          formText: 'Choose a Team',
+          selectName: 'team',
           teamsArr: [
             {
               name: 'Some Name',
@@ -103,6 +118,7 @@ describe('teams.controllers', function() {
       }
       sinon.spy(utils, 'fetchData')
       return teamsController.handleTeamsCache(cache.testCache, 30).then(res => {
+        // should match exact cache value
         assert.deepEqual(res, cache.testCache.teams)
         assert(utils.fetchData.notCalled)
         utils.fetchData.restore()

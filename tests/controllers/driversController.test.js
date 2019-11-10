@@ -1,11 +1,12 @@
 const driversController = require('../../controllers/drivers.controller')
+const teamsController = require('../../controllers/teams.controller')
 const cache = require('../../cache')
 const utils = require('../../utils')
 const sinon = require('sinon')
 const assert = require('assert')
 
 describe('driversController', () => {
-  describe.only('handleDriversCache()', () => {
+  describe('handleDriversCache()', () => {
     it('handleDriversCache gets data from API - not in cache ', function() {
       sinon.spy(utils, 'fetchData')
       const currentTimeStamp = new Date().getTime()
@@ -77,6 +78,78 @@ describe('driversController', () => {
           assert(utils.fetchData.notCalled)
           utils.fetchData.restore()
         })
+    })
+  })
+  describe.only('fetchDriverAPI()', () => {
+    it.only('fetchDriverAPI returns non-empty team/driver objs - type = card ', function() {
+      const ctx = {
+        params: {
+          driver_slug: 'some-driver'
+        }
+      }
+      return driversController.fetchDriverAPI(ctx, 'card').then(res => {
+        console.log(res.driversObj)
+        assert(res.driversObj)
+        assert(res.teamsObj)
+      })
+    })
+    it('fetchDriverAPI returns non-empty team/driver objs - type = page ', function() {
+      const ctx = {
+        query: {
+          driver: 'some-driver'
+        }
+      }
+      return driversController.fetchDriverAPI(ctx, 'page').then(res => {
+        assert(res.driversObj)
+        assert(res.teamsObj)
+      })
+    })
+    // TODO
+    it.skip('fetchDriverAPI works with test endpoint', function() {
+      const ctx = {
+        query: {
+          driver: 'some-driver'
+        }
+      }
+      return driversController.fetchDriverAPI(ctx, 'page').then(res => {
+        console.log(res)
+      })
+    })
+    it('fetchDriverAPI calls handleDriversCache()', function() {
+      sinon.spy(driversController, 'handleDriversCache')
+      const ctx = {
+        params: {
+          driver_slug: 'some-driver'
+        }
+      }
+      return driversController.fetchDriverAPI(ctx, 'card').then(res => {
+        assert(driversController.handleDriversCache.calledOnce)
+        driversController.handleDriversCache.restore()
+      })
+    })
+    it('fetchDriverAPI calls handleTeamsCache() type = card', function() {
+      const ctx = {
+        params: {
+          driver_slug: 'some-driver'
+        }
+      }
+      sinon.spy(teamsController, 'handleTeamsCache')
+      return driversController.fetchDriverAPI(ctx, 'card').then(res => {
+        assert(teamsController.handleTeamsCache.calledOnce)
+        teamsController.handleTeamsCache.restore()
+      })
+    })
+    it('fetchDriverAPI calls fetchData() - type = card', function() {
+      const ctx = {
+        params: {
+          driver_slug: 'some-driver'
+        }
+      }
+      sinon.spy(utils, 'fetchData')
+      return driversController.fetchDriverAPI(ctx, 'card').then(res => {
+        assert(utils.fetchData.called)
+        utils.fetchData.restore()
+      })
     })
   })
 })

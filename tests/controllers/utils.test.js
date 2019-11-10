@@ -5,6 +5,14 @@ let cache = require('../../cache')
 const sinon = require('sinon')
 
 describe('utils tests', () => {
+  describe.skip('fetchData()', () => {
+    it('', function() {
+      return utils.fetchData('drivers').then(res => {
+        console.log(res)
+      })
+    })
+  })
+
   describe('verifyTimeStamp', function() {
     it('verifyTimeStamp returns false when timestamp is older than expiry param', function() {
       const randomTimeStamp = new Date('Nov 05 2019 21:49:28').getTime()

@@ -2,6 +2,7 @@ const utils = require('../utils')
 const cache = require('../cache')
 const urls = require('../urls')
 const indexController = require('./index.controller')
+const teamsController = require('./teams.controller')
 
 // gets driver data and caches it
 // takes a cache - acceess driversObj which has driversArr inside
@@ -16,7 +17,7 @@ async function handleDriversCache(cache, expiryTime, manualFetch = false) {
           driversArr: fetchedDriversArr,
           timestamp: new Date().getTime()
         }
-        return this.addDataToDriversObj(cache['drivers'])
+        return addDataToDriversObj(cache['drivers'])
         // if drivers exists but timestamp, older than 24 hours, fails - add it and new timestamp
       } else if (
         cache.hasOwnProperty('drivers') &&
@@ -28,7 +29,7 @@ async function handleDriversCache(cache, expiryTime, manualFetch = false) {
           driversArr: fetchedDriversArr,
           timeStamp: new Date().getTime()
         }
-        return this.addDataToDriversObj(cache['drivers'])
+        return addDataToDriversObj(cache['drivers'])
         // if drivers exists but timestamp pass - use cache
       } else if (
         cache.hasOwnProperty('drivers') &&
@@ -36,7 +37,7 @@ async function handleDriversCache(cache, expiryTime, manualFetch = false) {
       ) {
         // if less than 24 hours old - time stamp passes-  get from cache
         console.log('handleDriversCache() - FROM CACHE')
-        return this.addDataToDriversObj(cache['drivers'])
+        return addDataToDriversObj(cache['drivers'])
       }
     } else if (manualFetch) {
       console.log('manual fetch')
@@ -66,7 +67,7 @@ async function handleCacheData() {
   }
 }
 // fetchs the driver info from the api to use in render func
-async function fetchDriverAPI(ctx, render) {
+async function  (ctx, render) {
   try {
     // get query params from GET req
     let driverSlug
@@ -78,26 +79,34 @@ async function fetchDriverAPI(ctx, render) {
     }
     // console.log('Q', driverSlug)
     // pass form data from cache to template
-    const formData = await handleCacheData()
+    // const formData = await handleCacheData()
     // set data to vars
-    const driversObj = handleDriversCache(cache, 1440)
-    const teamsObj = formData.teams
-    // query driver by slug
-    const driverData = JSON.parse(
-      await utils.fetchData(`drivers/${driverSlug}`)
-    )
-    // look up drivers team by id
-    // console.log('dd', `teams/${driverData.team_id}`)
-    const teamData = JSON.parse(
-      await utils.fetchData(`teams/${driverData.team_id}`)
-    )
-    // console.log('dd', teamData)
-    return {
-      driverData,
-      teamData,
-      driversObj,
-      teamsObj
+    const driversObj = module.exports.handleDriversCache(cache, 1440)
+    const teamsObj = teamsController.handleTeamsCache(cache, 1440)
+    // if slug exist - only on card
+    if (driverSlug) {
+      // query driver by slug
+      const driverData = JSON.parse(
+        await utils.fetchData(`drivers/${driverSlug}`)
+      )
+      // look up drivers team by id
+      // console.log('dd', `teams/${driverData.team_id}`)
+      const teamData = JSON.parse(
+        await utils.fetchData(`teams/${driverData.team_id}`)
+      )
+      return {
+        driverData,
+        teamData,
+        driversObj,
+        teamsObj
+      }
+    } else {
+      return {
+        driversObj,
+        teamsObj
+      }
     }
+    // console.log('dd', teamData)
   } catch (e) {
     console.error('An error in driverController.fetchDriverAPI()', e)
   }
@@ -122,7 +131,7 @@ async function renderDriverCard(ctx) {
       ctx,
       'card'
     )
-
+    console.log(driversObj)
     const teamUrl = `/team?team=${driverData.team_name_slug}`
     // add link to team to driver
     driverData['teamUrl'] = teamUrl
@@ -143,7 +152,7 @@ async function renderDriverCard(ctx) {
 }
 // use driver api data to render full template
 async function renderDriverTemplate(ctx) {
-  const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
+  const { driverData, teamData, driversObj, teamsObj } = await  (
     ctx,
     'page'
   )
@@ -152,6 +161,27 @@ async function renderDriverTemplate(ctx) {
   driverData['teamUrl'] = teamUrl
   driverData['logo_url'] = teamData.logo_url
   // console.log('HELLI', teamsObj.teamsArr)
+  console.log({
+    urls: ctx.urls,
+    method: 'GET',
+    title: ctx.title,
+    driverAction: driversObj.driverAction,
+    teamAction: teamsObj.teamAction,
+    buttonField: 'Submit',
+    buttonType: 'submit',
+    buttonValue: 'submit',
+    driverSelectName: driversObj.selectName,
+    driverEnums: driversObj.driversArr,
+    teamSelectName: teamsObj.selectName,
+    teamEnums: teamsObj.teamsArr,
+    driverFormText: ctx.driverFormText,
+    teamFormText: ctx.teamFormText,
+    // +++ mixin data  +++
+    routeName: 'driver',
+    driverData: driverData,
+    teamData: teamData,
+    allData: { ...driverData, ...teamData }
+  })
   return await ctx.render('driverPage', {
     //  +++ index params +++
     urls: ctx.urls,
@@ -176,6 +206,7 @@ async function renderDriverTemplate(ctx) {
   })
 }
 module.exports = {
+    ,
   addDataToDriversObj,
   renderDriverTemplate,
   renderDriverCard,
