@@ -125,4 +125,183 @@ describe('teams.controllers', function() {
       })
     })
   })
+  describe.only('fetchTeamAPI()', () => {
+    it.only('fetchTeamAPI returns non-empty team/driver objs - type = card ', function() {
+      const ctx = {
+        params: {
+          driver_slug: 'some-team'
+        }
+      }
+      return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
+        assert(res.driversObj)
+        assert(res.teamsObj)
+      })
+    })
+    it('fetchTeamAPI returns non-empty team/driver objs - type = page ', function() {
+      const ctx = {
+        query: {
+          driver: 'some-driver'
+        }
+      }
+      return driversController.fetchTeamAPI(ctx, 'page').then(res => {
+        assert(res.driversObj)
+        assert(res.teamsObj)
+      })
+    })
+    it('fetchTeamAPI returns non-empty team/driver objs - type = page ', function() {
+      const ctx = {
+        query: {
+          driver: 'some-driver'
+        }
+      }
+      return driversController.fetchTeamAPI(ctx, 'page').then(res => {
+        // console.log(res.driversObj)
+        assert(res.driversObj)
+        assert(res.teamsObj)
+      })
+    })
+    // TODO
+    it.skip('fetchTeamAPI works with test endpoint', function() {
+      const ctx = {
+        query: {
+          driver: 'some-driver'
+        }
+      }
+      return driversController.fetchTeamAPI(ctx, 'page').then(res => {
+        console.log(res)
+      })
+    })
+    it('fetchTeamAPI calls handleDriversCache()', function() {
+      sinon.spy(driversController, 'handleDriversCache')
+      const ctx = {
+        params: {
+          driver_slug: 'some-driver'
+        }
+      }
+      return driversController.fetchTeamAPI(ctx, 'card').then(res => {
+        assert(driversController.handleDriversCache.calledOnce)
+        driversController.handleDriversCache.restore()
+      })
+    })
+    it('fetchTeamAPI calls handleTeamsCache() type = card', function() {
+      const ctx = {
+        params: {
+          driver_slug: 'some-driver'
+        }
+      }
+      sinon.spy(teamsController, 'handleTeamsCache')
+      return driversController.fetchTeamAPI(ctx, 'card').then(res => {
+        assert(teamsController.handleTeamsCache.calledOnce)
+        teamsController.handleTeamsCache.restore()
+      })
+    })
+    it('fetchTeamAPI calls fetchData() - type = card', function() {
+      const ctx = {
+        params: {
+          driver_slug: 'some-driver'
+        }
+      }
+      sinon.spy(utils, 'fetchData')
+      return driversController.fetchTeamAPI(ctx, 'card').then(res => {
+        assert(utils.fetchData.called)
+        utils.fetchData.restore()
+      })
+    })
+  })
+  describe('renderDriverTemplate()', () => {
+    it('renderDriverTemplate gets fetchTeamAPI() data successfully', function() {
+      const mockCtx = {
+        query: {
+          driver: 'lewis-hamilton'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+      sinon.spy(driversController, 'fetchTeamAPI')
+      return Promise.resolve(
+        driversController.renderDriverTemplate(mockCtx)
+      ).then(res => {
+        assert(driversController.fetchTeamAPI.calledOnce)
+        // resolve promise from inner function
+        return Promise.resolve(
+          driversController.fetchTeamAPI.returnValues[0]
+        ).then(res => {
+          assert(res.hasOwnProperty('driverData'))
+          assert(res.hasOwnProperty('teamData'))
+          assert(res.hasOwnProperty('teamsObj'))
+          assert(res.hasOwnProperty('driversObj'))
+          assert(
+            !utils.isObjEmpty(res.driverData) &&
+              !utils.isObjEmpty(res.teamData) &&
+              !utils.isObjEmpty(res.teamsObj) &&
+              !utils.isObjEmpty(res.driversObj)
+          )
+          driversController.fetchTeamAPI.restore()
+        })
+      })
+    })
+    it('renderDriverTemplate returns correct template response object', function() {
+      const mockCtx = {
+        query: {
+          driver: 'lewis-hamilton'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+      sinon.spy(driversController, 'compileTemplateResObj')
+      return driversController.renderDriverTemplate(mockCtx).then(res => {
+        // res obj that is sent with render
+        const resObjOutput =
+          driversController.compileTemplateResObj.returnValues[0]
+        return driversController.fetchTeamAPI(mockCtx, 'page').then(res => {
+          const { driverData, teamData, driversObj, teamsObj } = res
+          return Promise.resolve(driversObj).then(driversObj => {
+            return Promise.resolve(teamsObj).then(teamsObj => {
+              const template = driversController.compileTemplateResObj(
+                mockCtx,
+                driversObj,
+                teamsObj,
+                driverData,
+                teamData
+              )
+              // compare direct call to template comiler and value given inside here
+              // they should be equal if functions are all correct
+              assert.deepEqual(resObjOutput, template)
+            })
+          })
+        })
+      })
+    })
+  })
+  // TODO
+  it.skip('calls fake endpoint', function() {
+    // { request:
+    //   { method: 'GET',
+    //     url: '/driver?driver=alexander-albon',
+    //     header:
+    //      { host: 'localhost:3000',
+    //        'user-agent': 'curl/7.54.0',
+    //        accept: '*/*' } },
+    //  response:
+    //   { status: 404,
+    //     message: 'Not Found',
+    //     header: [Object: null prototype] {} },
+    //  app: { subdomainOffset: 2, proxy: false, env: 'development' },
+    //  originalUrl: '/driver?driver=alexander-albon',
+    //  req: '<original node req>',
+    //  res: '<original node res>',
+    //  socket: '<original node socket>' }
+    const ctx = {
+      query: {
+        driver: 'some-driver'
+      }
+    }
+    return driversController.renderDriverTemplate(ctx).then(res => {
+      console.log(res)
+    })
+  })
 })

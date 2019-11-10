@@ -205,16 +205,17 @@ async function renderDriverTemplate(ctx) {
   } else if (!teamsObj) {
     throw new ReferenceError('renderDriverTemplate.teamsObj() is undefined')
   } // console.log(driverData)
+  // resolve inner promises given by fetchDriverAPI()
   return await Promise.resolve(driversObj).then(driversObj => {
     return Promise.resolve(teamsObj).then(teamsObj => {
-      const resObj = module.exports.compileTemplateResObj(
+      const options = module.exports.compileTemplateResObj(
         ctx,
         driversObj,
         teamsObj,
         driverData,
         teamData
       )
-      return ctx.render('driverPage', resObj)
+      return ctx.render('driverPage', options)
     })
   })
 }
