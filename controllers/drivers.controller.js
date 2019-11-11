@@ -79,9 +79,12 @@ async function fetchDriverAPI(ctx, render) {
         driversObj,
         teamsObj
       }
-      // else on template
+      // else when getting allDrivers - no slug
     } else {
-      throw new ReferenceError('fetchDriverAPI must have driver_slug')
+      return {
+        driversObj,
+        teamsObj
+      }
     }
     // console.log('dd', teamData)
   } catch (e) {
@@ -94,8 +97,9 @@ async function fetchDriverAPI(ctx, render) {
 async function renderAllDriversList(ctx) {
   try {
     const { driversObj } = await fetchDriverAPI(ctx, null)
-    // console.log(driversObj)
-    return await ctx.render('allDrivers', driversObj)
+    return Promise.resolve(driversObj).then(async res => {
+      return await ctx.render('allDrivers', res)
+    })
   } catch (e) {
     console.error('Error in renderAllDriversList', e)
   }
