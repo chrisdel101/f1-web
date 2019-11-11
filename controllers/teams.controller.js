@@ -53,7 +53,6 @@ async function fetchTeamAPI(ctx, render) {
     // pass form data from cache to template
     const driversObj = await cacheController.handleDriversCache(cache, 1440)
     const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
-    console.log('TT', teamsObj)
     // if slug exist - this is only on card
     if (teamSlug) {
       // query driver by slug
@@ -126,7 +125,7 @@ async function renderTeamTemplate(ctx) {
     ctx,
     'page'
   )
-  // console.log(driverData)
+
   if (!teamData) {
     throw new ReferenceError('renderDriverTemplate.teamData() is undefined')
   } else if (!driversObj) {
@@ -138,42 +137,16 @@ async function renderTeamTemplate(ctx) {
   return await Promise.resolve(teamsObj).then(teamsObj => {
     // console.log('teams Obj', teamsObj)
     return Promise.resolve(driversObj).then(driversObj => {
-      const options = module.exports.compileTeamTemplateResObj(
-        ctx,
-        driversObj,
-        teamsObj,
-        teamData
-      )
-      return ctx.render('driverPage', options)
+      return Promise.resolve(
+        module.exports.compileTeamTemplateResObj(
+          ctx,
+          driversObj,
+          teamsObj,
+          teamData
+        )
+      ).then(options => {
+        return ctx.render('teamPage', options)
+      })
     })
   })
 }
-// // use team api data to render full template
-// async function renderTeamTemplate(ctx, next) {
-//   let { teamData, allDriversObj, allteamsObj } = await fetchTeamAPI(ctx, 'page')
-//   // get data from form
-//   let teamName = ctx.query.team
-//   // add driver data to team obj
-//   teamData = await combineDriverDataOnTeam(teamData)
-//   // console.log('Team Data', allteamsObj)
-//   await ctx.render('teamPage', {
-//     //  +++ index params +++
-//     urls: ctx.urls,
-//     title: ctx.title,
-//     driverEnums: allDriversObj.driversArr,
-//     driverAction: allDriversObj.driverAction,
-//     teamEnums: allteamsObj.teamsArr,
-//     method: 'GET',
-//     buttonField: 'Submit',
-//     buttonType: 'submit',
-//     buttonValue: 'submit',
-//     teamAction: allteamsObj.teamAction,
-//     teamSelectName: allteamsObj.selectName,
-//     driverSelectName: allDriversObj.selectName,
-//     driverFormText: ctx.driverFormText,
-//     teamFormText: ctx.teamFormText,
-//     // +++ mixin data  +++
-//     routeName: 'team',
-//     teamData: teamData
-//   })
-// }

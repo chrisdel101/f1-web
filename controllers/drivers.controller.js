@@ -94,7 +94,7 @@ async function fetchDriverAPI(ctx, render) {
 async function renderAllDriversList(ctx) {
   try {
     const { driversObj } = await fetchDriverAPI(ctx, null)
-    console.log(driversObj)
+    // console.log(driversObj)
     return await ctx.render('allDrivers', driversObj)
   } catch (e) {
     console.error('Error in renderAllDriversList', e)
@@ -136,7 +136,7 @@ async function renderDriverTemplate(ctx) {
     driversObj,
     teamsObj
   } = await module.exports.fetchDriverAPI(ctx, 'page')
-  console.log(driverData)
+  // console.log(driverData)
   if (!driverData) {
     throw new ReferenceError('renderDriverTemplate.driverData() is undefined')
   } else if (!teamData) {

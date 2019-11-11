@@ -1,4 +1,3 @@
-//- - console.log('ROute', routeName)
 block content
   if routeName == 'teamCard'
     //set hidenav to true
@@ -10,6 +9,7 @@ block content
 include mixins/_teamCardMixinLg
 include mixins/_teamCardMixinSm
   //- append the card content to page
+  - console.log('here')
 block append content
   //add class on card-only page
   if addClass === 'team-card-page'
