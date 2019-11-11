@@ -44,19 +44,18 @@ describe('teams.controllers', function() {
     })
   })
   describe('fetchTeamAPI()', () => {
-    it('fetchTeamAPI returns non-empty team/driver objs - type = card ', function() {
+    it('fetchTeamAPI response contains teamData prop', function() {
       const ctx = {
         params: {
-          driver_slug: 'some-team'
+          team_slug: 'some-team'
         }
       }
 
       return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
-        assert(res.driversObj)
-        assert(res.teamsObj)
+        assert(res.hasOwnProperty('teamData'))
       })
     })
-    it('fetchTeamAPI returns non-empty team/driver objs - type = page ', function() {
+    it('fetchTeamAPI teamData contains correct data ', function() {
       const ctx = {
         query: {
           driver: 'some-driver'
@@ -67,8 +66,23 @@ describe('teams.controllers', function() {
         assert(res.teamsObj)
       })
     })
-    // TODO
-    it.skip('fetchTeamAPI works with test endpoint', function() {
+    // fails for some reason sometimes
+    it('fetchTeamAPI calls fetchData() - type = card', function() {
+      const ctx = {
+        params: {
+          team_slug: 'some-driver'
+        }
+      }
+      sinon.spy(utils, 'fetchData')
+      return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
+        return Promise.resolve(utils.fetchData.returnValues[0]).then(res => {
+          assert(utils.fetchData.called)
+          utils.fetchData.restore()
+        })
+      })
+    })
+    // TODO needs to works with test endpoint
+    it.skip('fetchTeamAPI teamData contains correct data', function() {
       const ctx = {
         query: {
           driver: 'some-driver'
@@ -78,43 +92,21 @@ describe('teams.controllers', function() {
         console.log(res)
       })
     })
-    it('fetchTeamAPI calls handleDriversCache() - type = card', function() {
-      sinon.spy(cacheController, 'handleDriversCache')
-      const ctx = {
-        params: {
-          driver_slug: 'some-driver'
-        }
-      }
-      return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
-        assert(cacheController.handleDriversCache.calledOnce)
-        cacheController.handleDriversCache.restore()
+  })
+  describe('fetchTeamssAPI', () => {
+    it('fetchTeamsAPI returns teamsObj', function() {
+      return teamsController.fetchTeamsAPI().then(res => {
+        assert(res.hasOwnProperty('teamsObj'))
       })
     })
-    it('fetchTeamAPI calls handleTeamsCache() type = card', function() {
-      const ctx = {
-        params: {
-          driver_slug: 'some-driver'
-        }
-      }
-      sinon.spy(cacheController, 'handleTeamsCache')
-      return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
-        assert(cacheController.handleTeamsCache.calledOnce)
-        cacheController.handleTeamsCache.restore()
-      })
-    })
-    // fails for some reason sometimes
-    it.skip('fetchTeamAPI calls fetchData() - type = card', function() {
-      const ctx = {
-        params: {
-          driver_slug: 'some-driver'
-        }
-      }
-      sinon.spy(utils, 'fetchData')
-      return teamsController.fetchTeamAPI(ctx, 'card').then(res => {
-        return Promise.resolve(utils.fetchData.returnValues[0]).then(res => {
-          assert(utils.fetchData.called)
-          utils.fetchData.restore()
-        })
+    it('fetchTeamsAPI teamsObj has correct props', function() {
+      return teamsController.fetchTeamsAPI().then(res => {
+        assert(
+          res.teamsObj.hasOwnProperty('teamsArr') &&
+            res.teamsObj.hasOwnProperty('teamText') &&
+            res.teamsObj.hasOwnProperty('selectName')
+        )
+        assert(res.teamsObj.teamsArr.length)
       })
     })
   })

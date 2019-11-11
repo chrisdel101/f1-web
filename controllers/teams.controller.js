@@ -5,6 +5,7 @@ module.exports = {
   renderTeamTemplate,
   renderTeamCard,
   fetchTeamAPI,
+  fetchTeamsAPI,
   combineDriverDataOnTeam,
   compileTeamTemplateResObj
 }
@@ -18,8 +19,6 @@ async function combineDriverDataOnTeam(teamDataObj) {
       JSON.parse(await utils.fetchData(`drivers/${driver1Slug}`)),
       JSON.parse(await utils.fetchData(`drivers/${driver2Slug}`))
     ]
-    // console.log(driversDataArr)
-    // console.log(teamDataObj)
     driversDataArr.forEach(driver => {
       if (driver.name_slug == 1) {
       }
@@ -41,6 +40,7 @@ async function combineDriverDataOnTeam(teamDataObj) {
     return 'Error in combineDriverDataOnTeam', e
   }
 }
+// fetch single teams dataObj
 async function fetchTeamAPI(ctx, render) {
   try {
     // get query params from GET req
@@ -50,28 +50,27 @@ async function fetchTeamAPI(ctx, render) {
     } else if (render === 'card') {
       teamSlug = ctx.params.team_slug
     }
-    // pass form data from cache to template
-    const driversObj = await cacheController.handleDriversCache(cache, 1440)
-    const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
-    // if slug exist - this is only on card
-    if (teamSlug) {
-      // query driver by slug
-      const teamData = JSON.parse(await utils.fetchData(`teams/${teamSlug}`))
-      // look up drivers team by id
-      return {
-        teamData,
-        driversObj,
-        teamsObj
-      }
-      // else on template
-    } else {
-      return {
-        driversObj,
-        teamsObj
-      }
+    if (!teamSlug) {
+      throw new ReferenceError('fetchTeamAPI must have teamSlug')
+    }
+    // query team by slug
+    const teamData = JSON.parse(await utils.fetchData(`teams/${teamSlug}`))
+    return {
+      teamData
     }
   } catch (e) {
     console.error('Error in fetchTeamAPI', e)
+  }
+}
+// fetchs the driver info from the api to use in render func
+async function fetchTeamsAPI() {
+  try {
+    const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
+    return {
+      teamsObj
+    }
+  } catch (e) {
+    console.error('An error in driverController.fetchDriversAPI()', e)
   }
 }
 

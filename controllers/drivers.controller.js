@@ -20,6 +20,7 @@ function compileDriverTemplateResObj(
   teamData
 ) {
   // call team endpoint
+  // console.log(driversObj)
   const teamUrl = `/team?team=${driverData.team_name_slug}`
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
@@ -52,9 +53,6 @@ function compileDriverTemplateResObj(
 // fetchs the driver info from the api to use in render func
 async function fetchDriverAPI(ctx, render) {
   try {
-    if (!driverSlug) {
-      throw new ReferenceError('fetchDriverAPI must have driver_slug')
-    }
     // get query params from GET req
     let driverSlug
     // get the input params diff depending on type
@@ -62,6 +60,9 @@ async function fetchDriverAPI(ctx, render) {
       driverSlug = ctx.query.driver
     } else if (render === 'card') {
       driverSlug = ctx.params.driver_slug
+    }
+    if (!driverSlug) {
+      throw new ReferenceError('fetchDriverAPI must have driver_slug')
     }
     // query driver by slug
     const driverData = JSON.parse(
@@ -97,11 +98,8 @@ async function fetchDriversAPI() {
 async function renderAllDriversList(ctx) {
   try {
     // must have module.exports to work in tests
-    return Promise.resolve(await module.exports.fetchDriversAPI()).then(
-      async res => {
-        return await ctx.render('allDrivers', res)
-      }
-    )
+    const driversObj = await module.exports.fetchDriversAPI()
+    return ctx.render('allDrivers', driversObj)
   } catch (e) {
     console.error('Error in renderAllDriversList', e)
   }
@@ -136,12 +134,11 @@ async function renderDriverCard(ctx) {
 // use driver api data to render full template
 async function renderDriverTemplate(ctx) {
   // console.log(ctx)
-  const {
-    driverData,
-    teamData,
-    driversObj,
-    teamsObj
-  } = await module.exports.fetchDriverAPI(ctx, 'page')
+  const { driverData, teamData } = await module.exports.fetchDriverAPI(
+    ctx,
+    'page'
+  )
+  const { driversObj, teamsObj } = await module.exports.fetchDriversAPI()
   // console.log(driverData)
   if (!driverData) {
     throw new ReferenceError('renderDriverTemplate.driverData() is undefined')
@@ -153,16 +150,30 @@ async function renderDriverTemplate(ctx) {
     throw new ReferenceError('renderDriverTemplate.teamsObj() is undefined')
   } // console.log(driverData)
   // resolve inner promises given by fetchDriverAPI()
-  return await Promise.resolve(driversObj).then(driversObj => {
-    return Promise.resolve(teamsObj).then(teamsObj => {
-      const options = module.exports.compileDriverTemplateResObj(
-        ctx,
-        driversObj,
-        teamsObj,
-        driverData,
-        teamData
-      )
-      return ctx.render('driverPage', options)
-    })
-  })
+  // return await Promise.resolve(driversObj).then(driversObj => {
+  //   return Promise.resolve(teamsObj).then(teamsObj => {
+  //     const options = module.exports.compileDriverTemplateResObj(
+  //       ctx,
+  //       driversObj,
+  //       teamsObj,
+  //       driverData,
+  //       teamData
+  //     )
+  // driversObj = await Promise.resolve(driversObj)
+  // console.log(driversObj)
+  // return
+  // teamsObj = await Promise.resolve(teamsObj)
+  // console.log(teamsObj)
+  // console.log(driversObj)
+  // console.log(teamsObj)
+  const options = module.exports.compileDriverTemplateResObj(
+    ctx,
+    driversObj,
+    teamsObj,
+    driverData,
+    teamData
+  )
+  return await ctx.render('driverPage', options)
+  // })
+  // })
 }

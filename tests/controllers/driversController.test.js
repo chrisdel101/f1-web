@@ -5,7 +5,7 @@ const utils = require('../../utils')
 const sinon = require('sinon')
 const assert = require('assert')
 
-describe.only('driversController', () => {
+describe('driversController', () => {
   describe('renderAllDriversList()', () => {
     it('renderAllDriversList calls fetchDriver API', function() {
       const mockCtx = {
@@ -21,16 +21,14 @@ describe.only('driversController', () => {
       return Promise.resolve(
         driversController.renderAllDriversList(mockCtx)
       ).then(res => {
-        return Promise.resolve(
-          driversController.fetchDriversAPI.returnValues[0]
-        ).then(res => {
-          return Promise.resolve(res).then(res => {
-            // intercepted API call has corret props
-            assert(res.hasOwnProperty('driverText'))
-            assert(res.hasOwnProperty('selectName'))
-            assert(Array.isArray(res.driversArr))
-            driversController.fetchDriversAPI.restore()
-          })
+        return driversController.fetchDriversAPI.returnValues[0].then(res => {
+          // intercepted API call has correct props
+          assert(res.hasOwnProperty('driversObj'))
+          assert(res.hasOwnProperty('teamsObj'))
+          // intercepted API call has correct props is not blank
+          assert(res.driversObj.driversArr.length)
+          assert(res.teamsObj.teamsArr.length)
+          driversController.fetchDriversAPI.restore()
         })
       })
     })
@@ -125,7 +123,7 @@ describe.only('driversController', () => {
     //   })
     // })
   })
-  describe.only('fetchDriversAPI', () => {
+  describe('fetchDriversAPI', () => {
     it('fetchDriversAPI returns driversObj and teamsObjZ', function() {
       return driversController.fetchDriversAPI().then(res => {
         assert(res.hasOwnProperty('driversObj'))
@@ -174,17 +172,43 @@ describe.only('driversController', () => {
         return Promise.resolve(
           driversController.fetchDriverAPI.returnValues[0]
         ).then(res => {
+          // console.log(res)
           assert(res.hasOwnProperty('driverData'))
           assert(res.hasOwnProperty('teamData'))
-          assert(res.hasOwnProperty('teamsObj'))
-          assert(res.hasOwnProperty('driversObj'))
+
           assert(
-            !utils.isObjEmpty(res.driverData) &&
-              !utils.isObjEmpty(res.teamData) &&
-              !utils.isObjEmpty(res.teamsObj) &&
-              !utils.isObjEmpty(res.driversObj)
+            !utils.isObjEmpty(res.driverData) && !utils.isObjEmpty(res.teamData)
           )
           driversController.fetchDriverAPI.restore()
+        })
+      })
+    })
+    it('renderDriverTemplate gets fetchDriversAPI() data successfully', function() {
+      const mockCtx = {
+        query: {
+          driver: 'lewis-hamilton'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+      sinon.spy(driversController, 'fetchDriversAPI')
+      return Promise.resolve(
+        driversController.renderDriverTemplate(mockCtx)
+      ).then(res => {
+        assert(driversController.fetchDriversAPI.calledOnce)
+        // resolve promise from inner function
+        return Promise.resolve(
+          driversController.fetchDriversAPI.returnValues[0]
+        ).then(res => {
+          assert(res.hasOwnProperty('driversObj'))
+          assert(res.hasOwnProperty('teamsObj'))
+
+          assert(
+            !utils.isObjEmpty(res.driversObj) && !utils.isObjEmpty(res.teamsObj)
+          )
+          driversController.fetchDriversAPI.restore()
         })
       })
     })

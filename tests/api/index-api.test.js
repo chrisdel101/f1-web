@@ -1,6 +1,6 @@
 const api = require('../../API/index')
 
-describe('API tests', () => {
+describe.skip('API tests', () => {
   it('sendImage takes mobile driver image', function() {
     const mockCtx = {
       path: 'https://f1-cards.herokuapp.com/api/mobile/driver/max-verstappen',
