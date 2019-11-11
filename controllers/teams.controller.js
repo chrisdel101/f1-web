@@ -66,8 +66,11 @@ async function fetchTeamAPI(ctx, render) {
 async function fetchTeamsAPI() {
   try {
     const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
+    const driversObj = await cacheController.handleDriversCache(cache, 1440)
+
     return {
-      teamsObj
+      teamsObj,
+      driversObj
     }
   } catch (e) {
     console.error('An error in driverController.fetchDriversAPI()', e)
@@ -120,10 +123,8 @@ async function compileTeamTemplateResObj(ctx, driversObj, teamsObj, teamData) {
 }
 async function renderTeamTemplate(ctx) {
   // console.log(ctx)
-  const { teamData, driversObj, teamsObj } = await module.exports.fetchTeamAPI(
-    ctx,
-    'page'
-  )
+  const { teamData } = await module.exports.fetchTeamAPI(ctx, 'page')
+  const { driversObj, teamsObj } = await module.exports.fetchTeamsAPI()
 
   if (!teamData) {
     throw new ReferenceError('renderDriverTemplate.teamData() is undefined')
@@ -133,19 +134,19 @@ async function renderTeamTemplate(ctx) {
     throw new ReferenceError('renderDriverTemplate.teamsObj() is undefined')
   }
   // resolve inner promises given by fetchDriverAPI()
-  return await Promise.resolve(teamsObj).then(teamsObj => {
-    // console.log('teams Obj', teamsObj)
-    return Promise.resolve(driversObj).then(driversObj => {
-      return Promise.resolve(
-        module.exports.compileTeamTemplateResObj(
-          ctx,
-          driversObj,
-          teamsObj,
-          teamData
-        )
-      ).then(options => {
-        return ctx.render('teamPage', options)
-      })
-    })
-  })
+  // return await Promise.resolve(teamsObj).then(teamsObj => {
+  //   // console.log('teams Obj', teamsObj)
+  //   return Promise.resolve(driversObj).then(driversObj => {
+  //     return Promise.resolve(
+  const options = module.exports.compileTeamTemplateResObj(
+    ctx,
+    driversObj,
+    teamsObj,
+    teamData
+  )
+  // ).then(options => {
+  return await ctx.render('teamPage', options)
+  //     })
+  //   })
+  // })
 }

@@ -93,7 +93,7 @@ describe('teams.controllers', function() {
       })
     })
   })
-  describe('fetchTeamssAPI', () => {
+  describe('fetchTeamsAPI', () => {
     it('fetchTeamsAPI returns teamsObj', function() {
       return teamsController.fetchTeamsAPI().then(res => {
         assert(res.hasOwnProperty('teamsObj'))
@@ -129,17 +129,50 @@ describe('teams.controllers', function() {
           return Promise.resolve(
             teamsController.fetchTeamAPI.returnValues[0]
           ).then(res => {
+            console.log(res)
             // checks for all keys
             assert(res.hasOwnProperty('teamData'))
+            // assert(res.hasOwnProperty('teamsObj'))
+            // assert(res.hasOwnProperty('driversObj'))
+            // make sure no empty objs
+            assert(
+              !utils.isObjEmpty(res.teamData)
+              // !utils.isObjEmpty(res.teamsObj) &&
+              // !utils.isObjEmpty(res.driversObj)
+            )
+            teamsController.fetchTeamAPI.restore()
+          })
+        }
+      )
+    })
+    it('renderTeamTemplate gets fetchTeamsAPI() data successfully', function() {
+      const mockCtx = {
+        query: {
+          team: 'red_bull_racing'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+      sinon.spy(teamsController, 'fetchTeamsAPI')
+      return Promise.resolve(teamsController.renderTeamTemplate(mockCtx)).then(
+        res => {
+          assert(teamsController.fetchTeamsAPI.calledOnce)
+          // resolve promise from inner function
+          return Promise.resolve(
+            teamsController.fetchTeamsAPI.returnValues[0]
+          ).then(res => {
+            console.log(res)
+            // checks for all keys
             assert(res.hasOwnProperty('teamsObj'))
             assert(res.hasOwnProperty('driversObj'))
             // make sure no empty objs
             assert(
-              !utils.isObjEmpty(res.teamData) &&
-                !utils.isObjEmpty(res.teamsObj) &&
+              !utils.isObjEmpty(res.teamsObj) &&
                 !utils.isObjEmpty(res.driversObj)
             )
-            teamsController.fetchTeamAPI.restore()
+            teamsController.fetchTeamsAPI.restore()
           })
         }
       )
