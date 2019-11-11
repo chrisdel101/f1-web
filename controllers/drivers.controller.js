@@ -7,6 +7,7 @@ const cacheController = require('./cache.controller')
 module.exports = {
   compileDriverTemplateResObj,
   fetchDriverAPI,
+  fetchDriversAPI,
   renderDriverTemplate,
   renderDriverCard,
   renderAllDriversList
@@ -60,8 +61,8 @@ async function fetchDriverAPI(ctx, render) {
       driverSlug = ctx.params.driver_slug
     }
     // pass form data from cache to template
-    const driversObj = cacheController.handleDriversCache(cache, 1440)
-    const teamsObj = cacheController.handleTeamsCache(cache, 1440)
+    const driversObj = await cacheController.handleDriversCache(cache, 1440)
+    const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
     // if slug exist - this is only on card
     if (driverSlug) {
       // query driver by slug
@@ -91,15 +92,26 @@ async function fetchDriverAPI(ctx, render) {
     console.error('An error in driverController.fetchDriverAPI()', e)
   }
 }
-// async function openMobileCard(ctx) {
-//   return renderDriverCard(ctx)
-// }
+// fetchs the driver info from the api to use in render func
+async function fetchDriversAPI() {
+  try {
+    // pass form data from cache to template
+    return await cacheController
+      .handleDriversCache(cache, 1440)
+      .then(res => res)
+  } catch (e) {
+    console.error('An error in driverController.fetchDriversAPI()', e)
+  }
+}
+
 async function renderAllDriversList(ctx) {
   try {
-    const { driversObj } = await fetchDriverAPI(ctx, null)
-    return Promise.resolve(driversObj).then(async res => {
-      return await ctx.render('allDrivers', res)
-    })
+    // must have module.exports to work in tests
+    return Promise.resolve(await module.exports.fetchDriversAPI()).then(
+      async res => {
+        return await ctx.render('allDrivers', res)
+      }
+    )
   } catch (e) {
     console.error('Error in renderAllDriversList', e)
   }

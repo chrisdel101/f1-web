@@ -6,7 +6,54 @@ const utils = require('../../utils')
 const sinon = require('sinon')
 const assert = require('assert')
 
-describe('driversController', () => {
+describe.only('driversController', () => {
+  describe('renderAllDriversList()', () => {
+    it('renderAllDriversList calls fetchDriver API', function() {
+      const mockCtx = {
+        query: {
+          driver: 'lewis-hamilton'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+      sinon.spy(driversController, 'fetchDriversAPI')
+      return Promise.resolve(
+        driversController.renderAllDriversList(mockCtx)
+      ).then(res => {
+        return Promise.resolve(
+          driversController.fetchDriversAPI.returnValues[0]
+        ).then(res => {
+          return Promise.resolve(res).then(res => {
+            // intercepted API call has corret props
+            assert(res.hasOwnProperty('driverText'))
+            assert(res.hasOwnProperty('selectName'))
+            assert(Array.isArray(res.driversArr))
+            driversController.fetchDriversAPI.restore()
+          })
+        })
+      })
+    })
+    it('renderAllDriversList calls render', function() {
+      const mockCtx = {
+        query: {
+          driver: 'lewis-hamilton'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+      sinon.spy(mockCtx, 'render')
+      return Promise.resolve(
+        driversController.renderAllDriversList(mockCtx)
+      ).then(res => {
+        assert(mockCtx.render.calledOnce)
+        mockCtx.render.restore()
+      })
+    })
+  })
   describe('fetchDriverAPI()', () => {
     it('fetchDriverAPI returns non-empty team/driver objs - type = card ', function() {
       const ctx = {
@@ -78,6 +125,16 @@ describe('driversController', () => {
       })
     })
   })
+  describe('fetchDriversAPI', () => {
+    it('fetchDriversAPI returns driversObj', function() {
+      return driversController.fetchDriversAPI().then(res => {
+        assert(res.hasOwnProperty('driverText'))
+        assert(res.hasOwnProperty('selectName'))
+        assert(Array.isArray(res.driversArr))
+      })
+    })
+  })
+
   describe('renderDriverTemplate()', () => {
     it('renderDriverTemplate gets fetchDriverAPI() data successfully', function() {
       const mockCtx = {
