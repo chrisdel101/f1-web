@@ -1,5 +1,4 @@
 const driversController = require('../../controllers/drivers.controller')
-const teamsController = require('../../controllers/teams.controller')
 const cacheController = require('../../controllers/cache.controller')
 const cache = require('../../cache')
 const utils = require('../../utils')
@@ -62,11 +61,12 @@ describe.only('driversController', () => {
         }
       }
       return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-        assert(res.driversObj)
-        assert(res.teamsObj)
+        assert(res.hasOwnProperty('driverData'))
+        assert(res.hasOwnProperty('teamData'))
       })
     })
-    it('fetchDriverAPI returns non-empty team/driver objs - type = page ', function() {
+    // need to create endpoint for this to work
+    it.skip('fetchDriverAPI returns non-empty team/driver objs - type = page ', function() {
       const ctx = {
         query: {
           driver: 'some-driver'
@@ -88,49 +88,68 @@ describe.only('driversController', () => {
         console.log(res)
       })
     })
-    it('fetchDriverAPI calls handleDriversCache()', function() {
-      sinon.spy(cacheController, 'handleDriversCache')
-      const ctx = {
-        params: {
-          driver_slug: 'some-driver'
-        }
-      }
-      return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-        assert(cacheController.handleDriversCache.calledOnce)
-        cacheController.handleDriversCache.restore()
-      })
-    })
-    it('fetchDriverAPI calls handleTeamsCache() type = card', function() {
-      const ctx = {
-        params: {
-          driver_slug: 'some-driver'
-        }
-      }
-      sinon.spy(cacheController, 'handleTeamsCache')
-      return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-        assert(cacheController.handleTeamsCache.calledOnce)
-        cacheController.handleTeamsCache.restore()
-      })
-    })
-    it('fetchDriverAPI calls fetchData() - type = card', function() {
-      const ctx = {
-        params: {
-          driver_slug: 'some-driver'
-        }
-      }
-      sinon.spy(utils, 'fetchData')
-      return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-        assert(utils.fetchData.called)
-        utils.fetchData.restore()
-      })
-    })
+    // it('fetchDriverAPI calls handleDriversCache()', function() {
+    //   sinon.spy(cacheController, 'handleDriversCache')
+    //   const ctx = {
+    //     params: {
+    //       driver_slug: 'some-driver'
+    //     }
+    //   }
+    //   return driversController.fetchDriverAPI(ctx, 'card').then(res => {
+    //     assert(cacheController.handleDriversCache.calledOnce)
+    //     cacheController.handleDriversCache.restore()
+    //   })
+    // })
+    // it('fetchDriverAPI calls handleTeamsCache() type = card', function() {
+    //   const ctx = {
+    //     params: {
+    //       driver_slug: 'some-driver'
+    //     }
+    //   }
+    //   sinon.spy(cacheController, 'handleTeamsCache')
+    //   return driversController.fetchDriverAPI(ctx, 'card').then(res => {
+    //     assert(cacheController.handleTeamsCache.calledOnce)
+    //     cacheController.handleTeamsCache.restore()
+    //   })
+    // })
+    // it('fetchDriverAPI calls fetchData() - type = card', function() {
+    //   const ctx = {
+    //     params: {
+    //       driver_slug: 'some-driver'
+    //     }
+    //   }
+    //   sinon.spy(utils, 'fetchData')
+    //   return driversController.fetchDriverAPI(ctx, 'card').then(res => {
+    //     assert(utils.fetchData.called)
+    //     utils.fetchData.restore()
+    //   })
+    // })
   })
-  describe('fetchDriversAPI', () => {
-    it('fetchDriversAPI returns driversObj', function() {
+  describe.only('fetchDriversAPI', () => {
+    it('fetchDriversAPI returns driversObj and teamsObjZ', function() {
       return driversController.fetchDriversAPI().then(res => {
-        assert(res.hasOwnProperty('driverText'))
-        assert(res.hasOwnProperty('selectName'))
-        assert(Array.isArray(res.driversArr))
+        assert(res.hasOwnProperty('driversObj'))
+        assert(res.hasOwnProperty('teamsObj'))
+      })
+    })
+    it('fetchDriversAPI driversObj has correct props', function() {
+      return driversController.fetchDriversAPI().then(res => {
+        assert(
+          res.driversObj.hasOwnProperty('driversArr') &&
+            res.driversObj.hasOwnProperty('driverText') &&
+            res.driversObj.hasOwnProperty('selectName')
+        )
+        assert(res.driversObj.driversArr.length)
+      })
+    })
+    it('fetchDriversAPI teamsObj has correct props', function() {
+      return driversController.fetchDriversAPI().then(res => {
+        assert(
+          res.teamsObj.hasOwnProperty('teamsArr') &&
+            res.teamsObj.hasOwnProperty('teamText') &&
+            res.teamsObj.hasOwnProperty('selectName')
+        )
+        assert(res.teamsObj.teamsArr.length)
       })
     })
   })

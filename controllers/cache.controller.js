@@ -22,11 +22,11 @@ exports.addDataToTeamsObj = teamsObj => {
   }
 }
 
-// / gets driver data and caches it
+// gets teams data obj and caches it
 exports.handleTeamsCache = async (cache, expiryTime, manualFetch = false) => {
   try {
     if (!manualFetch) {
-      // if drivers not in cache - add it
+      // if teams not in cache - add it
       if (!cache.hasOwnProperty('teams')) {
         const teamsArr = JSON.parse(await utils.fetchData('teams'))
         console.log('handleTeamsCache() - NOT FROM CACHE')
@@ -35,13 +35,13 @@ exports.handleTeamsCache = async (cache, expiryTime, manualFetch = false) => {
           timestamp: new Date().getTime()
         }
         return this.addDataToTeamsObj(cache['teams'])
-        // if drivers exists but timestamp, older than 24 hours, fails - add it
+        // if team exists but timestamp, older than 24 hours, fails - add it
       } else if (
         cache.hasOwnProperty('teams') &&
         !utils.verifyTimeStamp(cache['teams'].timestamp, expiryTime)
       ) {
         const teamsArr = JSON.parse(await utils.fetchData('teams'))
-        console.log('handleDriversCache() - NOT FROM CACHE')
+        console.log('handleTeamsCache() - NOT FROM CACHE')
         cache['teams'] = {
           teamsArr: teamsArr,
           timeStamp: new Date().getTime()
@@ -60,11 +60,11 @@ exports.handleTeamsCache = async (cache, expiryTime, manualFetch = false) => {
       console.log('manual fetch')
     }
   } catch (e) {
-    console.log('A error in handleTeamsCache', e)
+    console.error('A error in handleTeamsCache', e)
   }
 }
 
-// gets driver data and caches it
+// gets drivers data obj and caches it
 // takes a cache - acceess driversObj which has driversArr inside
 exports.handleDriversCache = async (cache, expiryTime, manualFetch = false) => {
   try {
@@ -103,6 +103,8 @@ exports.handleDriversCache = async (cache, expiryTime, manualFetch = false) => {
       console.log('manual fetch')
     }
   } catch (e) {
-    console.log('A error in handleDriversCache', e)
+    console.error('A error in handleDriversCache', e)
   }
 }
+
+exports.handleDriverCache = () => {}

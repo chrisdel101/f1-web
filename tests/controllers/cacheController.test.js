@@ -1,5 +1,6 @@
 const {
   handleDriversCache,
+  handleDriverCache,
   handleTeamsCache
 } = require('../../controllers/cache.controller')
 var assert = require('assert')
@@ -141,5 +142,8 @@ describe('cacheController()', () => {
         utils.fetchData.restore()
       })
     })
+  })
+  describe('handleDriverCache()', () => {
+    it('', function() {})
   })
 })

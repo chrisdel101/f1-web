@@ -52,6 +52,9 @@ function compileDriverTemplateResObj(
 // fetchs the driver info from the api to use in render func
 async function fetchDriverAPI(ctx, render) {
   try {
+    if (!driverSlug) {
+      throw new ReferenceError('fetchDriverAPI must have driver_slug')
+    }
     // get query params from GET req
     let driverSlug
     // get the input params diff depending on type
@@ -60,34 +63,19 @@ async function fetchDriverAPI(ctx, render) {
     } else if (render === 'card') {
       driverSlug = ctx.params.driver_slug
     }
-    // pass form data from cache to template
-    const driversObj = await cacheController.handleDriversCache(cache, 1440)
-    const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
-    // if slug exist - this is only on card
-    if (driverSlug) {
-      // query driver by slug
-      const driverData = JSON.parse(
-        await utils.fetchData(`drivers/${driverSlug}`)
-      )
-      // look up drivers team by id
-      // console.log('dd', `teams/${driverData.team_id}`)
-      const teamData = JSON.parse(
-        await utils.fetchData(`teams/${driverData.team_id}`)
-      )
-      return {
-        driverData,
-        teamData,
-        driversObj,
-        teamsObj
-      }
-      // else when getting allDrivers - no slug
-    } else {
-      return {
-        driversObj,
-        teamsObj
-      }
+    // query driver by slug
+    const driverData = JSON.parse(
+      await utils.fetchData(`drivers/${driverSlug}`)
+    )
+    // look up drivers team by id
+    // console.log('dd', `teams/${driverData.team_id}`)
+    const teamData = JSON.parse(
+      await utils.fetchData(`teams/${driverData.team_id}`)
+    )
+    return {
+      driverData,
+      teamData
     }
-    // console.log('dd', teamData)
   } catch (e) {
     console.error('An error in driverController.fetchDriverAPI()', e)
   }
@@ -95,10 +83,12 @@ async function fetchDriverAPI(ctx, render) {
 // fetchs the driver info from the api to use in render func
 async function fetchDriversAPI() {
   try {
-    // pass form data from cache to template
-    return await cacheController
-      .handleDriversCache(cache, 1440)
-      .then(res => res)
+    const driversObj = await cacheController.handleDriversCache(cache, 1440)
+    const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
+    return {
+      driversObj,
+      teamsObj
+    }
   } catch (e) {
     console.error('An error in driverController.fetchDriversAPI()', e)
   }
