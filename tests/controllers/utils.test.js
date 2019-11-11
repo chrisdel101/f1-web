@@ -1,18 +1,13 @@
 const assert = require('assert')
 const utils = require('../../utils')
-const indexController = require('../../controllers/index.controller')
+const {
+  handleDriversCache,
+  handleTeamsCache
+} = require('../../controllers/cache.controller')
 let cache = require('../../cache')
 const sinon = require('sinon')
 
-describe('utils tests', () => {
-  describe.skip('fetchData()', () => {
-    it('', function() {
-      return utils.fetchData('drivers').then(res => {
-        console.log(res)
-      })
-    })
-  })
-
+describe('utils()', () => {
   describe('verifyTimeStamp', function() {
     it('verifyTimeStamp returns false when timestamp is older than expiry param', function() {
       const randomTimeStamp = new Date('Nov 05 2019 21:49:28').getTime()
@@ -25,60 +20,6 @@ describe('utils tests', () => {
       // 24 hours in mins
       const res = utils.verifyTimeStamp(randomTimeStamp, 1440)
       assert(res)
-    })
-  })
-  describe('getSelectedData()', () => {
-    it('returns drivers data from cache', async function() {
-      const fakeCache = {
-        drivers: [
-          { name: 'Test Driver1', name_slug: 'test-driver1' },
-          { name: 'Test Driver2', name_slug: 'test-driver2' }
-        ]
-      }
-      sinon.spy(utils, 'fetchData')
-      const result = await utils.getData(fakeCache, 'drivers')
-      //   check not called from DB
-      assert(utils.fetchData.notCalled)
-      assert.deepEqual(result, fakeCache.drivers)
-      utils.fetchData.restore()
-    })
-    it('returns drivers team from cache', async function() {
-      const fakeCache = {
-        teams: [
-          { name: 'Test Team1', name_slug: 'test-team1' },
-          { name: 'Test Team2', name_slug: 'test-team2' }
-        ]
-      }
-      sinon.spy(utils, 'fetchData')
-      const result = await utils.getData(fakeCache, 'teams')
-      //   check not called from DB
-      assert(utils.fetchData.notCalled)
-      assert.deepEqual(result, fakeCache.teams)
-      utils.fetchData.restore()
-    })
-    it('attempt fetch drivers from DB - incorrect cache key returns error', async function() {
-      const fakeCache = {
-        teams: [
-          { name: 'Test Team1', name_slug: 'test-team1' },
-          { name: 'Test Team2', name_slug: 'test-team2' }
-        ]
-      }
-      sinon.spy(utils, 'fetchData')
-      const result = await utils.getData(fakeCache, 'blarg')
-      //   check not called from DB
-      assert.throws(() => {
-        throw new SyntaxError()
-      })
-      utils.fetchData.restore()
-    })
-    it('attempt fetch drivers from DB - incorrect cache key returns error', async function() {
-      const fakeCache = {}
-      sinon.spy(utils, 'fetchData')
-      //   get from DB
-      const result = await utils.getData(fakeCache, 'teams')
-      //   check is called from DB
-      assert(utils.fetchData.calledOnce)
-      utils.fetchData.restore()
     })
   })
   describe('isObjEmpty()', () => {
@@ -102,23 +43,8 @@ describe('utils tests', () => {
       cache = {}
       assert(utils.isObjEmpty(cache))
     })
-    it('handleDriversCache - checks that cache is not empty after call', async function() {
-      let drivers = await indexController.handleDriversCache()
-      let viewCache = utils.viewCache({})
-      assert(!utils.isObjEmpty(viewCache))
-    })
-    it('handleDriversCache - checks that has drivers key', async function() {
-      let drivers = await indexController.handleDriversCache()
-      let viewCache = utils.viewCache({})
-      assert(viewCache.hasOwnProperty('drivers'))
-    })
-    it('handleTeams - checks that has teams key', async function() {
-      let drivers = await indexController.handleTeams()
-      let viewCache = utils.viewCache({})
-      assert(viewCache.hasOwnProperty('teams'))
-    })
   })
-  describe('resetCache()', () => {
+  describe.skip('resetCache()', () => {
     beforeEach(function() {
       // check cache is empty
       cache = {}

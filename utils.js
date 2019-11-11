@@ -69,32 +69,9 @@ module.exports = {
   capitalize: word => {
     return word && word[0].toUpperCase() + word.slice(1)
   },
-  // takes the cache to store
-  // take a route i.e. /drivers to get from
-  // returns the data from the cache
-  getData: async (cache, route) => {
-    // JUST fetchs data - does not handle caching
-    try {
-      let dataObj
-      // route matches key in cache - if exists
-      // return from cache
-      // console.log(route)
-      if (cache && (cache[route] && cache[route].length)) {
-        // ADD TIMESTAMP next
-        console.log(`get ${route} from cache`)
-        // }
-        dataObj = cache[route]
-        // else get data from DB
-      } else {
-        dataObj = JSON.parse(await module.exports.fetchData(route))
-      }
-      return dataObj
-    } catch (e) {
-      console.error('Error in getSelectedData', e)
-    }
-  },
   viewCache: (ctx, type) => {
     try {
+      // take type from params is possible
       if (ctx && (ctx.params && ctx.params.type)) {
         type = ctx.params.type
       }

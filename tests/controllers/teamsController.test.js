@@ -43,89 +43,6 @@ describe('teams.controllers', function() {
       assert(res.drivers_scraped[0].hasOwnProperty('api_call'))
     })
   })
-  describe('fetchTeamAPI()', function() {
-    it('call team API with card render', function() {
-      const fakeCtx = {
-        params: {
-          team_slug: 'mercedes'
-        }
-      }
-      return teamsController.fetchTeamAPI(fakeCtx, 'card').then(res => {
-        console.log(res)
-      })
-    })
-  })
-  describe('handleTeamsCache()', () => {
-    it('handleTeamsCache gets data from API - not in cache ', function() {
-      sinon.spy(utils, 'fetchData')
-      const currentTimeStamp = new Date().getTime()
-      return teamsController
-        .handleTeamsCache(cache.testCache, currentTimeStamp)
-        .then(res => {
-          assert(utils.fetchData.calledOnce)
-          utils.fetchData.restore()
-          // reassign empty cache value
-          cache.testCache = utils.resetCache(null, cache.testCache)
-        })
-    })
-    it('handleTeamsCache is empty and adds to cache', function() {
-      const currentTimeStamp = new Date().getTime()
-      // no drivers key in cache
-      assert(!cache.testCache.hasOwnProperty('teams'))
-      return teamsController
-        .handleTeamsCache(cache.testCache, currentTimeStamp)
-        .then(res => {
-          // key added to cache
-          assert(cache.testCache.hasOwnProperty('teams'))
-          cache.testCache = utils.resetCache(null, cache.testCache)
-        })
-    })
-    it('handleTeamsCache gets data from API - fails timestamp', function() {
-      // add fake driver key
-      const oldTimeStamp = new Date('Nov 04 2019').getTime()
-      cache.testCache = {
-        teams: {
-          teamAction: '/team',
-          teamsArr: [],
-          formText: 'Choose a Team',
-          selectName: 'team',
-          timestamp: oldTimeStamp
-        }
-      }
-      sinon.spy(utils, 'fetchData')
-      return teamsController.handleTeamsCache(cache.testCache, 30).then(res => {
-        assert(utils.fetchData.calledOnce)
-        utils.fetchData.restore()
-        cache.testCache = utils.resetCache(null, cache.testCache)
-      })
-    })
-    it('handleTeamsCache gets data from cache - passes timestamp', function() {
-      // add fake driver key
-      console.log('cache', cache.testCache)
-      const oldTimeStamp = new Date().getTime()
-      cache.testCache = {
-        teams: {
-          teamAction: '/team',
-          formText: 'Choose a Team',
-          selectName: 'team',
-          teamsArr: [
-            {
-              name: 'Some Name',
-              name_slug: 'some_name'
-            }
-          ],
-          timestamp: oldTimeStamp
-        }
-      }
-      sinon.spy(utils, 'fetchData')
-      return teamsController.handleTeamsCache(cache.testCache, 30).then(res => {
-        // should match exact cache value
-        assert.deepEqual(res, cache.testCache.teams)
-        assert(utils.fetchData.notCalled)
-        utils.fetchData.restore()
-      })
-    })
-  })
   describe('fetchTeamAPI()', () => {
     it('fetchTeamAPI returns non-empty team/driver objs - type = card ', function() {
       const ctx = {
@@ -202,7 +119,7 @@ describe('teams.controllers', function() {
     })
   })
   describe('renderTeamTemplate()', () => {
-    it.only('renderTeamTemplate gets fetchTeamAPI() data successfully', function() {
+    it('renderTeamTemplate gets fetchTeamAPI() data successfully', function() {
       const mockCtx = {
         query: {
           team: 'red_bull_racing'
