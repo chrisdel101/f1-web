@@ -10,7 +10,8 @@ module.exports = {
   fetchDriversAPI,
   renderDriverTemplate,
   renderDriverCard,
-  renderAllDriversList
+  renderAllDriversList,
+  makeAllDriversObjs
 }
 function compileDriverTemplateResObj(
   ctx,
@@ -20,7 +21,6 @@ function compileDriverTemplateResObj(
   teamData
 ) {
   // call team endpoint
-  // console.log(driversObj)
   const teamUrl = `/team?team=${driverData.team_name_slug}`
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
@@ -51,12 +51,11 @@ function compileDriverTemplateResObj(
 }
 
 // fetchs the driver info from the api to use in render func
-async function fetchDriverAPI(ctx, render) {
+async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
   try {
-    // get query params from GET req
-    let driverSlug
     // get the input params diff depending on type
     if (render === 'page') {
+      // get query params from GET req
       driverSlug = ctx.query.driver
     } else if (render === 'card') {
       driverSlug = ctx.params.driver_slug
@@ -94,13 +93,42 @@ async function fetchDriversAPI() {
     console.error('An error in driverController.fetchDriversAPI()', e)
   }
 }
-
+async function makeAllDriversObjs(ctx, driverSlug) {
+  const { driverData } = await module.exports.fetchDriverAPI(
+    ctx,
+    null,
+    driverSlug
+  )
+  const driversObj = driverData.name_slug
+  const options = {
+    driver_name: driverData.driver_name,
+    flag_img_url: driverData.flag_img_url,
+    main_image: driverData.main_image
+  }
+  return options
+}
 async function renderAllDriversList(ctx) {
   try {
     // must have module.exports to work in tests
-    const driversObj = await module.exports.fetchDriversAPI()
-    // console.log('all', driversObj)
-    return ctx.render('allDrivers', driversObj)
+    const { driversObj } = await module.exports.fetchDriversAPI()
+    // console.log(driversObj.driversArr)
+    // allDriversObj contain partial info for allDriversPage
+    const bundlePromises = async () => {
+      const promises = driversObj.driversArr.map(async driver => {
+        // console.log(driver)
+        return await module.exports.makeAllDriversObjs(ctx, driver.name_slug)
+      })
+      return Promise.all(promises)
+    }
+    const options = await bundlePromises()
+    // let driversObjs
+    // await Promise.all(
+    //   (driversObjs = driversObj.driversArr.map(async driver => {
+    //     return await module.exports.makeAllDriversObjs(ctx, driver.name_slug)
+    //   }))
+    // )
+
+    return ctx.render('allDrivers', options)
   } catch (e) {
     console.error('Error in renderAllDriversList', e)
   }
@@ -118,7 +146,7 @@ async function renderDriverCard(ctx) {
     // add link to team to driver
     driverData['teamUrl'] = teamUrl
     driverData['logo_url'] = teamData.logo_url
-    console.log('Driver Data', driverData)
+    // console.log('Driver Data', driverData)
     return await ctx.render('driverPage', {
       //  +++ index params +++
       urls: ctx.urls,
@@ -157,5 +185,6 @@ async function renderDriverTemplate(ctx) {
     driverData,
     teamData
   )
+  // console.log(options)
   return await ctx.render('driverPage', options)
 }

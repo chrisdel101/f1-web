@@ -6,7 +6,29 @@ const sinon = require('sinon')
 const assert = require('assert')
 
 describe('driversController', () => {
-  describe('renderAllDriversList()', () => {
+  describe('makeAllDriversObjs()', () => {
+    it('makeAllDriversObjs returns obj with correct props', function() {
+      const mockCtx = {
+        query: {
+          driver: 'lewis-hamilton'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+
+      return driversController
+        .makeAllDriversObjs(mockCtx, mockCtx.query.driver)
+        .then(res => {
+          assert(res.hasOwnProperty('driver_name'))
+          assert(res.hasOwnProperty('flag_img_url'))
+          assert(res.hasOwnProperty('main_image'))
+        })
+    })
+  })
+
+  describe.only('renderAllDriversList()', () => {
     it('renderAllDriversList calls fetchDriver API', function() {
       const mockCtx = {
         query: {
@@ -30,6 +52,37 @@ describe('driversController', () => {
           assert(res.teamsObj.teamsArr.length)
           driversController.fetchDriversAPI.restore()
         })
+      })
+    })
+    it('renderAllDriversList calls makeAllDriversObjs()', function() {
+      const mockCtx = {
+        query: {
+          driver: 'alexander-albon'
+        },
+        // fake render func
+        render: function(templateName, options) {
+          return
+        }
+      }
+      sinon.spy(driversController, 'makeAllDriversObjs')
+      return Promise.resolve(
+        driversController.renderAllDriversList(mockCtx)
+      ).then(res => {
+        return driversController.makeAllDriversObjs.returnValues[0].then(
+          resOuter => {
+            // compare direct call to makeAllDriversObjs and value given inside spy
+            // they should be equal if function is correct
+            const makeAllDriversObjsCall = driversController.makeAllDriversObjs(
+              mockCtx,
+              mockCtx.query.driver
+            )
+            return makeAllDriversObjsCall.then(resInner => {
+              // direct call and spied call should be equal
+              assert.deepEqual(resInner, resOuter)
+              driversController.makeAllDriversObjs.restore()
+            })
+          }
+        )
       })
     })
     it('renderAllDriversList calls render', function() {
@@ -227,51 +280,42 @@ describe('driversController', () => {
         // res obj that is sent with render
         const resObjOutput =
           driversController.compileDriverTemplateResObj.returnValues[0]
+        // call for teamData/driverData
         return driversController.fetchDriverAPI(mockCtx, 'page').then(res => {
-          const { driverData, teamData, driversObj, teamsObj } = res
-          return Promise.resolve(driversObj).then(driversObj => {
-            return Promise.resolve(teamsObj).then(teamsObj => {
-              const template = driversController.compileDriverTemplateResObj(
-                mockCtx,
-                driversObj,
-                teamsObj,
-                driverData,
-                teamData
-              )
-              // compare direct call to template comiler and value given inside here
-              // they should be equal if functions are all correct
-              assert.deepEqual(resObjOutput, template)
-            })
-          })
+          const { driverData, teamData } = res
+          // now call for all drivers/teams
+          return Promise.resolve(driversController.fetchDriversAPI()).then(
+            res => {
+              const { driversObj, teamsObj } = res
+              return Promise.resolve(driversObj).then(driversObj => {
+                return Promise.resolve(teamsObj).then(teamsObj => {
+                  const template = driversController.compileDriverTemplateResObj(
+                    mockCtx,
+                    driversObj,
+                    teamsObj,
+                    driverData,
+                    teamData
+                  )
+                  // compare direct call to template comiler and value given inside here
+                  // they should be equal if functions are all correct
+                  assert.deepEqual(resObjOutput, template)
+                })
+              })
+            }
+          )
         })
       })
-    })
-  })
-  // TODO
-  it.skip('calls fake endpoint', function() {
-    // { request:
-    //   { method: 'GET',
-    //     url: '/driver?driver=alexander-albon',
-    //     header:
-    //      { host: 'localhost:3000',
-    //        'user-agent': 'curl/7.54.0',
-    //        accept: '*/*' } },
-    //  response:
-    //   { status: 404,
-    //     message: 'Not Found',
-    //     header: [Object: null prototype] {} },
-    //  app: { subdomainOffset: 2, proxy: false, env: 'development' },
-    //  originalUrl: '/driver?driver=alexander-albon',
-    //  req: '<original node req>',
-    //  res: '<original node res>',
-    //  socket: '<original node socket>' }
-    const ctx = {
-      query: {
-        driver: 'some-driver'
-      }
-    }
-    return driversController.renderDriverTemplate(ctx).then(res => {
-      console.log(res)
+      // TODO
+      it.skip('calls fake endpoint', function() {
+        const ctx = {
+          query: {
+            driver: 'some-driver'
+          }
+        }
+        return driversController.renderDriverTemplate(ctx).then(res => {
+          console.log(res)
+        })
+      })
     })
   })
 })
