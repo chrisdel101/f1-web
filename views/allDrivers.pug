@@ -3,10 +3,8 @@ include mixins/_allDriversMixin
 include mixins/_driverCardMixinMini
 
 block content
-  //- +driverCardMixinMini({
-
-  //- })
-  +allDriversMixin(driversArr)
+  //- - console.log(driversObj)
+  +allDriversMixin(driversObj.driversArr)
 
   script.
     (function(d, s, id){

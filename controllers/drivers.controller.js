@@ -99,6 +99,7 @@ async function renderAllDriversList(ctx) {
   try {
     // must have module.exports to work in tests
     const driversObj = await module.exports.fetchDriversAPI()
+    // console.log('all', driversObj)
     return ctx.render('allDrivers', driversObj)
   } catch (e) {
     console.error('Error in renderAllDriversList', e)
