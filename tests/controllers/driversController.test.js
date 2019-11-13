@@ -23,6 +23,41 @@ describe("driversController", () => {
           assert(res.hasOwnProperty("flag_img_url"))
           assert(res.hasOwnProperty("main_image"))
           assert(res.hasOwnProperty("size"))
+          assert(res.hasOwnProperty("checkboxes"))
+        })
+    })
+    it.only("makeAllDriversObjs returns checkboxes false when blank", function() {
+      const mockCtx = {
+        query: {
+          driver: "lewis-hamilton"
+        },
+        // fake render func
+        render: function() {
+          return
+        }
+      }
+
+      return driversController
+        .makeAllDriversObjs(mockCtx, mockCtx.query.driver)
+        .then(res => {
+          assert(!res.checkboxes)
+        })
+    })
+    it.only("makeAllDriversObjs returns checkboxes true when passed in", function() {
+      const mockCtx = {
+        query: {
+          driver: "lewis-hamilton",
+          checkboxes: "true"
+        },
+        // fake render func
+        render: function() {
+          return
+        }
+      }
+      return driversController
+        .makeAllDriversObjs(mockCtx, mockCtx.query.driver)
+        .then(res => {
+          assert(res.checkboxes)
         })
     })
   })

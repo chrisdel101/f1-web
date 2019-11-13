@@ -74,6 +74,15 @@ img {
   margin-top: 50px;
   margin-bottom: 50px;
 }
+.all-drivers {
+  padding-left: 0;
+  list-style: none;
+}
+.all-drivers .driver-title-container {
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+}
 .select-text {
   font-family: "PT Sans", Helvetica, Arial, sans-serif;
 }

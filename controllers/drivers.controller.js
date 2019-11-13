@@ -94,23 +94,31 @@ async function fetchDriversAPI() {
   }
 }
 // takes slug, calls API and combines props
-async function makeAllDriversObjs(ctx, driverSlug, size = "mini") {
+async function makeAllDriversObjs(
+  ctx,
+  driverSlug,
+  size = "mini",
+  checkboxes = false
+) {
   try {
     // add size to options for css class styles
     if (ctx.query.size === "full") {
       size = "full"
+    }
+    if (ctx.query.checkboxes === "true") {
+      checkboxes = true
     }
     const { driverData } = await module.exports.fetchDriverAPI(
       ctx,
       null,
       driverSlug
     )
-    const driversObj = driverData.name_slug
     const options = {
       driver_name: driverData.driver_name,
       flag_img_url: driverData.flag_img_url,
       main_image: driverData.main_image,
-      size: size
+      size,
+      checkboxes
     }
     return options
   } catch (e) {
@@ -118,7 +126,7 @@ async function makeAllDriversObjs(ctx, driverSlug, size = "mini") {
   }
 }
 // calls all drivers, fetchs makeAllDriversObjs, and renders tmplt
-async function renderAllDriversList(ctx, size = "mini") {
+async function renderAllDriversList(ctx) {
   try {
     // must have module.exports to work in tests
     const { driversObj } = await module.exports.fetchDriversAPI()
