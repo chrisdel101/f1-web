@@ -93,6 +93,7 @@ async function fetchDriversAPI() {
     console.error('An error in driverController.fetchDriversAPI()', e)
   }
 }
+// takes slug, calls API and combines props
 async function makeAllDriversObjs(ctx, driverSlug) {
   const { driverData } = await module.exports.fetchDriverAPI(
     ctx,
@@ -107,28 +108,24 @@ async function makeAllDriversObjs(ctx, driverSlug) {
   }
   return options
 }
+// calls all drivers, fetchs makeAllDriversObjs, and renders tmplt
 async function renderAllDriversList(ctx) {
   try {
     // must have module.exports to work in tests
     const { driversObj } = await module.exports.fetchDriversAPI()
-    // console.log(driversObj.driversArr)
     // allDriversObj contain partial info for allDriversPage
-    const bundlePromises = async () => {
+    const allDriverObjs = async () => {
       const promises = driversObj.driversArr.map(async driver => {
-        // console.log(driver)
         return await module.exports.makeAllDriversObjs(ctx, driver.name_slug)
       })
       return Promise.all(promises)
     }
-    const options = await bundlePromises()
-    // let driversObjs
-    // await Promise.all(
-    //   (driversObjs = driversObj.driversArr.map(async driver => {
-    //     return await module.exports.makeAllDriversObjs(ctx, driver.name_slug)
-    //   }))
-    // )
+    // needs to have key name to work in template
+    const options = {
+      driversArr: await allDriverObjs()
+    }
 
-    return ctx.render('allDrivers', options)
+    return await ctx.render('allDrivers', options)
   } catch (e) {
     console.error('Error in renderAllDriversList', e)
   }

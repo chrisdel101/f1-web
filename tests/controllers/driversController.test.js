@@ -28,7 +28,7 @@ describe('driversController', () => {
     })
   })
 
-  describe.only('renderAllDriversList()', () => {
+  describe('renderAllDriversList()', () => {
     it('renderAllDriversList calls fetchDriver API', function() {
       const mockCtx = {
         query: {
