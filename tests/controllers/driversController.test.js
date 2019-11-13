@@ -1,19 +1,17 @@
-const driversController = require('../../controllers/drivers.controller')
-const cacheController = require('../../controllers/cache.controller')
-const cache = require('../../cache')
-const utils = require('../../utils')
-const sinon = require('sinon')
-const assert = require('assert')
+const driversController = require("../../controllers/drivers.controller")
+const utils = require("../../utils")
+const sinon = require("sinon")
+const assert = require("assert")
 
-describe('driversController', () => {
-  describe('makeAllDriversObjs()', () => {
-    it('makeAllDriversObjs returns obj with correct props', function() {
+describe("driversController", () => {
+  describe.only("makeAllDriversObjs()", () => {
+    it("makeAllDriversObjs returns obj with correct props", function() {
       const mockCtx = {
         query: {
-          driver: 'lewis-hamilton'
+          driver: "lewis-hamilton"
         },
         // fake render func
-        render: function(templateName, options) {
+        render: function() {
           return
         }
       }
@@ -21,32 +19,33 @@ describe('driversController', () => {
       return driversController
         .makeAllDriversObjs(mockCtx, mockCtx.query.driver)
         .then(res => {
-          assert(res.hasOwnProperty('driver_name'))
-          assert(res.hasOwnProperty('flag_img_url'))
-          assert(res.hasOwnProperty('main_image'))
+          assert(res.hasOwnProperty("driver_name"))
+          assert(res.hasOwnProperty("flag_img_url"))
+          assert(res.hasOwnProperty("main_image"))
+          assert(res.hasOwnProperty("size"))
         })
     })
   })
 
-  describe('renderAllDriversList()', () => {
-    it('renderAllDriversList calls fetchDriver API', function() {
+  describe("renderAllDriversList()", () => {
+    it("renderAllDriversList calls fetchDriver API", function() {
       const mockCtx = {
         query: {
-          driver: 'lewis-hamilton'
+          driver: "lewis-hamilton"
         },
         // fake render func
-        render: function(templateName, options) {
+        render: function() {
           return
         }
       }
-      sinon.spy(driversController, 'fetchDriversAPI')
+      sinon.spy(driversController, "fetchDriversAPI")
       return Promise.resolve(
         driversController.renderAllDriversList(mockCtx)
-      ).then(res => {
+      ).then(() => {
         return driversController.fetchDriversAPI.returnValues[0].then(res => {
           // intercepted API call has correct props
-          assert(res.hasOwnProperty('driversObj'))
-          assert(res.hasOwnProperty('teamsObj'))
+          assert(res.hasOwnProperty("driversObj"))
+          assert(res.hasOwnProperty("teamsObj"))
           // intercepted API call has correct props is not blank
           assert(res.driversObj.driversArr.length)
           assert(res.teamsObj.teamsArr.length)
@@ -54,20 +53,20 @@ describe('driversController', () => {
         })
       })
     })
-    it('renderAllDriversList calls makeAllDriversObjs()', function() {
+    it("renderAllDriversList calls makeAllDriversObjs()", function() {
       const mockCtx = {
         query: {
-          driver: 'alexander-albon'
+          driver: "alexander-albon"
         },
         // fake render func
-        render: function(templateName, options) {
+        render: function() {
           return
         }
       }
-      sinon.spy(driversController, 'makeAllDriversObjs')
+      sinon.spy(driversController, "makeAllDriversObjs")
       return Promise.resolve(
         driversController.renderAllDriversList(mockCtx)
-      ).then(res => {
+      ).then(() => {
         return driversController.makeAllDriversObjs.returnValues[0].then(
           resOuter => {
             // compare direct call to makeAllDriversObjs and value given inside spy
@@ -85,57 +84,57 @@ describe('driversController', () => {
         )
       })
     })
-    it('renderAllDriversList calls render', function() {
+    it("renderAllDriversList calls render", function() {
       const mockCtx = {
         query: {
-          driver: 'lewis-hamilton'
+          driver: "lewis-hamilton"
         },
         // fake render func
-        render: function(templateName, options) {
+        render: function() {
           return
         }
       }
-      sinon.spy(mockCtx, 'render')
+      sinon.spy(mockCtx, "render")
       return Promise.resolve(
         driversController.renderAllDriversList(mockCtx)
-      ).then(res => {
+      ).then(() => {
         assert(mockCtx.render.calledOnce)
         mockCtx.render.restore()
       })
     })
   })
-  describe('fetchDriverAPI()', () => {
-    it('fetchDriverAPI returns non-empty team/driver objs - type = card ', function() {
+  describe("fetchDriverAPI()", () => {
+    it("fetchDriverAPI returns non-empty team/driver objs - type = card ", function() {
       const ctx = {
         params: {
-          driver_slug: 'some-driver'
+          driver_slug: "some-driver"
         }
       }
-      return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-        assert(res.hasOwnProperty('driverData'))
-        assert(res.hasOwnProperty('teamData'))
+      return driversController.fetchDriverAPI(ctx, "card").then(res => {
+        assert(res.hasOwnProperty("driverData"))
+        assert(res.hasOwnProperty("teamData"))
       })
     })
     // need to create endpoint for this to work
-    it.skip('fetchDriverAPI returns non-empty team/driver objs - type = page ', function() {
+    it.skip("fetchDriverAPI returns non-empty team/driver objs - type = page ", function() {
       const ctx = {
         query: {
-          driver: 'some-driver'
+          driver: "some-driver"
         }
       }
-      return driversController.fetchDriverAPI(ctx, 'page').then(res => {
+      return driversController.fetchDriverAPI(ctx, "page").then(res => {
         assert(res.driversObj)
         assert(res.teamsObj)
       })
     })
     // TODO
-    it.skip('fetchDriverAPI works with test endpoint', function() {
+    it.skip("fetchDriverAPI works with test endpoint", function() {
       const ctx = {
         query: {
-          driver: 'some-driver'
+          driver: "some-driver"
         }
       }
-      return driversController.fetchDriverAPI(ctx, 'page').then(res => {
+      return driversController.fetchDriverAPI(ctx, "page").then(res => {
         console.log(res)
       })
     })
@@ -176,58 +175,58 @@ describe('driversController', () => {
     //   })
     // })
   })
-  describe('fetchDriversAPI', () => {
-    it('fetchDriversAPI returns driversObj and teamsObjZ', function() {
+  describe("fetchDriversAPI", () => {
+    it("fetchDriversAPI returns driversObj and teamsObjZ", function() {
       return driversController.fetchDriversAPI().then(res => {
-        assert(res.hasOwnProperty('driversObj'))
-        assert(res.hasOwnProperty('teamsObj'))
+        assert(res.hasOwnProperty("driversObj"))
+        assert(res.hasOwnProperty("teamsObj"))
       })
     })
-    it('fetchDriversAPI driversObj has correct props', function() {
+    it("fetchDriversAPI driversObj has correct props", function() {
       return driversController.fetchDriversAPI().then(res => {
         assert(
-          res.driversObj.hasOwnProperty('driversArr') &&
-            res.driversObj.hasOwnProperty('driverText') &&
-            res.driversObj.hasOwnProperty('selectName')
+          res.driversObj.hasOwnProperty("driversArr") &&
+            res.driversObj.hasOwnProperty("driverText") &&
+            res.driversObj.hasOwnProperty("selectName")
         )
         assert(res.driversObj.driversArr.length)
       })
     })
-    it('fetchDriversAPI teamsObj has correct props', function() {
+    it("fetchDriversAPI teamsObj has correct props", function() {
       return driversController.fetchDriversAPI().then(res => {
         assert(
-          res.teamsObj.hasOwnProperty('teamsArr') &&
-            res.teamsObj.hasOwnProperty('teamText') &&
-            res.teamsObj.hasOwnProperty('selectName')
+          res.teamsObj.hasOwnProperty("teamsArr") &&
+            res.teamsObj.hasOwnProperty("teamText") &&
+            res.teamsObj.hasOwnProperty("selectName")
         )
         assert(res.teamsObj.teamsArr.length)
       })
     })
   })
 
-  describe('renderDriverTemplate()', () => {
-    it('renderDriverTemplate gets fetchDriverAPI() data successfully', function() {
+  describe("renderDriverTemplate()", () => {
+    it("renderDriverTemplate gets fetchDriverAPI() data successfully", function() {
       const mockCtx = {
         query: {
-          driver: 'lewis-hamilton'
+          driver: "lewis-hamilton"
         },
         // fake render func
-        render: function(templateName, options) {
+        render: function() {
           return
         }
       }
-      sinon.spy(driversController, 'fetchDriverAPI')
+      sinon.spy(driversController, "fetchDriverAPI")
       return Promise.resolve(
         driversController.renderDriverTemplate(mockCtx)
-      ).then(res => {
+      ).then(() => {
         assert(driversController.fetchDriverAPI.calledOnce)
         // resolve promise from inner function
         return Promise.resolve(
           driversController.fetchDriverAPI.returnValues[0]
         ).then(res => {
           // console.log(res)
-          assert(res.hasOwnProperty('driverData'))
-          assert(res.hasOwnProperty('teamData'))
+          assert(res.hasOwnProperty("driverData"))
+          assert(res.hasOwnProperty("teamData"))
 
           assert(
             !utils.isObjEmpty(res.driverData) && !utils.isObjEmpty(res.teamData)
@@ -236,17 +235,17 @@ describe('driversController', () => {
         })
       })
     })
-    it('renderDriverTemplate gets fetchDriversAPI() data successfully', function() {
+    it("renderDriverTemplate gets fetchDriversAPI() data successfully", function() {
       const mockCtx = {
         query: {
-          driver: 'lewis-hamilton'
+          driver: "lewis-hamilton"
         },
         // fake render func
-        render: function(templateName, options) {
+        render: function() {
           return
         }
       }
-      sinon.spy(driversController, 'fetchDriversAPI')
+      sinon.spy(driversController, "fetchDriversAPI")
       return Promise.resolve(
         driversController.renderDriverTemplate(mockCtx)
       ).then(res => {
@@ -255,8 +254,8 @@ describe('driversController', () => {
         return Promise.resolve(
           driversController.fetchDriversAPI.returnValues[0]
         ).then(res => {
-          assert(res.hasOwnProperty('driversObj'))
-          assert(res.hasOwnProperty('teamsObj'))
+          assert(res.hasOwnProperty("driversObj"))
+          assert(res.hasOwnProperty("teamsObj"))
 
           assert(
             !utils.isObjEmpty(res.driversObj) && !utils.isObjEmpty(res.teamsObj)
@@ -265,23 +264,23 @@ describe('driversController', () => {
         })
       })
     })
-    it('renderDriverTemplate returns correct template response object', function() {
+    it("renderDriverTemplate returns correct template response object", function() {
       const mockCtx = {
         query: {
-          driver: 'lewis-hamilton'
+          driver: "lewis-hamilton"
         },
         // fake render func
-        render: function(templateName, options) {
+        render: function() {
           return
         }
       }
-      sinon.spy(driversController, 'compileDriverTemplateResObj')
+      sinon.spy(driversController, "compileDriverTemplateResObj")
       return driversController.renderDriverTemplate(mockCtx).then(res => {
         // res obj that is sent with render
         const resObjOutput =
           driversController.compileDriverTemplateResObj.returnValues[0]
         // call for teamData/driverData
-        return driversController.fetchDriverAPI(mockCtx, 'page').then(res => {
+        return driversController.fetchDriverAPI(mockCtx, "page").then(res => {
           const { driverData, teamData } = res
           // now call for all drivers/teams
           return Promise.resolve(driversController.fetchDriversAPI()).then(
@@ -305,16 +304,16 @@ describe('driversController', () => {
           )
         })
       })
-      // TODO
-      it.skip('calls fake endpoint', function() {
-        const ctx = {
-          query: {
-            driver: 'some-driver'
-          }
+    })
+    // TODO
+    it.skip("calls fake endpoint", function() {
+      const ctx = {
+        query: {
+          driver: "some-driver"
         }
-        return driversController.renderDriverTemplate(ctx).then(res => {
-          console.log(res)
-        })
+      }
+      return driversController.renderDriverTemplate(ctx).then(res => {
+        console.log(res)
       })
     })
   })

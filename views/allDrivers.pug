@@ -2,8 +2,9 @@ extends layout
 include mixins/_allDriversMixin
 
 block content
-  for driver in driversArr
-    +allDriverMixin(driver)
+  .all-drivers
+    for driver in driversArr
+      +allDriverMixin(driver)
 
   script.
     (function(d, s, id){

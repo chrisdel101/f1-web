@@ -157,6 +157,20 @@ img {
   min-height: 60px;
   text-align: center;
 }
+.all-drivers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.all-drivers .driver-card.mini h6 {
+  font-size: 15px;
+}
+.all-drivers .driver-card.mini {
+  width: 200px;
+}
+.all-drivers .driver-card.full {
+  width: 600px;
+}
 .driver-logo-container {
   min-height: 60px;
   align-self: center;
