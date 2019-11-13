@@ -100,7 +100,6 @@ async function makeAllDriversObjs(ctx, driverSlug, size = "mini") {
     if (ctx.query.size === "full") {
       size = "full"
     }
-    console.log("size", size)
     const { driverData } = await module.exports.fetchDriverAPI(
       ctx,
       null,
