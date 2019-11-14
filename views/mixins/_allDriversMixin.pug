@@ -2,10 +2,10 @@ mixin allDriverMixin(data)
   //- - console.log('D', data)
   .card.driver-card(class=data.size)
       li
-        a(href="#")
+        a(href="javascript:void(0);").driver-click
           .driver-title-container 
             h6  #{data.driver_name}
             .flag-img-container
               img(src=data.flag_img_url)
-          .main-image
-          img(src=data.main_image)
+          .main-image-container
+            img(src=data.main_image)

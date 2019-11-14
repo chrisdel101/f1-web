@@ -75,13 +75,38 @@ img {
   margin-bottom: 50px;
 }
 .all-drivers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   padding-left: 0;
   list-style: none;
+}
+.all-drivers a:hover {
+  text-decoration: none;
+}
+.all-drivers li {
+  transition: border 0.1s;
+}
+.all-drivers .driver-card.mini li:hover {
+  border: 2px solid blue;
+}
+.all-drivers .driver-card.mini {
+  width: 200px;
+  overflow: auto;
+}
+.all-drivers .driver-card.full {
+  width: 600px;
 }
 .all-drivers .driver-title-container {
   display: flex;
   min-height: 50px;
   align-items: center;
+}
+.all-drivers .driver-title-container,
+.all-drivers .driver-title-container h6,
+.all-drivers .main-image-container,
+.all-drivers .main-image-container img {
+  pointer-events: none;
 }
 .select-text {
   font-family: "PT Sans", Helvetica, Arial, sans-serif;
@@ -166,20 +191,6 @@ img {
   align-items: center;
   min-height: 60px;
   text-align: center;
-}
-.all-drivers {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.all-drivers .driver-card.mini h6 {
-  font-size: 15px;
-}
-.all-drivers .driver-card.mini {
-  width: 200px;
-}
-.all-drivers .driver-card.full {
-  width: 600px;
 }
 .driver-logo-container {
   min-height: 60px;
