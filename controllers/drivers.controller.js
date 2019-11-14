@@ -97,13 +97,13 @@ async function fetchDriversAPI() {
 async function makeAllDriversObjs(
   ctx,
   driverSlug,
-  size = "mini",
+  size = "full",
   checkboxes = false
 ) {
   try {
     // add size to options for css class styles
-    if (ctx.query.size === "full") {
-      size = "full"
+    if (ctx.query.size === "mini") {
+      size = "mini"
     }
     if (ctx.query.checkboxes === "true") {
       checkboxes = true
@@ -117,6 +117,7 @@ async function makeAllDriversObjs(
       driver_name: driverData.driver_name,
       flag_img_url: driverData.flag_img_url,
       main_image: driverData.main_image,
+      name_slug: driverData.name_slug,
       size,
       checkboxes
     }

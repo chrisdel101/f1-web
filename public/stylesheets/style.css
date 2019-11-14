@@ -90,6 +90,9 @@ img {
 .all-drivers .driver-card.mini li:hover {
   border: 2px solid blue;
 }
+.all-drivers .driver-card.mini li.selected {
+  border: 2px solid blue;
+}
 .all-drivers .driver-card.mini {
   width: 200px;
   overflow: auto;

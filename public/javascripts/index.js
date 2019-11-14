@@ -1,37 +1,48 @@
 const driverCards = document.querySelectorAll(".driver-card.mini a")
-let checkedOrder = []
+let driverObjs = []
 let lastChecked
-driverCards.forEach(driverCard => {
-  driverCard.addEventListener("click", function(e) {
+driverCards.forEach(driverCardElem => {
+  driverCardElem.addEventListener("click", function(e) {
     e.preventDefault()
-    checkedOrder.push(new createDriverObj(e))
-    lastChecked = checkedOrder[checkedOrder.length - 1]
-    // console.log(checkedOrder)
-    // console.log(lastChecked)
+    const driverObj = new createDriverObj(e)
+    driverObjs.push(driverObj)
+    lastChecked = driverObjs[driverObjs.length - 1]
+    // add class to parent li elem
+    driverObj.element.parentNode.classList.add("selected")
+    driverObj.clicked = true
     //   Going downwards
     // if second check is greater than first
-    console.log(e.shiftKey)
-    if (checkedOrder[0] < lastChecked)
+    if (driverObjs[0] < lastChecked)
       if (e.shiftKey) {
+        console.log("two")
         // start at first index of array of indexs - check from start to current
-        // for (var i = checkedOrder[0]; i < lastChecked; i++) {
-        //   // fill in all boxes
-        //   driverCards[i].checked = true
-        // }
+        for (let i = driverObjs[0]; i < lastChecked; i++) {
+          // fill in all boxes
+          console.log(driverObjs[i].element.classList.add)
+          driverObjs[i].element.classList.add("selected")
+        }
       }
     if (!e.shiftKey) {
       console.log("two")
+      // add class to parent li elem
+      driverObj.clicked = true
+      toggleClickedClass(driverObj)
+      console.log("lastChecked", lastChecked)
       // uncheck all up to but not current
-      //   for (var i = checkedOrder[0]; i < lastChecked; i++) {
-      //     inputs[i].checked = false
-      //   }
+      for (let i = 0; i < driverObjs.indexOf(lastChecked); i++) {
+        driverObjs[i].clicked = false
+        console.log(driverObjs[i])
+        toggleClickedClass(driverObjs[i])
+      }
+      // move current to start of array
+      driverObjs.splice(0, driverObjs.length - 1)
     }
     //   going upwards
-    if (checkedOrder[0] > lastChecked)
+    if (driverObjs[0] > lastChecked)
       if (e.shiftKey) {
         console.log("three")
         // start at first index of array of indexs
-        // for (var i = lastChecked; i < checkedOrder[0]; i++) {
+        // for (var i = lastChecked; i < driverObjs[0]; i++) {
         //   // fill in all boxes
         //   inputs[i].checked = true
         // }
@@ -48,9 +59,20 @@ driverCards.forEach(driverCard => {
 //   //     return false
 //   //   }
 // }
+function sliceAndLastClicked(arr) {}
+function toggleClickedClass(driverObj) {
+  if (driverObj.clicked) {
+    driverObj.element.parentNode.classList.add("selected")
+  } else {
+    driverObj.element.parentNode.classList.remove("selected")
+  }
+}
 function createDriverObj(e) {
+  this.name_slug = e.target.parentNode.parentNode.dataset.slug
   this.name = e.target.childNodes[0].childNodes[1].innerText
   this.shiftKey = e.shiftKey
+  this.element = e.target
+  this.clicked = false
 }
 
 // // get array of inputs

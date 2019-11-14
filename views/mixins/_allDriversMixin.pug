@@ -1,6 +1,6 @@
 mixin allDriverMixin(data)
   //- - console.log('D', data)
-  .card.driver-card(class=data.size)
+  .card.driver-card(class=data.size data-slug=data.name_slug)
       li
         a(href="javascript:void(0);").driver-click
           .driver-title-container 
