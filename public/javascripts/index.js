@@ -1,5 +1,6 @@
 let driverCardsLinks = document.querySelectorAll(".driver-card.mini a")
 driverCardsLinks = Array.from(driverCardsLinks)
+// console.log("touch", is_touch_device())
 // array of objs on the page currently selected
 let driverObjs = []
 let lastChecked
@@ -8,10 +9,17 @@ driverCardsLinks.forEach((driverCardElem, i) => {
   driverObjs.push(driverObj)
   driverCardElem.addEventListener("click", function(e) {
     e.preventDefault()
-    console.log(returnClicked(driverCardElem, e))
+    console.log("touch", is_touch_device())
+    if (!is_touch_device()) {
+      return returnClickedNon_touch(driverCardElem, e)
+    } else if (is_touch_device()) {
+      return retrunClickedTouch(driverCardElem, e)
+    } else {
+      throw new TypeError("Browser type - touch or non-touch - not detected.")
+    }
   })
 })
-function returnClicked(driverCardElem, e) {
+function retrunClickedTouch(driverCardElem, e) {
   const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
   const currentDriverObj = driverObjs.filter(driver => {
     if (driver.name_slug === nodeNameSlug) {
@@ -21,10 +29,17 @@ function returnClicked(driverCardElem, e) {
   // select current driver
   currentDriverObj.clicked = true
   toggleClickedClass(currentDriverObj)
-  // console.log("current", currentDriverObj.name)
-  // if (lastChecked) {
-  //   console.log("last", lastChecked.name)
-  // }
+}
+function returnClickedNon_touch(driverCardElem, e) {
+  const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
+  const currentDriverObj = driverObjs.filter(driver => {
+    if (driver.name_slug === nodeNameSlug) {
+      return driver
+    }
+  })[0]
+  // select current driver
+  currentDriverObj.clicked = true
+  toggleClickedClass(currentDriverObj)
   // un-click all previous
   if (!e.shiftKey) {
     // console.log("====two")
@@ -105,4 +120,23 @@ function createDriverObj(elem, pageIndex) {
   this.parent = elem.parentNode.parentNode
   this.originalElement = elem
   this.clicked = false
+}
+// https://stackoverflow.com/a/4819886/5972531
+function is_touch_device() {
+  var prefixes = " -webkit- -moz- -o- -ms- ".split(" ")
+  var mq = function(query) {
+    return window.matchMedia(query).matches
+  }
+
+  if (
+    "ontouchstart" in window ||
+    (window.DocumentTouch && document instanceof DocumentTouch)
+  ) {
+    return true
+  }
+
+  // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+  // https://git.io/vznFH
+  var query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("")
+  return mq(query)
 }

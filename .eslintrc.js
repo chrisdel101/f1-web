@@ -2,7 +2,7 @@ module.exports = {
   env: {
     mocha: true,
     node: true,
-    browser: false,
+    browser: true,
     es6: true
   },
   extends: "eslint:recommended",
@@ -15,4 +15,4 @@ module.exports = {
     sourceType: "module"
   },
   rules: {}
-};
+}
