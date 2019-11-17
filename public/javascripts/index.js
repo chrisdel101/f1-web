@@ -4,6 +4,7 @@ driverCardsLinks = Array.from(driverCardsLinks)
 let driverObjs = []
 let lastChecked
 driverCardsLinks.forEach((driverCardElem, i) => {
+  console.log("driverElem", driverCardElem)
   const driverObj = new createDriverObj(driverCardElem, i)
   driverObjs.push(driverObj)
   driverCardElem.addEventListener("click", function(e) {

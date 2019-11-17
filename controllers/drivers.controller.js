@@ -101,6 +101,7 @@ async function makeAllDriversObjs(
   checkboxes = false
 ) {
   try {
+    console.log("IS mini", ctx.query.size)
     // add size to options for css class styles
     if (ctx.query.size === "mini") {
       size = "mini"
