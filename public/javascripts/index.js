@@ -8,88 +8,93 @@ driverCardsLinks.forEach((driverCardElem, i) => {
   driverObjs.push(driverObj)
   driverCardElem.addEventListener("click", function(e) {
     e.preventDefault()
-    const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
-    const currentDriverObj = driverObjs.filter(driver => {
-      if (driver.name_slug === nodeNameSlug) {
-        return driver
-      }
-    })[0]
-    // un-click all previous
-    if (!e.shiftKey) {
-      console.log("====two")
-      // make current clicked true
-      driverObj.clicked = true
-      toggleClickedClass(currentDriverObj)
-      if (lastChecked) {
-        // forward
-        if (lastChecked.pageIndex < currentDriverObj.pageIndex) {
-          // uncheck all objs in array up to not including current
-          for (
-            let i = lastChecked.pageIndex;
-            i < currentDriverObj.pageIndex;
-            i++
-          ) {
-            console.log(i)
-            driverObjs[i].clicked = false
-            toggleClickedClass(driverObjs[i])
-          }
-          // backward
-        } else if (lastChecked.pageIndex > currentDriverObj.pageIndex) {
-          // uncheck all objs in array down to but not including current
-          for (
-            let i = lastChecked.pageIndex;
-            i > currentDriverObj.pageIndex;
-            i--
-          ) {
-            console.log(i)
-            driverObjs[i].clicked = false
-            toggleClickedClass(driverObjs[i])
-          }
+    console.log(returnClicked(driverCardElem, e))
+  })
+})
+function returnClicked(driverCardElem, e) {
+  const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
+  const currentDriverObj = driverObjs.filter(driver => {
+    if (driver.name_slug === nodeNameSlug) {
+      return driver
+    }
+  })[0]
+  // select current driver
+  currentDriverObj.clicked = true
+  toggleClickedClass(currentDriverObj)
+  // console.log("current", currentDriverObj.name)
+  // if (lastChecked) {
+  //   console.log("last", lastChecked.name)
+  // }
+  // un-click all previous
+  if (!e.shiftKey) {
+    // console.log("====two")
+    // make current clicked true
+    if (lastChecked) {
+      // forward
+      if (lastChecked.pageIndex < currentDriverObj.pageIndex) {
+        // go from start all the way to the current - over all
+        for (let i = 0; i < currentDriverObj.pageIndex; i++) {
+          // console.log(i)
+          driverObjs[i].clicked = false
+          toggleClickedClass(driverObjs[i])
+        }
+        // backward
+      } else if (lastChecked.pageIndex > currentDriverObj.pageIndex) {
+        //  go from end all the way to the current - over all
+        console.log(lastChecked.pageIndex)
+        for (
+          let i = driverObjs.length - 1;
+          i > currentDriverObj.pageIndex;
+          i--
+        ) {
+          // console.log("here", i)
+          driverObjs[i].clicked = false
+          toggleClickedClass(driverObjs[i])
         }
       }
     }
-    //   // // console.log("lastChecked", lastChecked)
-    //   // // add class to parent li elem
-    //   // // driverObj.element.parentNode.classList.add("selected")
-    //   // // driverObj.clicked = true
-    //   // /
-    //   if (e.shiftKey) {
-    //     // //   Going downwards
-    //     // // if second pageindex is greater than last one
-    //     if (driverObj.pageIndex > lastChecked.pageIndex) {
-    //       console.log("one")
-    //       // start at first index of obj array  - check all from start to current
-    //       console.log("current obj index", arrIndex)
-    //       for (let i = driverObjs[0]; i < arrIndex; i++) {
-    //         // fill in all boxes
-    //         driverObjs[i].clicked = true
-    //         toggleClickedClass(driverObjs[i])
-    //       }
-    //     }
-    //   }
-    //   // going upwards
-    //   // if (driverObjs[0] > lastChecked) {
-    //   //   if (e.shiftKey) {
-    //   //     console.log("three")
-    //   //     // start at first index of array of indexs
-    //   //     // for (var i = lastChecked; i < driverObjs[0]; i++) {
-    //   //     //   // fill in all boxes
-    //   //     //   inputs[i].checked = true
-    //   //     // }
-    //   //   }
-    //   // }
-    lastChecked = currentDriverObj
-    //   console.log("last check bottom", lastChecked)
-    //   console.log("last index", driverObjs.indexOf(lastChecked))
-  })
-})
+  }
+  if (e.shiftKey) {
+    // //   Going downwards
+    // // if second pageindex is greater than last one
+    if (currentDriverObj.pageIndex > lastChecked.pageIndex) {
+      // console.log("one")
+      // start at first index of obj array  - check all from start to current
+      for (
+        let i = lastChecked.pageIndex + 1;
+        i <= currentDriverObj.pageIndex;
+        i++
+      ) {
+        // console.log("current obj index", i)
+        // fill in all boxes
+        driverObjs[i].clicked = true
+        toggleClickedClass(driverObjs[i])
+      }
+    } else if (lastChecked.pageIndex > currentDriverObj.pageIndex) {
+      for (
+        let i = lastChecked.pageIndex;
+        i >= currentDriverObj.pageIndex;
+        i--
+      ) {
+        // console.log("current obj index", i)
+        // fill in all boxes
+        driverObjs[i].clicked = true
+        toggleClickedClass(driverObjs[i])
+      }
+    }
+  }
+  // assign current to last
+  lastChecked = currentDriverObj
+  console.log("last checked assigned", lastChecked)
+  return driverObjs.filter(driver => driver.clicked)
+}
 function toggleClickedClass(driverObj) {
-  console.log(driverObj)
+  // console.log(driverObj)
   if (driverObj.clicked) {
-    console.log("toggle on", driverObj)
+    console.log("toggle on", driverObj.name)
     driverObj.originalElement.parentNode.classList.add("selected")
   } else {
-    console.log("toggle off", driverObj)
+    console.log("toggle off", driverObj.name)
     driverObj.originalElement.parentNode.classList.remove("selected")
   }
 }
