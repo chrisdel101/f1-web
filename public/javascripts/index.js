@@ -1,6 +1,5 @@
 let driverCardsLinks = document.querySelectorAll(".driver-card.mini a")
 driverCardsLinks = Array.from(driverCardsLinks)
-const driverSubmitButton = document.querySelector("button.submit-all-drivers")
 // array of objs on the page currently selected
 let driverObjs = []
 let lastChecked
@@ -19,37 +18,43 @@ driverCardsLinks.forEach((driverCardElem, i) => {
     }
   })
 })
+
+const driverSubmitButton = document.querySelector("button.submit-all-drivers")
 driverSubmitButton.addEventListener("click", async () => {
   try {
-    // const data = {
-    //   data: returnClickedCardsSlugs()
-    // // }
-
-    // console.log(data)
-    // // console.log(JSON.stringify(data)) // JSON-string from `response.json()` call
-    // console.log(data)
-    await postData(
-      "http://localhost:3000/drivers",
-      { "data": 42 }
-    )
+    const data = returnClickedCardsSlugs()
+    return await postData("/drivers", data)
+    // fetch("/drivers", {
+    //   method: "POST", // *GET, POST, PUT, DELETE, etc.
+    //   mode: "cors", // no-cors, *cors, same-origin
+    //   cache: "default", // *default, no-cache, reload, force-cache, only-if-cached
+    //   credentials: "same-origin", // include, *same-origin, omit
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //     // 'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    //   redirect: "follow", // manual, *follow, error
+    //   referrer: "no-referrer", // no-referrer, *client
+    //   body: JSON.stringify({ test: "43" }) // body data type must match "Content-Type" header
+    // })
   } catch (e) {
     console.error("An error in submitting all drivers occured", e)
   }
 })
-async function postData(url = "", data = {}) {
-  // Default options are marked with *
+
+async function postData(url, data) {
   const response = await fetch(url, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
-    // mode: "cors", // no-cors, *cors, same-origin
-    // cache: "default", // *default, no-cache, reload, force-cache, only-if-cached
-    // credentials: "same-origin", // include, *same-origin, omit
-    // headers: {
-    //   "Content-Type": "application/json"
-    //   // 'Content-Type': 'application/x-www-form-urlencoded',
-    // },
-    // redirect: "follow", // manual, *follow, error
-    // referrer: "no-referrer", // no-referrer, *client
-    // body: JSON.stringify(data) // body data type must match "Content-Type" header
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "default", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json"
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrer: "no-referrer", // no-referrer, *client
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
   })
   return await response.json() // parses JSON response into native JavaScript objects
 }

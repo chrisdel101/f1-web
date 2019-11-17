@@ -16,7 +16,7 @@ router.get("/", indexController.renderIndex)
 router.get("/demo", indexController.renderDemo)
 router.get("/drivers", driversController.renderAllDriversList)
 router.post("/drivers", ctx => {
-  console.log(ctx.body)
+  console.log(ctx.request.body)
 })
 // render full template with query params- like POST
 router.get("/driver", driversController.renderDriverTemplate)
