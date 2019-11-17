@@ -7,11 +7,13 @@ driverCardsLinks.forEach((driverCardElem, i) => {
   const driverObj = new createDriverObj(driverCardElem, i)
   driverObjs.push(driverObj)
   driverCardElem.addEventListener("click", function(e) {
+    console.log("click outer")
     e.preventDefault()
-    console.log("touch", is_touch_device())
     if (!is_touch_device()) {
+      console.log("not touch", is_touch_device())
       keyboardCardSelect(driverCardElem, e)
     } else if (is_touch_device()) {
+      console.log("touch", is_touch_device())
       touchCardSelect(driverCardElem, e)
     } else {
       throw new TypeError("Browser type - touch or non-touch - not detected.")
@@ -21,6 +23,7 @@ driverCardsLinks.forEach((driverCardElem, i) => {
 
 const driverSubmitButton = document.querySelector("button.submit-all-drivers")
 driverSubmitButton.addEventListener("click", async () => {
+  console.log("click submit")
   try {
     const data = returnClickedCardsSlugs()
     return await postData("/drivers", data)
