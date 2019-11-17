@@ -81,6 +81,10 @@ img {
   padding-left: 0;
   list-style: none;
 }
+.all-drivers-container {
+  display: flex;
+  flex-direction: column;
+}
 .all-drivers a:hover {
   text-decoration: none;
 }
@@ -110,6 +114,9 @@ img {
 .all-drivers .main-image-container,
 .all-drivers .main-image-container img {
   pointer-events: none;
+}
+button.submit-all-drivers {
+  align-self: center;
 }
 .select-text {
   font-family: "PT Sans", Helvetica, Arial, sans-serif;

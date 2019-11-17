@@ -1,6 +1,6 @@
 let driverCardsLinks = document.querySelectorAll(".driver-card.mini a")
 driverCardsLinks = Array.from(driverCardsLinks)
-// console.log("touch", is_touch_device())
+const driverSubmitButton = document.querySelector("button.submit-all-drivers")
 // array of objs on the page currently selected
 let driverObjs = []
 let lastChecked
@@ -11,15 +11,59 @@ driverCardsLinks.forEach((driverCardElem, i) => {
     e.preventDefault()
     console.log("touch", is_touch_device())
     if (!is_touch_device()) {
-      return returnClickedNon_touch(driverCardElem, e)
+      keyboardCardSelect(driverCardElem, e)
     } else if (is_touch_device()) {
-      return retrunClickedTouch(driverCardElem, e)
+      touchCardSelect(driverCardElem, e)
     } else {
       throw new TypeError("Browser type - touch or non-touch - not detected.")
     }
   })
 })
-function retrunClickedTouch(driverCardElem, e) {
+driverSubmitButton.addEventListener("click", async () => {
+  try {
+    // const data = {
+    //   data: returnClickedCardsSlugs()
+    // // }
+
+    // console.log(data)
+    // // console.log(JSON.stringify(data)) // JSON-string from `response.json()` call
+    // console.log(data)
+    await postData(
+      "http://localhost:3000/drivers",
+      { "data": 42 }
+    )
+  } catch (e) {
+    console.error("An error in submitting all drivers occured", e)
+  }
+})
+async function postData(url = "", data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    // mode: "cors", // no-cors, *cors, same-origin
+    // cache: "default", // *default, no-cache, reload, force-cache, only-if-cached
+    // credentials: "same-origin", // include, *same-origin, omit
+    // headers: {
+    //   "Content-Type": "application/json"
+    //   // 'Content-Type': 'application/x-www-form-urlencoded',
+    // },
+    // redirect: "follow", // manual, *follow, error
+    // referrer: "no-referrer", // no-referrer, *client
+    // body: JSON.stringify(data) // body data type must match "Content-Type" header
+  })
+  return await response.json() // parses JSON response into native JavaScript objects
+}
+function returnClickedCardsSlugs() {
+  try {
+    return driverObjs
+      .filter(driver => driver.clicked)
+      .map(driver => driver.name_slug)
+  } catch (e) {
+    console.error("An error occured while gathering all selected cards", e)
+  }
+}
+// toggles current card on/off - touch only
+function touchCardSelect(driverCardElem, e) {
   const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
   const currentDriverObj = driverObjs.filter(driver => {
     if (driver.name_slug === nodeNameSlug) {
@@ -27,10 +71,16 @@ function retrunClickedTouch(driverCardElem, e) {
     }
   })[0]
   // select current driver
-  currentDriverObj.clicked = true
+  if (!currentDriverObj.clicked) {
+    currentDriverObj.clicked = true
+  } else {
+    currentDriverObj.clicked = false
+  }
   toggleClickedClass(currentDriverObj)
 }
-function returnClickedNon_touch(driverCardElem, e) {
+
+// toggles current card with shift bar action
+function keyboardCardSelect(driverCardElem, e) {
   const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
   const currentDriverObj = driverObjs.filter(driver => {
     if (driver.name_slug === nodeNameSlug) {
@@ -101,15 +151,16 @@ function returnClickedNon_touch(driverCardElem, e) {
   // assign current to last
   lastChecked = currentDriverObj
   console.log("last checked assigned", lastChecked)
-  return driverObjs.filter(driver => driver.clicked)
 }
 function toggleClickedClass(driverObj) {
   // console.log(driverObj)
   if (driverObj.clicked) {
     console.log("toggle on", driverObj.name)
+    // driverObj.clicked = true
     driverObj.originalElement.parentNode.classList.add("selected")
   } else {
     console.log("toggle off", driverObj.name)
+    // driverObj.clicked = false
     driverObj.originalElement.parentNode.classList.remove("selected")
   }
 }
