@@ -131,7 +131,6 @@ async function renderAllDriversList(ctx) {
     const driversArrObj = {
       driversArr: await allDriverObjs()
     }
-    console.log("op", driversArrObj)
     return await ctx.render("allDrivers", driversArrObj)
   } catch (e) {
     console.error("Error in renderAllDriversList", e)

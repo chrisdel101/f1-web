@@ -70,20 +70,26 @@ img {
 }
 .team-card-page,
 .driver-card-page,
-.all-drivers {
+.all-drivers,
+.all-teams {
   margin-top: 50px;
   margin-bottom: 50px;
 }
-.all-drivers {
+.all-drivers,
+.all-teams {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   padding-left: 0;
   list-style: none;
 }
-.all-drivers-container {
+.all-drivers-container,
+.all-teams-container {
   display: flex;
   flex-direction: column;
+}
+.all-teams-container {
+  align-items: center;
 }
 .all-drivers a:hover {
   text-decoration: none;
@@ -97,12 +103,15 @@ img {
 .all-drivers .driver-card.mini li.selected {
   border: 2px solid blue;
 }
-.all-drivers .driver-card.mini {
+.all-drivers .driver-card.mini,
+.all-teams .team-card.mini {
   width: 200px;
   overflow: auto;
 }
-.all-drivers .driver-card.full {
-  width: 600px;
+.all-drivers .driver-card.full,
+.all-teams .team-card.full {
+  max-width: 600px;
+  margin-bottom: 20px;
 }
 .all-drivers .driver-title-container {
   display: flex;
