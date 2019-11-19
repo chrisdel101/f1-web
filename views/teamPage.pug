@@ -5,11 +5,11 @@ block content
     - let hideNav = true
     include layout.pug
   else
+    - console.log ('TEAM', teamData)
     include demo.pug
 include mixins/_teamCardMixinLg
 include mixins/_teamCardMixinSm
   //- append the card content to page
-  - console.log('here')
 block append content
   //add class on card-only page
   if addClass === 'team-card-page'

@@ -14,6 +14,7 @@ router.get("/fresh-fetch", indexController.freshFetch)
 // ---------templates
 router.get("/", indexController.renderIndex)
 router.get("/demo", indexController.renderDemo)
+router.get("/teams", teamsController.renderAllTeamsList)
 router.get("/drivers", driversController.renderAllDriversList)
 router.post("/drivers", ctx => {
   console.log(ctx.request.body)

@@ -1,8 +1,6 @@
 const utils = require("../utils")
 const cache = require("../cache")
-const urls = require("../urls")
 const cacheController = require("./cache.controller")
-// console.log(mainController)
 
 module.exports = {
   compileDriverTemplateResObj,
@@ -94,20 +92,11 @@ async function fetchDriversAPI() {
   }
 }
 // takes slug, calls API and combines props
-async function makeAllDriversObjs(
-  ctx,
-  driverSlug,
-  size = "full",
-  checkboxes = false
-) {
+async function makeAllDriversObjs(ctx, driverSlug, size = "full") {
   try {
-    console.log("IS mini", ctx.query.size)
     // add size to options for css class styles
     if (ctx.query.size === "mini") {
       size = "mini"
-    }
-    if (ctx.query.checkboxes === "true") {
-      checkboxes = true
     }
     const { driverData } = await module.exports.fetchDriverAPI(
       ctx,
@@ -119,8 +108,7 @@ async function makeAllDriversObjs(
       flag_img_url: driverData.flag_img_url,
       main_image: driverData.main_image,
       name_slug: driverData.name_slug,
-      size,
-      checkboxes
+      size
     }
     return options
   } catch (e) {

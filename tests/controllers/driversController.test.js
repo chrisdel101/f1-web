@@ -4,11 +4,11 @@ const sinon = require("sinon")
 const assert = require("assert")
 
 describe("driversController", () => {
-  describe.only("makeAllDriversObjs()", () => {
+  describe("makeAllDriversObjs()", () => {
     it("makeAllDriversObjs returns obj with correct props", function() {
       const mockCtx = {
         query: {
-          driver: "lewis-hamilton"
+          team: "mercedes"
         },
         // fake render func
         render: function() {
@@ -23,10 +23,9 @@ describe("driversController", () => {
           assert(res.hasOwnProperty("flag_img_url"))
           assert(res.hasOwnProperty("main_image"))
           assert(res.hasOwnProperty("size"))
-          assert(res.hasOwnProperty("checkboxes"))
         })
     })
-    it.only("makeAllDriversObjs returns checkboxes false when blank", function() {
+    it("makeAllDriversObjs returns checkboxes false when blank", function() {
       const mockCtx = {
         query: {
           driver: "lewis-hamilton"
@@ -43,7 +42,7 @@ describe("driversController", () => {
           assert(!res.checkboxes)
         })
     })
-    it.only("makeAllDriversObjs returns checkboxes true when passed in", function() {
+    it("makeAllDriversObjs returns checkboxes true when passed in", function() {
       const mockCtx = {
         query: {
           driver: "lewis-hamilton",
