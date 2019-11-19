@@ -128,11 +128,11 @@ async function renderAllDriversList(ctx) {
       return Promise.all(promises)
     }
     // needs to have key name to work in template
-    const options = {
+    const driversArrObj = {
       driversArr: await allDriverObjs()
     }
-
-    return await ctx.render("allDrivers", options)
+    console.log("op", driversArrObj)
+    return await ctx.render("allDrivers", driversArrObj)
   } catch (e) {
     console.error("Error in renderAllDriversList", e)
   }

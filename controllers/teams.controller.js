@@ -44,11 +44,12 @@ async function renderAllTeamsList(ctx) {
       return Promise.all(promises)
     }
     // needs to have key name to work in template
-    const options = {
-      driversArr: await allTeamObjs()
+    const teamsArrObj = {
+      teamsArr: await allTeamObjs()
     }
+    console.log("op", teamsArrObj)
 
-    return await ctx.render("allTeams", options)
+    return await ctx.render("allTeams", teamsArrObj)
   } catch (e) {
     console.error("Error in renderAllTeamsList", e)
   }
