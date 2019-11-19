@@ -47,7 +47,6 @@ async function renderAllTeamsList(ctx) {
     const teamsArrObj = {
       teamsArr: await allTeamObjs()
     }
-    console.log("op", teamsArrObj)
 
     return await ctx.render("allTeams", teamsArrObj)
   } catch (e) {

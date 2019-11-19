@@ -1,10 +1,20 @@
 mixin allDriverMixin(data)
-  //- - console.log('D', data)
-  .card.driver-card(class=data.size data-slug=data.name_slug)
-      li
-        a(href="javascript:void(0);").driver-click
+  if data.size === "mini"
+    .card.driver-card(class=data.size data-slug=data.name_slug)
+        li
+          a(href="javascript:void(0);").driver-click
+            .driver-title-container 
+              h6  #{data.driver_name}
+              .flag-img-container
+                img(src=data.flag_img_url)
+            .main-image-container
+              img(src=data.main_image)
+  else if data.size === "full"
+    .card.driver-card(class=data.size data-slug=data.name_slug)
+        li
           .driver-title-container 
-            h6  #{data.driver_name}
+            a(href=`/driver?driver=${data.name_slug}`).driver-click
+              h4  #{data.driver_name}
             .flag-img-container
               img(src=data.flag_img_url)
           .main-image-container

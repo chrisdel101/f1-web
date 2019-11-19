@@ -110,18 +110,24 @@ img {
 }
 .all-drivers .driver-card.full,
 .all-teams .team-card.full {
-  max-width: 600px;
+  max-width: 400px;
   margin-bottom: 20px;
+  margin-right: 10px;
 }
 .all-drivers .driver-title-container {
   display: flex;
-  min-height: 50px;
   align-items: center;
 }
-.all-drivers .driver-title-container,
-.all-drivers .driver-title-container h6,
-.all-drivers .main-image-container,
-.all-drivers .main-image-container img {
+.all-drivers .mini .driver-title-container {
+  min-height: 50px;
+}
+.all-drivers .full .driver-title-container {
+  min-height: 100px;
+}
+.all-drivers .mini .driver-title-container,
+.all-drivers .mini .driver-title-container h6,
+.all-drivers .mini .main-image-container,
+.all-drivers .mini .main-image-container img {
   pointer-events: none;
 }
 button.submit-all-drivers {
