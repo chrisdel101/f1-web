@@ -44,10 +44,12 @@ async function renderAllTeamsList(ctx) {
       return Promise.all(promises)
     }
     // needs to have key name to work in template
+    const teamsArr = await allTeamObjs()
     const teamsArrObj = {
-      teamsArr: await allTeamObjs()
+      teamsArr,
+      // take size from first arr ite,
+      size: teamsArr[0].size
     }
-
     return await ctx.render("allTeams", teamsArrObj)
   } catch (e) {
     console.error("Error in renderAllTeamsList", e)

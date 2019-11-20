@@ -127,9 +127,11 @@ async function renderAllDriversList(ctx) {
       })
       return Promise.all(promises)
     }
+    const driversArr = await allDriverObjs()
     // needs to have key name to work in template
     const driversArrObj = {
-      driversArr: await allDriverObjs()
+      driversArr,
+      size: driversArr[0].size
     }
     return await ctx.render("allDrivers", driversArrObj)
   } catch (e) {
@@ -139,11 +141,7 @@ async function renderAllDriversList(ctx) {
 // use driver api data to rendercard only
 async function renderDriverCard(ctx) {
   try {
-    const urlParts = ctx.path.split("/")
-    const { driverData, teamData, driversObj, teamsObj } = await fetchDriverAPI(
-      ctx,
-      "card"
-    )
+    const { driverData, teamData } = await fetchDriverAPI(ctx, "card")
 
     const teamUrl = `/team?team=${driverData.team_name_slug}`
     // add link to team to driver

@@ -4,11 +4,9 @@ driverCardsLinks = Array.from(driverCardsLinks)
 let driverObjs = []
 let lastChecked
 driverCardsLinks.forEach((driverCardElem, i) => {
-  console.log("driverElem", driverCardElem)
   const driverObj = new createDriverObj(driverCardElem, i)
   driverObjs.push(driverObj)
   driverCardElem.addEventListener("click", function(e) {
-    console.log("click outer")
     e.preventDefault()
     if (!is_touch_device()) {
       console.log("not touch", is_touch_device())
@@ -23,14 +21,16 @@ driverCardsLinks.forEach((driverCardElem, i) => {
 })
 
 const driverSubmitButton = document.querySelector("button.submit-all-drivers")
-driverSubmitButton.addEventListener("click", async () => {
-  try {
-    const data = returnClickedCardsSlugs()
-    return await postData("/drivers", data)
-  } catch (e) {
-    console.error("An error in submitting all drivers occured", e)
-  }
-})
+if (driverSubmitButton) {
+  driverSubmitButton.addEventListener("click", async () => {
+    try {
+      const data = returnClickedCardsSlugs()
+      return await postData("/drivers", data)
+    } catch (e) {
+      console.error("An error in submitting all drivers occured", e)
+    }
+  })
+}
 
 async function postData(url, data) {
   if (!data.length || !data) return
@@ -149,7 +149,7 @@ function keyboardCardSelect(driverCardElem, e) {
   }
   // assign current to last
   lastChecked = currentDriverObj
-  console.log("last checked assigned", lastChecked)
+  // console.log("last checked assigned", lastChecked)
 }
 function toggleClickedClass(driverObj) {
   // console.log(driverObj)

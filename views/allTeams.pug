@@ -6,7 +6,9 @@ block content
     ul.all-teams
       for team in teamsArr
         +allTeamsMixin(team)
-    button(type="button" class="btn btn-primary btn-lg submit-all-teams") Submit
+    - console.log('team', size)
+    if size == 'mini'
+      button(type="button" class="btn btn-primary btn-lg submit-all-teams") Submit
   script.
     (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];

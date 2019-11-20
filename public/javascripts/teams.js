@@ -22,14 +22,16 @@ teamCardLinks.forEach((teamCardElem, i) => {
 })
 
 const teamSubmitButton = document.querySelector("button.submit-all-teams")
-teamSubmitButton.addEventListener("click", async () => {
-  try {
-    const data = await returnClickedCardsSlugs()
-    return await postData("/teams", data)
-  } catch (e) {
-    console.error("An error in submitting all drivers occured", e)
-  }
-})
+if (teamSubmitButton) {
+  teamSubmitButton.addEventListener("click", async () => {
+    try {
+      const data = await returnClickedCardsSlugs()
+      return await postData("/teams", data)
+    } catch (e) {
+      console.error("An error in submitting all drivers occured", e)
+    }
+  })
+}
 
 async function postData(url, data) {
   if (!data.length || !data) return
@@ -101,7 +103,7 @@ function keyboardCardSelect(teamCardElem, e) {
         // backward
       } else if (lastChecked.pageIndex > currentTeamObj.pageIndex) {
         //  go from end all the way to the current - over all
-        console.log(lastChecked.pageIndex)
+        // console.log(lastChecked.pageIndex)
         for (let i = teamObjs.length - 1; i > currentTeamObj.pageIndex; i--) {
           // console.log("here", i)
           teamObjs[i].clicked = false
@@ -144,7 +146,7 @@ function keyboardCardSelect(teamCardElem, e) {
   }
   // assign current to last
   lastChecked = currentTeamObj
-  console.log("last checked assigned", lastChecked)
+  // console.log("last checked assigned", lastChecked)
 }
 function toggleClickedClass(driverObj) {
   // console.log(driverObj)
