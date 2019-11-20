@@ -24,7 +24,6 @@ driverCardsLinks.forEach((driverCardElem, i) => {
 
 const driverSubmitButton = document.querySelector("button.submit-all-drivers")
 driverSubmitButton.addEventListener("click", async () => {
-  console.log("click submit")
   try {
     const data = returnClickedCardsSlugs()
     return await postData("/drivers", data)
@@ -34,6 +33,8 @@ driverSubmitButton.addEventListener("click", async () => {
 })
 
 async function postData(url, data) {
+  if (!data.length || !data) return
+  console.log("click submit")
   const response = await fetch(url, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
@@ -115,32 +116,34 @@ function keyboardCardSelect(driverCardElem, e) {
       }
     }
   }
+  // //   Going downwards
   if (e.shiftKey) {
-    // //   Going downwards
-    // // if second pageindex is greater than last one
-    if (currentDriverObj.pageIndex > lastChecked.pageIndex) {
-      // console.log("one")
-      // start at first index of obj array  - check all from start to current
-      for (
-        let i = lastChecked.pageIndex + 1;
-        i <= currentDriverObj.pageIndex;
-        i++
-      ) {
-        // console.log("current obj index", i)
-        // fill in all boxes
-        driverObjs[i].clicked = true
-        toggleClickedClass(driverObjs[i])
-      }
-    } else if (lastChecked.pageIndex > currentDriverObj.pageIndex) {
-      for (
-        let i = lastChecked.pageIndex;
-        i >= currentDriverObj.pageIndex;
-        i--
-      ) {
-        // console.log("current obj index", i)
-        // fill in all boxes
-        driverObjs[i].clicked = true
-        toggleClickedClass(driverObjs[i])
+    if (lastChecked) {
+      // // if second pageindex is greater than last one
+      if (currentDriverObj.pageIndex > lastChecked.pageIndex) {
+        // console.log("one")
+        // start at first index of obj array  - check all from start to current
+        for (
+          let i = lastChecked.pageIndex + 1;
+          i <= currentDriverObj.pageIndex;
+          i++
+        ) {
+          // console.log("current obj index", i)
+          // fill in all boxes
+          driverObjs[i].clicked = true
+          toggleClickedClass(driverObjs[i])
+        }
+      } else if (lastChecked.pageIndex > currentDriverObj.pageIndex) {
+        for (
+          let i = lastChecked.pageIndex;
+          i >= currentDriverObj.pageIndex;
+          i--
+        ) {
+          // console.log("current obj index", i)
+          // fill in all boxes
+          driverObjs[i].clicked = true
+          toggleClickedClass(driverObjs[i])
+        }
       }
     }
   }

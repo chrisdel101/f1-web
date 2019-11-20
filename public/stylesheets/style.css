@@ -91,15 +91,26 @@ img {
 .all-teams-container {
   align-items: center;
 }
-.all-drivers a:hover {
+.all-drivers a:hover,
+.all-teams a:hover {
   text-decoration: none;
 }
-.all-drivers li {
+.all-drivers li,
+.all-teams li {
   transition: border 0.1s;
 }
-.all-drivers .driver-card.mini li:hover {
+.all-drivers .driver-card.mini li:hover,
+.all-teams .team-card.mini li:hover {
   border: 2px solid blue;
 }
+.all-drivers .driver-card.mini li,
+.all-teams .team-card.mini li {
+  border: 2px solid transparent;
+}
+.all-teams li {
+  overflow: auto;
+}
+.all-teams .team-card.mini li.selected,
 .all-drivers .driver-card.mini li.selected {
   border: 2px solid blue;
 }

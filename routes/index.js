@@ -19,6 +19,9 @@ router.get("/drivers", driversController.renderAllDriversList)
 router.post("/drivers", ctx => {
   console.log(ctx.request.body)
 })
+router.post("/teams", ctx => {
+  console.log(ctx.request.body)
+})
 // render full template with query params- like POST
 router.get("/driver", driversController.renderDriverTemplate)
 router.get("/team", teamsController.renderTeamTemplate)

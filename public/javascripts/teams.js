@@ -1,39 +1,39 @@
-let driverCardsLinks = document.querySelectorAll(".driver-card.mini a")
-driverCardsLinks = Array.from(driverCardsLinks)
+let teamCardLinks = document.querySelectorAll(".team-card.mini a")
+
+teamCardLinks = Array.from(teamCardLinks)
 // array of objs on the page currently selected
-let driverObjs = []
+let teamObjs = []
 let lastChecked
-driverCardsLinks.forEach((driverCardElem, i) => {
-  console.log("driverElem", driverCardElem)
-  const driverObj = new createDriverObj(driverCardElem, i)
-  driverObjs.push(driverObj)
-  driverCardElem.addEventListener("click", function(e) {
-    console.log("click outer")
+teamCardLinks.forEach((teamCardElem, i) => {
+  const teamObj = new createTeamObj(teamCardElem, i)
+  teamObjs.push(teamObj)
+  teamCardElem.addEventListener("click", function(e) {
     e.preventDefault()
     if (!is_touch_device()) {
       console.log("not touch", is_touch_device())
-      keyboardCardSelect(driverCardElem, e)
+      keyboardCardSelect(teamCardElem, e)
     } else if (is_touch_device()) {
       console.log("touch", is_touch_device())
-      touchCardSelect(driverCardElem, e)
+      // touchCardSelect(teamCardElem, e)
     } else {
       throw new TypeError("Browser type - touch or non-touch - not detected.")
     }
   })
 })
 
-const driverSubmitButton = document.querySelector("button.submit-all-drivers")
-driverSubmitButton.addEventListener("click", async () => {
-  console.log("click submit")
+const teamSubmitButton = document.querySelector("button.submit-all-teams")
+teamSubmitButton.addEventListener("click", async () => {
   try {
-    const data = returnClickedCardsSlugs()
-    return await postData("/drivers", data)
+    const data = await returnClickedCardsSlugs()
+    return await postData("/teams", data)
   } catch (e) {
     console.error("An error in submitting all drivers occured", e)
   }
 })
 
 async function postData(url, data) {
+  if (!data.length || !data) return
+  console.log("click submit")
   const response = await fetch(url, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
@@ -49,18 +49,16 @@ async function postData(url, data) {
   })
   return await response.json() // parses JSON response into native JavaScript objects
 }
-function returnClickedCardsSlugs() {
+async function returnClickedCardsSlugs() {
   try {
-    return driverObjs
-      .filter(driver => driver.clicked)
-      .map(driver => driver.name_slug)
+    return teamObjs.filter(team => team.clicked).map(team => team.name_slug)
   } catch (e) {
     console.error("An error occured while gathering all selected cards", e)
   }
 }
 // toggles current card on/off - touch only
-function touchCardSelect(driverCardElem, e) {
-  const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
+function touchCardSelect(teamCardElem, e) {
+  const nodeNameSlug = teamCardElem.parentNode.parentNode.dataset.slug
   const currentDriverObj = driverObjs.filter(driver => {
     if (driver.name_slug === nodeNameSlug) {
       return driver
@@ -76,76 +74,76 @@ function touchCardSelect(driverCardElem, e) {
 }
 
 // toggles current card with shift bar action
-function keyboardCardSelect(driverCardElem, e) {
-  const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
-  const currentDriverObj = driverObjs.filter(driver => {
-    if (driver.name_slug === nodeNameSlug) {
-      return driver
+function keyboardCardSelect(teamCardElem, e) {
+  const nodeNameSlug = teamCardElem.parentNode.parentNode.dataset.slug
+  // console.log(nodeNameSlug)
+  const currentTeamObj = teamObjs.filter(team => {
+    if (team.name_slug === nodeNameSlug) {
+      return team
     }
   })[0]
   // select current driver
-  currentDriverObj.clicked = true
-  toggleClickedClass(currentDriverObj)
+  currentTeamObj.clicked = true
+  toggleClickedClass(currentTeamObj)
   // un-click all previous
   if (!e.shiftKey) {
     // console.log("====two")
     // make current clicked true
     if (lastChecked) {
       // forward
-      if (lastChecked.pageIndex < currentDriverObj.pageIndex) {
+      if (lastChecked.pageIndex < currentTeamObj.pageIndex) {
         // go from start all the way to the current - over all
-        for (let i = 0; i < currentDriverObj.pageIndex; i++) {
+        for (let i = 0; i < currentTeamObj.pageIndex; i++) {
           // console.log(i)
-          driverObjs[i].clicked = false
-          toggleClickedClass(driverObjs[i])
+          teamObjs[i].clicked = false
+          toggleClickedClass(teamObjs[i])
         }
         // backward
-      } else if (lastChecked.pageIndex > currentDriverObj.pageIndex) {
+      } else if (lastChecked.pageIndex > currentTeamObj.pageIndex) {
         //  go from end all the way to the current - over all
         console.log(lastChecked.pageIndex)
-        for (
-          let i = driverObjs.length - 1;
-          i > currentDriverObj.pageIndex;
-          i--
-        ) {
+        for (let i = teamObjs.length - 1; i > currentTeamObj.pageIndex; i--) {
           // console.log("here", i)
-          driverObjs[i].clicked = false
-          toggleClickedClass(driverObjs[i])
+          teamObjs[i].clicked = false
+          toggleClickedClass(teamObjs[i])
         }
       }
     }
   }
+  // //   Going downwards
   if (e.shiftKey) {
-    // //   Going downwards
-    // // if second pageindex is greater than last one
-    if (currentDriverObj.pageIndex > lastChecked.pageIndex) {
-      // console.log("one")
-      // start at first index of obj array  - check all from start to current
-      for (
-        let i = lastChecked.pageIndex + 1;
-        i <= currentDriverObj.pageIndex;
-        i++
-      ) {
-        // console.log("current obj index", i)
-        // fill in all boxes
-        driverObjs[i].clicked = true
-        toggleClickedClass(driverObjs[i])
-      }
-    } else if (lastChecked.pageIndex > currentDriverObj.pageIndex) {
-      for (
-        let i = lastChecked.pageIndex;
-        i >= currentDriverObj.pageIndex;
-        i--
-      ) {
-        // console.log("current obj index", i)
-        // fill in all boxes
-        driverObjs[i].clicked = true
-        toggleClickedClass(driverObjs[i])
+    // make sure lastChecked
+    if (lastChecked) {
+      // // if second pageindex is greater than last one
+      if (currentTeamObj.pageIndex > lastChecked.pageIndex) {
+        // console.log("one")
+        // start at first index of obj array  - check all from start to current
+        for (
+          let i = lastChecked.pageIndex + 1;
+          i <= currentTeamObj.pageIndex;
+          i++
+        ) {
+          // console.log("current obj index", i)
+          // fill in all boxes
+          teamObjs[i].clicked = true
+          toggleClickedClass(teamObjs[i])
+        }
+      } else if (lastChecked.pageIndex > currentTeamObj.pageIndex) {
+        for (
+          let i = lastChecked.pageIndex;
+          i >= currentTeamObj.pageIndex;
+          i--
+        ) {
+          // console.log("current obj index", i)
+          // fill in all boxes
+          teamObjs[i].clicked = true
+          toggleClickedClass(teamObjs[i])
+        }
       }
     }
   }
   // assign current to last
-  lastChecked = currentDriverObj
+  lastChecked = currentTeamObj
   console.log("last checked assigned", lastChecked)
 }
 function toggleClickedClass(driverObj) {
@@ -160,10 +158,10 @@ function toggleClickedClass(driverObj) {
     driverObj.originalElement.parentNode.classList.remove("selected")
   }
 }
-function createDriverObj(elem, pageIndex) {
+function createTeamObj(elem, pageIndex) {
   this.pageIndex = pageIndex
   this.name_slug = elem.parentNode.parentNode.dataset.slug
-  this.name = elem.childNodes[0].childNodes[1].innerText
+  this.name = elem.childNodes[0].innerText
   this.parent = elem.parentNode.parentNode
   this.originalElement = elem
   this.clicked = false
