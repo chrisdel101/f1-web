@@ -138,10 +138,10 @@ describe("driversController", () => {
     })
   })
   describe("fetchDriverAPI()", () => {
-    it("fetchDriverAPI returns non-empty team/driver objs - type = card ", function() {
+    it.only("fetchDriverAPI returns non-empty team/driver objs - type = card ", function() {
       const ctx = {
         params: {
-          driver_slug: "some-driver"
+          driver_slug: "lewis-hamilton"
         }
       }
       return driversController.fetchDriverAPI(ctx, "card").then(res => {
@@ -172,42 +172,6 @@ describe("driversController", () => {
         console.log(res)
       })
     })
-    // it('fetchDriverAPI calls handleDriversCache()', function() {
-    //   sinon.spy(cacheController, 'handleDriversCache')
-    //   const ctx = {
-    //     params: {
-    //       driver_slug: 'some-driver'
-    //     }
-    //   }
-    //   return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-    //     assert(cacheController.handleDriversCache.calledOnce)
-    //     cacheController.handleDriversCache.restore()
-    //   })
-    // })
-    // it('fetchDriverAPI calls handleTeamsCache() type = card', function() {
-    //   const ctx = {
-    //     params: {
-    //       driver_slug: 'some-driver'
-    //     }
-    //   }
-    //   sinon.spy(cacheController, 'handleTeamsCache')
-    //   return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-    //     assert(cacheController.handleTeamsCache.calledOnce)
-    //     cacheController.handleTeamsCache.restore()
-    //   })
-    // })
-    // it('fetchDriverAPI calls fetchData() - type = card', function() {
-    //   const ctx = {
-    //     params: {
-    //       driver_slug: 'some-driver'
-    //     }
-    //   }
-    //   sinon.spy(utils, 'fetchData')
-    //   return driversController.fetchDriverAPI(ctx, 'card').then(res => {
-    //     assert(utils.fetchData.called)
-    //     utils.fetchData.restore()
-    //   })
-    // })
   })
   describe("fetchDriversAPI", () => {
     it("fetchDriversAPI returns driversObj and teamsObjZ", function() {

@@ -65,11 +65,18 @@ async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
     const driverData = JSON.parse(
       await utils.fetchData(`drivers/${driverSlug}`)
     )
+    console.log(driverData)
     // look up drivers team by id
-    // console.log('dd', `teams/${driverData.team_id}`)
-    const teamData = JSON.parse(
+    let teamData = JSON.parse(
       await utils.fetchData(`teams/${driverData.team_id}`)
     )
+    // if id fails use slug
+    if (!teamData) {
+      console.log("dd", `teams/${driverData.team_name_slug}`)
+      teamData = JSON.parse(
+        await utils.fetchData(`teams/${driverData.team_name_slug}`)
+      )
+    }
     return {
       driverData,
       teamData

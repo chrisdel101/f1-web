@@ -56,7 +56,7 @@ describe("teams.controllers", function() {
       assert(result.size)
     })
   })
-  describe.only("renderAllTeamsList()", () => {
+  describe("renderAllTeamsList()", () => {
     it("renderAllTeamsList calls fetchTeamsAPI", async function() {
       const ctx = {
         params: {
@@ -73,7 +73,7 @@ describe("teams.controllers", function() {
       assert(teamsController.fetchTeamsAPI.calledOnce)
       teamsController.fetchTeamsAPI.restore()
     })
-    it.only("renderAllTeamsList calls makeAllTeamsObjs", async function() {
+    it("renderAllTeamsList calls makeAllTeamsObjs", async function() {
       const ctx = {
         params: {
           team_name_slug: "some-team"
