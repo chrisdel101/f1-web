@@ -76,17 +76,17 @@ module.exports = {
         type = ctx.params.type
       }
       if (type === "teams") {
-        if (!cache.teams) {
+        if (!globalCache.teams) {
           return {}
         }
-        return cache.teams
+        return globalCache.teams
       } else if (type === "drivers") {
-        if (!cache.drivers) {
+        if (!globalCache.drivers) {
           return {}
         }
-        return cache.drivers
+        return globalCache.drivers
       } else {
-        return cache
+        return globalCache
       }
     } catch (e) {
       console.error("An error in viewCache", e)
