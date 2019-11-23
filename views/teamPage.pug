@@ -15,9 +15,10 @@ block append content
   if addClass === 'team-card-page'
     .team-page.team-card-page
       .team-card-container-sm
+        //hide and show each template based on page size
         +teamCardMixinSm(teamData)
       .team-card-container-lg
-      +teamCardMixinLg(teamData)
+        +teamCardMixinLg(teamData)
   else
     .team-page
       .team-card-container-sm

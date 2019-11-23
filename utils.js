@@ -51,7 +51,6 @@ module.exports = {
         process.env.NODE_ENV === "testing"
       ) {
         const call = module.exports.httpCall(urls.localDev(params))
-        console.log("C", urls.localDev(params))
         let remoteJson = await call
         // console.log('REM', remoteJson)
         return remoteJson
@@ -127,7 +126,6 @@ module.exports = {
       const browser = await puppeteer.launch({
         args: ["--no-sandbox", "--disable-setuid-sandbox"]
       })
-      console.log("HERE 1")
       const page = await browser.newPage()
       if (process.env.NODE_ENV === "development") {
         await page.goto(
@@ -137,12 +135,9 @@ module.exports = {
         await page.goto(
           `https://f1-cards.herokuapp.com/api/driver/${ctx.params.driver_slug}`
         )
-        console.log("HERE 2")
       }
       await page.screenshot({ path: "example.png" })
-      console.log("here 3")
       await browser.close()
-      console.log("here 3")
     } catch (e) {
       console.error("An error occured in takeImage:", e)
       return "An error occured in takeImage:", e

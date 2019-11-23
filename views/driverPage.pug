@@ -14,6 +14,7 @@ block content
     if addClass === 'driver-card-page'
       .driver-page.driver-card-page
         .driver-card-container-sm
+          //hide and show each template based on page size
           +driverCardMixinSm(driverData)
         .driver-card-container-lg
           +driverCardMixinLg(driverData)
