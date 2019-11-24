@@ -11,6 +11,11 @@ module.exports = {
   renderAllDriversList,
   makeAllDriversObjs
 }
+//TODO
+//get array post
+// send post to webhook - recieved
+// close webhook send post with sender_ID to add to res obj
+//ask user next question on msgr
 function compileDriverTemplateResObj(
   ctx,
   driversObj,

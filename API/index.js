@@ -1,54 +1,67 @@
-const utils = require('../utils')
-const fs = require('fs')
-var puppeteer = require('puppeteer')
+const utils = require("../utils")
+const urls = require("../urls")
+const fs = require("fs")
+var puppeteer = require("puppeteer")
+// HANDLES ALL CALLS TO MSNGR
+// when POST recieved send data to DB
+async function sendUserDatatoDB(data, sender_id) {
+  const senderData = {
+    sender_id,
+    data
+  }
+  utils.httpPostCall()
+}
+// get user ID from url and send id and data to API DB
+//send POST back to msg to close window and confirm data was saved
+// ask user next question
 
-// send image when called to messenger
-async function sendImage(ctx, type) {
-  const types = ['driver', 'team']
+// return GET image to messenger
+async function sendImagetoMsgr(ctx, type) {
+  const types = ["driver", "team"]
   if (!types.includes(type)) {
-    console.error('Incorrect type in sendImage API')
+    console.error("Incorrect type in sendImagetoMsgr API")
     return
   }
-  const urlParts = ctx.path.split('/')
+  const urlParts = ctx.path.split("/")
   console.log(urlParts)
   try {
     // access checks if file exists - takes path
-    if (process.env.NODE_ENV === 'testing') {
-      fs.access('./tests/api/test.png', err => {
+    if (process.env.NODE_ENV === "testing") {
+      fs.access("./tests/api/test.png", err => {
         if (!err) {
-          console.log('myfile exists')
-          fs.unlink('./tests/api/test.png', err => {
+          console.log("myfile exists")
+          fs.unlink("./tests/api/test.png", err => {
             if (err) throw err
-            console.log('File unlinked')
+            console.log("File unlinked")
           })
         } else {
-          console.log('myfile does not exist')
+          console.log("myfile does not exist")
         }
       })
     } else {
-      fs.access('./example.png', err => {
+      fs.access("./example.png", err => {
         if (!err) {
-          console.log('myfile exists')
-          fs.unlink('./example.png', err => {
+          console.log("myfile exists")
+          fs.unlink("./example.png", err => {
             if (err) throw err
-            console.log('File unlinked')
+            console.log("File unlinked")
           })
         } else {
-          console.log('myfile does not exist')
+          console.log("myfile does not exist")
         }
       })
     }
   } catch (err) {
-    console.error('Unlinking file error', err)
+    console.error("Unlinking file error", err)
   }
   try {
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
     })
     const page = await browser.newPage()
-    if (process.env.NODE_ENV === 'development') {
-      if (type === 'team') {
-        if (ctx.path.includes('api/mobile')) {
+    if (process.env.NODE_ENV === "development") {
+      if (type === "team") {
+        if (ctx.path.includes("api/mobile")) {
           await page.setViewport({
             width: 400,
             height: 600,
@@ -62,8 +75,8 @@ async function sendImage(ctx, type) {
           })
         }
         await page.goto(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
-      } else if (type === 'driver') {
-        if (ctx.path.includes('api/mobile')) {
+      } else if (type === "driver") {
+        if (ctx.path.includes("api/mobile")) {
           await page.setViewport({
             width: 600,
             height: 600,
@@ -80,9 +93,9 @@ async function sendImage(ctx, type) {
           `http://localhost:3000/${type}/${ctx.params.driver_slug}`
         )
       }
-    } else if (process.env.NODE_ENV === 'production') {
-      if (type === 'team') {
-        if (ctx.path.includes('api/mobile')) {
+    } else if (process.env.NODE_ENV === "production") {
+      if (type === "team") {
+        if (ctx.path.includes("api/mobile")) {
           await page.setViewport({
             width: 400,
             height: 600,
@@ -98,8 +111,8 @@ async function sendImage(ctx, type) {
         await page.goto(
           `https://f1-cards.herokuapp.com/${type}/${ctx.params.team_slug}`
         )
-      } else if (type === 'driver') {
-        if (ctx.path.includes('api/mobile')) {
+      } else if (type === "driver") {
+        if (ctx.path.includes("api/mobile")) {
           await page.setViewport({
             width: 600,
             height: 600,
@@ -116,9 +129,9 @@ async function sendImage(ctx, type) {
           `https://f1-cards.herokuapp.com/${type}/${ctx.params.driver_slug}`
         )
       }
-    } else if (process.env.NODE_ENV === 'testing') {
-      if (type === 'driver') {
-        if (ctx.path.includes('api/mobile')) {
+    } else if (process.env.NODE_ENV === "testing") {
+      if (type === "driver") {
+        if (ctx.path.includes("api/mobile")) {
           await page.setViewport({
             width: 600,
             height: 600,
@@ -135,8 +148,8 @@ async function sendImage(ctx, type) {
         await page.goto(
           `http://localhost:3000/${type}/${ctx.params.driver_slug}`
         )
-      } else if (type === 'team') {
-        if (ctx.path.includes('api/mobile')) {
+      } else if (type === "team") {
+        if (ctx.path.includes("api/mobile")) {
           await page.setViewport({
             width: 400,
             height: 600,
@@ -153,23 +166,24 @@ async function sendImage(ctx, type) {
         await page.goto(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
       }
       await page.screenshot({
-        path: './tests/api/test.png',
+        path: "./tests/api/test.png",
         fullPage: true
       })
       await browser.close()
       return
     }
-    await page.screenshot({ path: 'example.png', fullPage: true })
+    await page.screenshot({ path: "example.png", fullPage: true })
     await browser.close()
   } catch (e) {
-    console.error('An error occured in takeImage:', e)
-    return 'An error occured in takeImage:', e
+    console.error("An error occured in takeImage:", e)
+    return "An error occured in takeImage:", e
   }
   //   set content type to image
   ctx.type = `image/png`
   //   send image to body
-  return fs.createReadStream('./example.png')
+  return fs.createReadStream("./example.png")
 }
 module.exports = {
-  sendImage
+  sendImagetoMsgr,
+  sendUserDatatoDB
 }
