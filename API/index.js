@@ -9,7 +9,7 @@ async function sendUserDatatoDB(data, sender_id) {
     sender_id,
     data
   }
-  utils.httpPostCall()
+  utils.httpPostCall(urls.localDev())
 }
 // get user ID from url and send id and data to API DB
 //send POST back to msg to close window and confirm data was saved

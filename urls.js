@@ -1,4 +1,5 @@
 module.exports = {
+  cardsEndpoint: `http://localhost:3000`,
   localDev: params => {
     return `http://localhost:5000/${params}`
   },

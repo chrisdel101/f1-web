@@ -138,7 +138,7 @@ describe("driversController", () => {
     })
   })
   describe("fetchDriverAPI()", () => {
-    it.only("fetchDriverAPI returns non-empty team/driver objs - type = card ", function() {
+    it("fetchDriverAPI returns non-empty team/driver objs - type = card ", function() {
       const ctx = {
         params: {
           driver_slug: "lewis-hamilton"
