@@ -1,19 +1,23 @@
 const api = require('../../API/index')
 const nock = require('nock')
+const sinon = require('sinon')
+const assert = require('assert')
 
 describe('API tests', () => {
-  describe('sendUserDatatoDB()', () => {
-    it('sendUserDatatoDB sends POST to DB', function() {
+  describe('sendUserData()', () => {
+    it.only('sendUserData sends POST to DB', function() {
       const data = {
         driver_data: ['driver1', 'driver2'],
         team_data: ['team1', 'team2'],
         user_id: 2
       }
-      return api.sendUserDatatoDB(data)
+      let stub = sinon.stub(api, 'sendUserData').returns('okay')
+      api.sendUserData(data)
+      assert(stub.calledOnce)
     })
   })
   describe('takeCardScreenShot()', () => {
-    it.only('takeCardScreenShot takes mobile driver image', function() {
+    it('takeCardScreenShot takes mobile driver image', function() {
       const mockCtx = {
         path: 'https://f1-cards.herokuapp.com/api/mobile/driver/max-verstappen',
         params: {
