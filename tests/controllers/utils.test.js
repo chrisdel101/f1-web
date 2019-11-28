@@ -6,6 +6,25 @@ const sinon = require('sinon')
 const nock = require('nock')
 
 describe('utils()', () => {
+  describe('statusCodeChecker()', () => {
+    it('statusCodeChecker returns false for 404', function() {
+      const res = utils.statusCodeChecker(404)
+      assert(!res)
+    })
+    it('statusCodeChecker returns false for 500', function() {
+      const res = utils.statusCodeChecker(404)
+      assert(!res)
+    })
+    it('statusCodeChecker returns true for 200', function() {
+      const res = utils.statusCodeChecker(200)
+      assert(res)
+    })
+    it('statusCodeChecker returns true for 301', function() {
+      const res = utils.statusCodeChecker(301)
+      assert(res)
+    })
+  })
+
   describe('verifyTimeStamp', function() {
     it('verifyTimeStamp returns false when timestamp is older than expiry param', function() {
       const randomTimeStamp = new Date('Nov 05 2019 21:49:28').getTime()
@@ -94,14 +113,14 @@ describe('utils()', () => {
       assert(utils.isObjEmpty(viewCache))
     })
   })
-  describe.only('httpPostCall()', () => {
+  describe('httpPostCall()', () => {
     const data = {
       driver_data: ['driver1', 'driver2'],
       team_data: ['team1', 'team2'],
       user_id: 2
     }
     it('httpPostCall returns 200 status', async function() {
-      const scope = nock(`${urls.cardsEndpoint}`)
+      const scope = nock(`${urls.localCardsEndpoint}`)
         .post('/test')
         .reply(200, {
           license: {
@@ -112,7 +131,7 @@ describe('utils()', () => {
             node_id: 'MDc6TGljZW5zZTEz'
           }
         })
-      await utils.httpPostCall(`${urls.cardsEndpoint}/test`, data)
+      await utils.httpPostCall(`${urls.localCardsEndpoint}/test`, data)
       assert(scope.interceptors[0].statusCode === 200)
     })
   })

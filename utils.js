@@ -180,5 +180,12 @@ module.exports = {
       console.error('An error occured in takeImage:', e)
       return 'An error occured in takeImage:', e
     }
+  },
+  // false for 400 and 500s
+  statusCodeChecker(code) {
+    if (code >= 400 && code <= 599) {
+      return false
+    }
+    return true
   }
 }
