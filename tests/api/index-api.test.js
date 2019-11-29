@@ -2,10 +2,12 @@ const api = require('../../API/index')
 const nock = require('nock')
 const sinon = require('sinon')
 const assert = require('assert')
+const urls = require('../../urls')
+const { mockRequest, mockResponse } = require('mock-req-res')
 
 describe('API tests', () => {
   describe('sendUserData()', () => {
-    it.only('sendUserData sends POST to DB', function() {
+    it('sendUserData sends POST to DB', function() {
       const data = {
         driver_data: ['driver1', 'driver2'],
         team_data: ['team1', 'team2'],
@@ -17,16 +19,28 @@ describe('API tests', () => {
     })
   })
   describe('takeCardScreenShot()', () => {
-    it('takeCardScreenShot takes mobile driver image', function() {
+    it.only('takeCardScreenShot takes mobile driver image', async function() {
       const mockCtx = {
-        path: 'https://f1-cards.herokuapp.com/api/mobile/driver/max-verstappen',
+        path: `${urls.localCardsEndpoint}/api/mobile/driver/max-verstappen`,
         params: {
           team_slug: 'red_bull_racing',
           driver_slug: 'max-verstappen'
         }
       }
-      return api.takeCardScreenShot(mockCtx, 'driver').then(res => {
-        console.log(res)
+      const scope = nock(`${urls.localCardsEndpoint}`)
+        .get('/driver/max-verstappen')
+        .reply(200, {
+          license: {
+            key: 'mit',
+            name: 'MIT License',
+            spdx_id: 'MIT',
+            url: 'https://api.github.com/licenses/mit',
+            node_id: 'MDc6TGljZW5zZTEz'
+          }
+        })
+      const res = api.takeCardScreenShot(mockCtx, 'driver')
+      res.then(r => {
+        console.log(scope.isDone())
       })
     })
     it('takeCardScreenShot takes mobile driver image', async function() {

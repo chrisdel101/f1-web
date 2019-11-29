@@ -1,3 +1,4 @@
+// HANDLES CALLS TO OTHER SERVERS
 const utils = require('../utils')
 const urls = require('../urls')
 const fs = require('fs')
@@ -13,15 +14,18 @@ async function takeCardScreenShot(ctx, type) {
     console.error('Incorrect type in takeCardScreenShot API')
     return
   }
+  // console.log('ctx', ctx)
   // set content type to image
   ctx.type = `image/png`
   try {
     // access checks if file exists - takes path
     if (process.env.NODE_ENV === 'testing') {
+      // err - if file does not exist
       fs.access('./tests/api/test.png', err => {
         if (!err) {
           console.log('myfile exists')
           fs.unlink('./tests/api/test.png', err => {
+            // unlink err
             if (err) throw err
           })
         } else {
@@ -43,6 +47,7 @@ async function takeCardScreenShot(ctx, type) {
   } catch (err) {
     console.error('Unlinking file error', err)
   }
+
   try {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
@@ -155,8 +160,11 @@ async function takeCardScreenShot(ctx, type) {
             deviceScaleFactor: 1
           })
         }
+        console.log(
+          `${urls.localCardsEndpoint}/${type}/${ctx.params.driver_slug}`
+        )
         const req = await page.goto(
-          `http://localhost:3000/${type}/${ctx.params.driver_slug}`
+          `${urls.localCardsEndpoint}/${type}/${ctx.params.driver_slug}`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
@@ -179,7 +187,7 @@ async function takeCardScreenShot(ctx, type) {
         }
         // console.log(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
         const req = await page.goto(
-          `http://localhost:3000/${type}/${ctx.params.team_slug}`
+          `${urls.localCardsEndpoint}/${type}/${ctx.params.team_slug}`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
@@ -192,16 +200,19 @@ async function takeCardScreenShot(ctx, type) {
         fullPage: true
       })
       await browser.close()
-      return
+      return fs.createReadStream('./tests/api/test.png')
+      // return fs.createReadStream('./tests/api/test.png')
     }
-    await page.screenshot({ path: 'example.png', fullPage: true })
-    await browser.close()
+    if (process.env.NODE_ENV !== 'testing') {
+      await page.screenshot({ path: 'example.png', fullPage: true })
+      await browser.close()
+      return fs.createReadStream('./example.png')
+    }
   } catch (e) {
     console.error('An error occured in takeImage:', e)
     return 'An error occured in takeImage:', e
   }
   //   send image to body
-  return fs.createReadStream('./example.png')
 }
 module.exports = {
   takeCardScreenShot,
