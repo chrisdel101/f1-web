@@ -20,6 +20,8 @@ describe('API tests', () => {
   })
   describe('takeCardScreenShot()', () => {
     it.only('takeCardScreenShot takes mobile driver image', async function() {
+      this.server = sinon.createFakeServer()
+
       const mockCtx = {
         path: `${urls.localCardsEndpoint}/api/mobile/driver/max-verstappen`,
         params: {
@@ -27,20 +29,21 @@ describe('API tests', () => {
           driver_slug: 'max-verstappen'
         }
       }
-      const scope = nock(`${urls.localCardsEndpoint}`)
-        .get('/driver/max-verstappen')
-        .reply(200, {
-          license: {
-            key: 'mit',
-            name: 'MIT License',
-            spdx_id: 'MIT',
-            url: 'https://api.github.com/licenses/mit',
-            node_id: 'MDc6TGljZW5zZTEz'
-          }
-        })
+
       const res = api.takeCardScreenShot(mockCtx, 'driver')
       res.then(r => {
-        console.log(scope.isDone())
+        this.server.respondWith(
+          'GET',
+          `${urls.localCardsEndpoint}/api/mobile/driver/max-verstappen`,
+          [
+            200,
+            { 'Content-Type': 'application/json' },
+            '[{ "id": 12, "comment": "Hey there" }]'
+          ]
+        )
+        console.log(this.server)
+        // assert(this.server.requests.length > 0)
+        // this.server.restore()
       })
     })
     it('takeCardScreenShot takes mobile driver image', async function() {
