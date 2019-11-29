@@ -8,7 +8,7 @@ const puppeteer = require('puppeteer')
 
 describe('API tests', () => {
   describe('sendUserData()', () => {
-    it.only('sendUserData sends POST to DB success', function() {
+    it('sendUserData sends POST to DB success', function() {
       const data = {
         driver_data: ['driver1', 'driver2'],
         team_data: ['team1', 'team2'],
@@ -19,7 +19,7 @@ describe('API tests', () => {
       assert(stub.calledOnce)
       api.sendUserData.restore()
     })
-    it.only('sendUserData sends POST to DB', function() {
+    it('sendUserData sends POST to DB', function() {
       const data = {
         driver_data: ['driver1', 'driver2'],
         team_data: ['team1', 'team2'],

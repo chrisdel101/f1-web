@@ -132,7 +132,8 @@ async function makeAllDriversObjs(ctx, driverSlug, size = 'full') {
       flag_img_url: driverData.flag_img_url,
       main_image: driverData.main_image,
       name_slug: driverData.name_slug,
-      size
+      size,
+      sender_ID: ctx.query.id
     }
     return options
   } catch (e) {
@@ -155,7 +156,8 @@ async function renderAllDriversList(ctx) {
     // needs to have key name to work in template
     const driversArrObj = {
       driversArr,
-      size: driversArr[0].size
+      size: driversArr[0].size,
+      sender_ID: driversArr.sender_ID
     }
     return await ctx.render('allDrivers', driversArrObj)
   } catch (e) {

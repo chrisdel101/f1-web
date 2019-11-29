@@ -1,4 +1,4 @@
-let driverCardsLinks = document.querySelectorAll(".driver-card.mini a")
+let driverCardsLinks = document.querySelectorAll('.driver-card.mini a')
 driverCardsLinks = Array.from(driverCardsLinks)
 // array of objs on the page currently selected
 let driverObjs = []
@@ -6,46 +6,46 @@ let lastChecked
 driverCardsLinks.forEach((driverCardElem, i) => {
   const driverObj = new createDriverObj(driverCardElem, i)
   driverObjs.push(driverObj)
-  driverCardElem.addEventListener("click", function(e) {
+  driverCardElem.addEventListener('click', function(e) {
     e.preventDefault()
     if (!is_touch_device()) {
-      console.log("not touch", is_touch_device())
+      console.log('not touch', is_touch_device())
       keyboardCardSelect(driverCardElem, e)
     } else if (is_touch_device()) {
-      console.log("touch", is_touch_device())
+      console.log('touch', is_touch_device())
       touchCardSelect(driverCardElem, e)
     } else {
-      throw new TypeError("Browser type - touch or non-touch - not detected.")
+      throw new TypeError('Browser type - touch or non-touch - not detected.')
     }
   })
 })
 
-const driverSubmitButton = document.querySelector("button.submit-all-drivers")
+const driverSubmitButton = document.querySelector('button.submit-all-drivers')
 if (driverSubmitButton) {
-  driverSubmitButton.addEventListener("click", async () => {
+  driverSubmitButton.addEventListener('click', async () => {
     try {
       const data = returnClickedCardsSlugs()
-      return await postData("/drivers", data)
+      return await postData('/drivers', data)
     } catch (e) {
-      console.error("An error in submitting all drivers occured", e)
+      console.error('An error in submitting all drivers occured', e)
     }
   })
 }
 
 async function postData(url, data) {
   if (!data.length || !data) return
-  console.log("click submit")
+  console.log('click submit')
   const response = await fetch(url, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, *cors, same-origin
-    cache: "default", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, *same-origin, omit
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    redirect: "follow", // manual, *follow, error
-    referrer: "no-referrer", // no-referrer, *client
+    redirect: 'follow', // manual, *follow, error
+    referrer: 'no-referrer', // no-referrer, *client
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   })
   return await response.json() // parses JSON response into native JavaScript objects
@@ -56,7 +56,7 @@ function returnClickedCardsSlugs() {
       .filter(driver => driver.clicked)
       .map(driver => driver.name_slug)
   } catch (e) {
-    console.error("An error occured while gathering all selected cards", e)
+    console.error('An error occured while gathering all selected cards', e)
   }
 }
 // toggles current card on/off - touch only
@@ -154,13 +154,13 @@ function keyboardCardSelect(driverCardElem, e) {
 function toggleClickedClass(driverObj) {
   // console.log(driverObj)
   if (driverObj.clicked) {
-    console.log("toggle on", driverObj.name)
+    console.log('toggle on', driverObj.name)
     // driverObj.clicked = true
-    driverObj.originalElement.parentNode.classList.add("selected")
+    driverObj.originalElement.parentNode.classList.add('selected')
   } else {
-    console.log("toggle off", driverObj.name)
+    console.log('toggle off', driverObj.name)
     // driverObj.clicked = false
-    driverObj.originalElement.parentNode.classList.remove("selected")
+    driverObj.originalElement.parentNode.classList.remove('selected')
   }
 }
 function createDriverObj(elem, pageIndex) {
@@ -173,13 +173,14 @@ function createDriverObj(elem, pageIndex) {
 }
 // https://stackoverflow.com/a/4819886/5972531
 function is_touch_device() {
-  var prefixes = " -webkit- -moz- -o- -ms- ".split(" ")
+  var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ')
   var mq = function(query) {
     return window.matchMedia(query).matches
   }
 
   if (
-    "ontouchstart" in window ||
+    'ontouchstart' in window ||
+    // eslint-disable-next-line no-undef
     (window.DocumentTouch && document instanceof DocumentTouch)
   ) {
     return true
@@ -187,6 +188,21 @@ function is_touch_device() {
 
   // include the 'heartz' as a way to have a non matching MQ to help terminate the join
   // https://git.io/vznFH
-  var query = ["(", prefixes.join("touch-enabled),("), "heartz", ")"].join("")
+  var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('')
   return mq(query)
+}
+
+window.extAsyncInit = function() {
+  console.log('loaded')
+  // eslint-disable-next-line no-undef
+  MessengerExtensions.getContext(
+    '428256864460216',
+    function success(thread_context) {
+      console.log('context', thread_context)
+    },
+    function error(err) {
+      console.log('err', err)
+      // error
+    }
+  )
 }
