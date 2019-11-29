@@ -4,8 +4,8 @@ const urls = require('../urls')
 const fs = require('fs')
 var puppeteer = require('puppeteer')
 // send post to endpoint
-async function sendUserData(data) {
-  return await utils.httpPostCall(`${urls.localCardsEndpoint}/test`, data)
+async function sendUserData(data, url) {
+  return await utils.httpPostCall(url, data)
 }
 // take screen shot of endpoints entered
 async function takeCardScreenShot(ctx, type) {
