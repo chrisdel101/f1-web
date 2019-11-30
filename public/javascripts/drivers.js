@@ -3,6 +3,7 @@ driverCardsLinks = Array.from(driverCardsLinks)
 // array of objs on the page currently selected
 let driverObjs = []
 let lastChecked
+let context
 driverCardsLinks.forEach((driverCardElem, i) => {
   const driverObj = new createDriverObj(driverCardElem, i)
   driverObjs.push(driverObj)
@@ -191,11 +192,9 @@ function is_touch_device() {
   var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('')
   return mq(query)
 }
-
-window.extAsyncInit = function() {
-  console.log('loaded')
+async function getContext() {
   // eslint-disable-next-line no-undef
-  MessengerExtensions.getContext(
+  return await MessengerExtensions.getContext(
     '428256864460216',
     function success(thread_context) {
       console.log('context', thread_context)
@@ -205,4 +204,9 @@ window.extAsyncInit = function() {
       // error
     }
   )
+}
+window.extAsyncInit = async function() {
+  console.log('loaded')
+  context = await getContext()
+  console.log('CC', context)
 }
