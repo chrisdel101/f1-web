@@ -1,0 +1,27 @@
+<html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <title>Mocha Tests</title>
+      <link rel="stylesheet" href="/Users/chrisdielschnieder/desktop/code_work/formula1/f1Web/node_modules/mocha/mocha.css" />
+    </head>
+    <body>
+      <div id="mocha"></div>
+      <script src="/Users/chrisdielschnieder/desktop/code_work/formula1/f1Web/node_modules/mocha/mocha.js"></script>
+      <script src="/Users/chrisdielschnieder/desktop/code_work/formula1/f1Web/node_modules/chai/chai.js"></script>
+      <script>
+        mocha.setup('bdd')
+      </script>
+      <!-- load code you want to test here -->
+      <script src="/Users/chrisdielschnieder/desktop/code_work/formula1/f1Web/public/javascripts/drivers.js"></script>
+      
+      <!-- load your test files here -->
+      <script type="module" crossorigin src="./drivers.test.js"></script>
+
+      <script type="module">
+        mocha.run()
+      </script>
+    </body>
+  </html>
+</html>
