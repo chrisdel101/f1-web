@@ -49,8 +49,9 @@ async function postData(url, data) {
     referrer: 'no-referrer', // no-referrer, *client
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   })
-  return await response.json() // parses JSON response into native JavaScript objects
+  return await response // parses JSON response into native JavaScript objects
 }
+// returns array of driver slugs with clicked attr
 function returnClickedCardsSlugs() {
   try {
     return driverObjs
@@ -211,6 +212,6 @@ async function getContext() {
 }
 window.extAsyncInit = function() {
   getContext().then(res => {
-    console.log('con', res)
+    context = res
   })
 }
