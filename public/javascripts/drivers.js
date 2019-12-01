@@ -25,16 +25,20 @@ const driverSubmitButton = document.querySelector('button.submit-all-drivers')
 if (driverSubmitButton) {
   driverSubmitButton.addEventListener('click', async () => {
     try {
-      const data = returnClickedCardsSlugs()
+      const data = {
+        context,
+        driversArr: returnClickedCardsSlugs()
+      }
+      console.log(data)
       return await postData('/drivers', data)
     } catch (e) {
       console.error('An error in submitting all drivers occured', e)
     }
   })
 }
-
+// takes an obj with driversArr prop
 async function postData(url, data) {
-  if (!data.length || !data) return
+  if (isObjEmpty(data)) return 'No data'
   console.log('click submit')
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -210,8 +214,16 @@ async function getContext() {
     )
   })
 }
+function isObjEmpty(obj) {
+  if (Object.keys(obj).length === 0 && obj.constructor === Object) {
+    return true
+  }
+  return false
+}
 window.extAsyncInit = function() {
   getContext().then(res => {
+    // set context to global scope
     context = res
+    console.log('contex ready', context)
   })
 }
