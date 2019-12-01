@@ -208,6 +208,7 @@ async function getContext() {
       }
     }
   )
+  console.log('con above', context)
   return context
 }
 window.extAsyncInit = async function() {
