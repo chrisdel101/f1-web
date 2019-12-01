@@ -195,30 +195,26 @@ function is_touch_device() {
 async function getContext() {
   let context
   return new Promise(resolve => {
-    resolve(
-      'resolve',
-      // eslint-disable-next-line no-undef
-      MessengerExtensions.getContext(
-        '428256864460216',
-        function success(thread_context) {
-          context = thread_context
-          console.log('context set', thread_context)
-        },
-        function error(err) {
-          if (err) {
-            console.error('An error occured in the getContext()', err)
-            context = err
-          }
+    // eslint-disable-next-line no-undef
+    MessengerExtensions.getContext(
+      '428256864460216',
+      function success(thread_context) {
+        context = thread_context
+        console.log('context set', thread_context)
+      },
+      function error(err) {
+        if (err) {
+          console.error('An error occured in the getContext()', err)
+          context = err
         }
-      )
+      }
     )
-  }).then(() => {
-    console.log('con above', context)
-    return context
+    console.log('above res', context)
+    resolve(context)
   })
 }
-window.extAsyncInit = async function() {
-  console.log('loaded')
-  context = await getContext()
-  console.log('XX', context)
+window.extAsyncInit = function() {
+  getContext().then(res => {
+    console.log('con', res)
+  })
 }
