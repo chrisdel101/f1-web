@@ -193,24 +193,20 @@ function is_touch_device() {
   return mq(query)
 }
 async function getContext() {
-  let context
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     // eslint-disable-next-line no-undef
     MessengerExtensions.getContext(
       '428256864460216',
       function success(thread_context) {
-        context = thread_context
-        console.log('context set', thread_context)
+        resolve(thread_context)
       },
       function error(err) {
         if (err) {
           console.error('An error occured in the getContext()', err)
-          context = err
+          reject(err)
         }
       }
     )
-    console.log('above res', context)
-    resolve(context)
   })
 }
 window.extAsyncInit = function() {
