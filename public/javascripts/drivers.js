@@ -204,6 +204,7 @@ async function getContext() {
     function error(err) {
       if (err) {
         console.error('An error occured in the getContext()', err)
+        context = err
       }
     }
   )
@@ -212,9 +213,5 @@ async function getContext() {
 window.extAsyncInit = async function() {
   console.log('loaded')
   context = await getContext()
-  console.log('CC', context)
-}
-
-export default function sum(a, b) {
-  return a + b
+  console.log('XX', context)
 }
