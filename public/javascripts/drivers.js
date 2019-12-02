@@ -38,7 +38,7 @@ if (driverSubmitButton) {
 }
 // takes an obj with driversArr prop
 async function postData(url, data) {
-  if (isObjEmpty(data)) return 'No data'
+  if (!data.driversArr.length || !data.driversArr) return 'No data'
   console.log('click submit')
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -213,12 +213,6 @@ async function getContext() {
       }
     )
   })
-}
-function isObjEmpty(obj) {
-  if (Object.keys(obj).length === 0 && obj.constructor === Object) {
-    return true
-  }
-  return false
 }
 function isDevelopment() {
   if (window.location.hostname === 'localhost') {

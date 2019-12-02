@@ -31,6 +31,7 @@ if (teamSubmitButton) {
         teamsArr: await returnClickedCardsSlugs()
       }
       console.log(data)
+      // send to back end
       return await postData('/teams', data)
     } catch (e) {
       console.error('An error in submitting all teams occured', e)
@@ -39,7 +40,7 @@ if (teamSubmitButton) {
 }
 
 async function postData(url, data) {
-  if (isObjEmpty(data)) return 'No data'
+  if (!data.teamsArr.length || !data.teamsArr) return 'No data'
   console.log('click submit')
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -55,6 +56,7 @@ async function postData(url, data) {
   })
   return await response // parses JSON response into native JavaScript objects
 }
+// return arr of team slugs
 async function returnClickedCardsSlugs() {
   try {
     return teamObjs.filter(team => team.clicked).map(team => team.name_slug)
@@ -205,12 +207,6 @@ async function getContext() {
       }
     )
   })
-}
-function isObjEmpty(obj) {
-  if (Object.keys(obj).length === 0 && obj.constructor === Object) {
-    return true
-  }
-  return false
 }
 function isDevelopment() {
   if (window.location.hostname === 'localhost') {

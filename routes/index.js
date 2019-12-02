@@ -3,6 +3,7 @@ const indexController = require('../controllers/index.controller')
 const driversController = require('../controllers/drivers.controller')
 const teamsController = require('../controllers/teams.controller')
 const utils = require('../utils')
+const urls = require('../urls')
 const API = require('../API/index')
 
 // cache related
@@ -23,9 +24,11 @@ router.get('/team/:team_slug', teamsController.renderTeamCard)
 //---- WEBVIEWS
 router.post('/drivers', ctx => {
   console.log('drivers', ctx.request.body)
+  return API.sendUserData(ctx.request.body, urls.localDev('user'))
 })
 router.post('/teams', ctx => {
-  console.log(ctx.request.body)
+  console.log('teams', ctx.request.body)
+  return API.sendUserData(ctx.request.body, urls.localDev('user'))
 })
 // API - take images of cards
 // moblie size - uses puppeteer viewport to get
