@@ -220,10 +220,19 @@ function isObjEmpty(obj) {
   }
   return false
 }
+function isDevelopment() {
+  if (window.location.hostname === 'localhost') {
+    return true
+  }
+  return false
+}
 window.extAsyncInit = function() {
-  getContext().then(res => {
-    // set context to global scope
-    context = res
-    console.log('contex ready', context)
-  })
+  if (!isDevelopment) {
+    // eslint-disable-next-line no-undef
+    getContext().then(res => {
+      // set context to global scope
+      context = res
+      console.log('contex ready', context)
+    })
+  }
 }

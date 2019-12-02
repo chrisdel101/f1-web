@@ -200,7 +200,7 @@ async function getContext() {
       function error(err) {
         if (err) {
           console.error('An error occured in the getContext()', err)
-          resolve(err)
+          reject(err)
         }
       }
     )
@@ -212,11 +212,19 @@ function isObjEmpty(obj) {
   }
   return false
 }
+function isDevelopment() {
+  if (window.location.hostname === 'localhost') {
+    return true
+  }
+  return false
+}
 window.extAsyncInit = function() {
-  // eslint-disable-next-line no-undef
-  getContext().then(res => {
-    // set context to global scope
-    context = res
-    console.log('contex ready', context)
-  })
+  if (!isDevelopment) {
+    // eslint-disable-next-line no-undef
+    getContext().then(res => {
+      // set context to global scope
+      context = res
+      console.log('contex ready', context)
+    })
+  }
 }
