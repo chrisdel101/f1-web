@@ -65,7 +65,7 @@ async function returnClickedCardsSlugs() {
   }
 }
 // toggles current card on/off - touch only
-function touchCardSelect(teamCardElem, e) {
+function touchCardSelect(teamCardElem) {
   const nodeNameSlug = teamCardElem.parentNode.parentNode.dataset.slug
   const currentTeamObj = teamObjs.filter(team => {
     if (team.name_slug === nodeNameSlug) {

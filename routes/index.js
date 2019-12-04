@@ -24,7 +24,14 @@ router.get('/team/:team_slug', teamsController.renderTeamCard)
 //---- WEBVIEWS
 router.post('/drivers', ctx => {
   console.log('drivers', ctx.request.body)
-  return API.sendUserData(ctx.request.body, urls.localDev('user'))
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'testing'
+  ) {
+    return API.sendUserData(ctx.request.body, urls.localDev('user'))
+  } else {
+    return API.sendUserData(ctx.request.body, urls.prodUrl('user'))
+  }
 })
 router.post('/teams', ctx => {
   console.log('teams', ctx.request.body)

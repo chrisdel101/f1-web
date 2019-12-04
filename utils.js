@@ -25,7 +25,7 @@ module.exports = {
     return false
   },
   httpCall: async url => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       http.get(url, res => {
         res.setEncoding('utf8')
         res.on('data', d => {
@@ -35,7 +35,7 @@ module.exports = {
     })
   },
   httpsCall: async url => {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       https.get(url, res => {
         res.setEncoding('utf8')
         res.on('data', d => {
@@ -74,6 +74,9 @@ module.exports = {
       })
 
       // Write data to request body
+      if (process.env.LOGS !== 'OFF') {
+        console.log('data', data)
+      }
       req.write(data)
       req.end()
       return 'Post Complete'

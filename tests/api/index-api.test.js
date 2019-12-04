@@ -1,9 +1,7 @@
 const api = require('../../API/index')
-const nock = require('nock')
 const sinon = require('sinon')
 const assert = require('assert')
 const urls = require('../../urls')
-const { mockRequest, mockResponse } = require('mock-req-res')
 const puppeteer = require('puppeteer')
 
 describe('API tests', () => {
@@ -28,6 +26,16 @@ describe('API tests', () => {
       let stub = sinon.stub(api, 'sendUserData').returns('okay')
       api.sendUserData(data)
       assert(stub.calledOnce)
+    })
+    it.only('sendUserData sends POST to DB', function() {
+      const data = {
+        driver_data: ['driver1', 'driver2'],
+        team_data: ['team1', 'team2'],
+        user_id: 2
+      }
+      // let stub = sinon.stub(api, 'sendUserData').returns('okay')
+      api.sendUserData(data, urls.localDev('user'))
+      // assert(stub.calledOnce)
     })
   })
   describe.skip('takeCardScreenShot()', () => {

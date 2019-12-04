@@ -87,7 +87,7 @@ describe('driversController', () => {
         })
       })
     })
-    it.only('renderAllDriversList calls makeAllDriversObjs()', function() {
+    it('renderAllDriversList calls makeAllDriversObjs()', function() {
       const mockCtx = {
         query: {
           driver: 'alexander-albon',

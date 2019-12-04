@@ -66,7 +66,7 @@ function returnClickedCardsSlugs() {
   }
 }
 // toggles current card on/off - touch only
-function touchCardSelect(driverCardElem, e) {
+function touchCardSelect(driverCardElem) {
   const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
   const currentDriverObj = driverObjs.filter(driver => {
     if (driver.name_slug === nodeNameSlug) {
