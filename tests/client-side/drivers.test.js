@@ -16,7 +16,7 @@ describe('driver.js tests', () => {
   })
   describe('postData', () => {
     it('postData works', function() {
-      postData('')
+      postData('/users')
     })
   })
 })

@@ -220,7 +220,7 @@ function isDevelopment() {
   return false
 }
 window.extAsyncInit = function() {
-  if (!isDevelopment) {
+  if (!isDevelopment()) {
     // eslint-disable-next-line no-undef
     getContext().then(res => {
       // set context to global scope

@@ -2,7 +2,6 @@ extends layout
 include mixins/_allDriversMixin
 block content
   .all-drivers-container
-    - console.log('PP', process.env.NODE_ENV)
     ul.all-drivers
       for driver in driversArr
         +allDriverMixin(driver)
