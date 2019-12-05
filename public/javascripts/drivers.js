@@ -20,7 +20,9 @@ driverCardsLinks.forEach((driverCardElem, i) => {
     }
   })
 })
-
+function sum(a, b) {
+  return a + b
+}
 const driverSubmitButton = document.querySelector('button.submit-all-drivers')
 if (driverSubmitButton) {
   driverSubmitButton.addEventListener('click', async () => {
