@@ -20,16 +20,13 @@ driverCardsLinks.forEach((driverCardElem, i) => {
     }
   })
 })
-function sum(a, b) {
-  return a + b
-}
 const driverSubmitButton = document.querySelector('button.submit-all-drivers')
 if (driverSubmitButton) {
   driverSubmitButton.addEventListener('click', async () => {
     try {
       const data = {
         context,
-        driversArr: returnClickedCardsSlugs()
+        driversArr: returnClickedCardsSlugs(driverObjs)
       }
       console.log(data)
       return await postData('/drivers', data)
@@ -58,7 +55,7 @@ async function postData(url, data) {
   return await response // parses JSON response into native JavaScript objects
 }
 // returns array of driver slugs with clicked attr
-function returnClickedCardsSlugs() {
+function returnClickedCardsSlugs(driverObjs) {
   try {
     return driverObjs
       .filter(driver => driver.clicked)

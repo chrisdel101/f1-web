@@ -1,6 +1,22 @@
-var expect = chai.expect
-describe('sum', function() {
-  it('should return sum of arguments', function() {
-    chai.expect(sum(1, 2)).to.equal(3)
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+const expect = chai.expect
+const assert = chai.assert
+describe('driver.js tests', () => {
+  describe('returnClickedCardsSlugs()', () => {
+    it('returnClickedCardsSlugs returns an arr', function() {
+      const data = [
+        { clicked: true, name_slug: 'Some slug1' },
+        { clicked: true, name_slug: 'Some slug2' },
+        { clicked: false, name_slug: 'Some slug2' }
+      ]
+      const res = returnClickedCardsSlugs(data)
+      chai.assert.deepEqual(res, ['Some slug1', 'Some slug2'])
+    })
+  })
+  describe('postData', () => {
+    it('postData works', function() {
+      postData('')
+    })
   })
 })
