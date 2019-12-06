@@ -27,7 +27,7 @@ describe('API tests', () => {
       api.sendUserData(data)
       assert(stub.calledOnce)
     })
-    it.only('sendUserData sends POST to DB', function() {
+    it('sendUserData sends POST to DB', function() {
       const data = {
         driver_data: ['driver1', 'driver2'],
         team_data: ['team1', 'team2'],

@@ -23,14 +23,15 @@ router.get('/driver/:driver_slug', driversController.renderDriverCard)
 router.get('/team/:team_slug', teamsController.renderTeamCard)
 //---- WEBVIEWS
 router.post('/drivers', ctx => {
-  console.log('here')
   if (process.env.LOGs !== 'off') {
-    console.log('req body', ctx.request.body)
+    console.log('/drivers req body', ctx.request.body)
   }
   if (
     process.env.NODE_ENV === 'development' ||
     process.env.NODE_ENV === 'testing'
   ) {
+    ctx.response.status = 200
+    // console.log('here', typeof ctx.request.body)
     return API.sendUserData(ctx.request.body, urls.localDev('user'))
   } else {
     return API.sendUserData(ctx.request.body, urls.prodUrl('user'))

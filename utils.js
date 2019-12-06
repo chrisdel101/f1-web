@@ -46,8 +46,12 @@ module.exports = {
   },
   httpPostCall: async (url, data) => {
     const newUrl = new URL(url)
-
-    data = JSON.stringify(data)
+    if (typeof data !== 'string') {
+      if (process.env.LOGS != 'off') {
+        console.log('stringify in httpPostCall')
+        data = JSON.stringify(data)
+      }
+    }
     try {
       const options = {
         hostname: newUrl.hostname,
@@ -77,6 +81,7 @@ module.exports = {
       if (process.env.LOGS !== 'OFF') {
         console.log('data', data)
       }
+
       req.write(data)
       req.end()
       return 'Post Complete'

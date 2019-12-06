@@ -15,7 +15,7 @@ describe('driver.js tests', () => {
     })
   })
   describe('postData', () => {
-    it.only('postData works', async function() {
+    it('postData works', async function() {
       const data = {
         driversArr: ['driver1', 'driver2'],
         teamsArr: ['team1', 'team2'],

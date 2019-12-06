@@ -119,7 +119,7 @@ describe('utils()', () => {
       team_data: ['team1', 'team2'],
       user_id: 2
     }
-    it('httpPostCall returns 200 status', async function() {
+    it.only('httpPostCall returns 200 status', async function() {
       const scope = nock(`${urls.localCardsEndpoint}`)
         .post('/test')
         .reply(200, {

@@ -35,11 +35,12 @@ if (driverSubmitButton) {
     }
   })
 }
-// takes an obj with driversArr prop
+// takes an obj with driversArr prop - calls backend
 async function postData(url, data) {
   try {
     console.log('url', url)
     if (!data.driversArr.length || !data.driversArr) return 'No data'
+    data = JSON.stringify(data)
     console.log('click submit')
     const response = await fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -52,9 +53,10 @@ async function postData(url, data) {
       },
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
+      body: data // body data type must match "Content-Type" header
     })
-    console.log('res', response)
+    console.log('type', typeof data)
+
     return await response // parses JSON response into native JavaScript objects
   } catch (e) {
     console.error('An error in postData', e)
