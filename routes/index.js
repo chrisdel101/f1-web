@@ -23,6 +23,7 @@ router.get('/driver/:driver_slug', driversController.renderDriverCard)
 router.get('/team/:team_slug', teamsController.renderTeamCard)
 //---- WEBVIEWS
 router.post('/drivers', ctx => {
+  console.log('here')
   if (process.env.LOGs !== 'off') {
     console.log('req body', ctx.request.body)
   }

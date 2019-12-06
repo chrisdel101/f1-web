@@ -15,8 +15,13 @@ describe('driver.js tests', () => {
     })
   })
   describe('postData', () => {
-    it('postData works', function() {
-      postData('/users')
+    it.only('postData works', async function() {
+      const data = {
+        driversArr: ['driver1', 'driver2'],
+        teamsArr: ['team1', 'team2'],
+        user_id: 2
+      }
+      console.log(await postData('http://localhost:3000/drivers', data))
     })
   })
 })

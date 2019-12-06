@@ -37,22 +37,28 @@ if (driverSubmitButton) {
 }
 // takes an obj with driversArr prop
 async function postData(url, data) {
-  if (!data.driversArr.length || !data.driversArr) return 'No data'
-  console.log('click submit')
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrer: 'no-referrer', // no-referrer, *client
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  })
-  return await response // parses JSON response into native JavaScript objects
+  try {
+    console.log('url', url)
+    if (!data.driversArr.length || !data.driversArr) return 'No data'
+    console.log('click submit')
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'no-cors', // no-cors, *cors, same-origin
+      cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrer: 'no-referrer', // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    })
+    console.log('res', response)
+    return await response // parses JSON response into native JavaScript objects
+  } catch (e) {
+    console.error('An error in postData', e)
+  }
 }
 // returns array of driver slugs with clicked attr
 function returnClickedCardsSlugs(driverObjs) {
