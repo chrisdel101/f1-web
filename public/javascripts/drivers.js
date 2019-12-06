@@ -38,25 +38,21 @@ if (driverSubmitButton) {
 // takes an obj with driversArr prop - calls backend
 async function postData(url, data) {
   try {
-    console.log('url', url)
     if (!data.driversArr.length || !data.driversArr) return 'No data'
-    data = JSON.stringify(data)
     console.log('click submit')
     const response = await fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'no-cors', // no-cors, *cors, same-origin
+      method: 'POST',
+      mode: 'no-cors',
       cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client
-      body: data // body data type must match "Content-Type" header
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
     })
-    console.log('type', typeof data)
-
+    console.log('innser', response)
     return await response // parses JSON response into native JavaScript objects
   } catch (e) {
     console.error('An error in postData', e)

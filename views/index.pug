@@ -22,4 +22,13 @@ block content
       li Subscribe and your Formula 1 cards will automatically arrive before every grand-prix weekend.
   
 
-
+  script. 
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId            : '428256864460216',
+        autoLogAppEvents : true,
+        xfbml            : true,
+        version          : 'v5.0'
+      });
+    };
+  script(async defer src="https://connect.facebook.net/en_US/sdk.js")

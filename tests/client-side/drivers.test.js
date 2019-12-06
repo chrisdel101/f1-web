@@ -21,7 +21,11 @@ describe('driver.js tests', () => {
         teamsArr: ['team1', 'team2'],
         user_id: 2
       }
-      console.log(await postData('http://localhost:3000/drivers', data))
+      const res = await postData('http://localhost:3000/drivers', data)
+      console.log('res', res)
+      setTimeout(() => {
+        console.log('res', res)
+      }, 1000)
     })
   })
 })
