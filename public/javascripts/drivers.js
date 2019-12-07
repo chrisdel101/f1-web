@@ -1,20 +1,23 @@
 let driverCardsLinks = document.querySelectorAll('.driver-card.mini a')
+
+// convert to array
 driverCardsLinks = Array.from(driverCardsLinks)
 // array of objs on the page currently selected
 let driverObjs = []
 let lastChecked
 let context
-driverCardsLinks.forEach((driverCardElem, i) => {
-  const driverObj = new createDriverObj(driverCardElem, i)
+driverCardsLinks.forEach((driverCardLinkElem, i) => {
+  const driverObj = new createDriverObj(driverCardLinkElem, i)
   driverObjs.push(driverObj)
-  driverCardElem.addEventListener('click', function(e) {
+  driverCardLinkElem.addEventListener('click', function(e) {
     e.preventDefault()
     if (!is_touch_device()) {
       console.log('not touch', is_touch_device())
-      keyboardCardSelect(driverCardElem, e)
+      keyboardCardSelect(driverCardLinkElem, e)
+      console.log('driverCardEl', driverCardLinkElem)
     } else if (is_touch_device()) {
       console.log('touch', is_touch_device())
-      touchCardSelect(driverCardElem, e)
+      touchCardSelect(driverCardLinkElem, e)
     } else {
       throw new TypeError('Browser type - touch or non-touch - not detected.')
     }
@@ -38,11 +41,18 @@ if (driverSubmitButton) {
 // takes an obj with driversArr prop - calls backend
 async function postData(url, data) {
   try {
-    if (!data.driversArr.length || !data.driversArr) return 'No data'
+    if (!data.driversArr.length || !data.driversArr)
+      return 'No data supplied to fetch'
     console.log('click submit')
+    let mode
+    if (!isDevelopment()) {
+      mode = 'cors'
+    } else {
+      mode = 'no-cors'
+    }
     const response = await fetch(url, {
       method: 'POST',
-      mode: 'no-cors',
+      mode: mode,
       cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
@@ -52,7 +62,6 @@ async function postData(url, data) {
       referrer: 'no-referrer', // no-referrer, *client
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     })
-    console.log('innser', response)
     return await response // parses JSON response into native JavaScript objects
   } catch (e) {
     console.error('An error in postData', e)
@@ -69,14 +78,17 @@ function returnClickedCardsSlugs(driverObjs) {
   }
 }
 // toggles current card on/off - touch only
-function touchCardSelect(driverCardElem) {
-  const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
+// takes a tag of driver card
+function touchCardSelect(driverCardLinkElem) {
+  // target name inside container from a tag
+  const nodeNameSlug = driverCardLinkElem.parentNode.parentNode.dataset.slug
+  // match name to proper driver obj
   const currentDriverObj = driverObjs.filter(driver => {
     if (driver.name_slug === nodeNameSlug) {
       return driver
     }
   })[0]
-  // select current driver
+  // toggle clicked on matched driver obj
   if (!currentDriverObj.clicked) {
     currentDriverObj.clicked = true
   } else {
@@ -86,8 +98,8 @@ function touchCardSelect(driverCardElem) {
 }
 
 // toggles current card with shift bar action
-function keyboardCardSelect(driverCardElem, e) {
-  const nodeNameSlug = driverCardElem.parentNode.parentNode.dataset.slug
+function keyboardCardSelect(driverCardLinkElem, e) {
+  const nodeNameSlug = driverCardLinkElem.parentNode.parentNode.dataset.slug
   const currentDriverObj = driverObjs.filter(driver => {
     if (driver.name_slug === nodeNameSlug) {
       return driver
@@ -217,14 +229,20 @@ async function getContext() {
     )
   })
 }
+// get script from page
 function isDevelopment() {
-  if (window.location.hostname === 'localhost') {
-    return true
-  }
-  return false
+  return new Promise((resolve, reject) => {
+    const env = document.querySelectorAll('script[data-env]')[0].dataset.env
+    if (env === 'development' || env === 'testing') {
+      console.log('env', env)
+      resolve(true)
+    } else {
+      reject(false)
+    }
+  })
 }
-window.extAsyncInit = function() {
-  if (!isDevelopment()) {
+window.extAsyncInit = async function() {
+  if (!(await isDevelopment())) {
     // eslint-disable-next-line no-undef
     getContext().then(res => {
       // set context to global scope

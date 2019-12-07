@@ -9,6 +9,7 @@
     </head>
     <body>
       <div id="mocha"></div>
+      <script src="https://cdn.jsdelivr.net/npm/sinon@3/pkg/sinon.js"></script>
       <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.2.0/chai.js"></script>
       <script>
@@ -18,7 +19,7 @@
       <script src="public/javascripts/drivers.js"></script>
       
       <!-- load your test files here -->
-      <script src="drivers.test.js"></script>
+      <script src="drivers.test.js" data-env="testing"></script>
 
       <script type="module">
         mocha.run()

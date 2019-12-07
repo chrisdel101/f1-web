@@ -16,4 +16,4 @@ block content
       js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
       fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'Messenger'));
-    script(src="../javascripts/teams.js" type="application/javascript")
+    script(src="../javascripts/teams.js" type="application/javascript" data-env=`${process.env.NODE_ENV}`)
