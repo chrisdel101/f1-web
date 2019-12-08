@@ -48,8 +48,8 @@ module.exports = {
     const newUrl = new URL(url)
     if (typeof data !== 'string') {
       if (process.env.LOGS != 'off') {
-        console.log('stringify in httpPostCall')
         data = JSON.stringify(data)
+        console.log('stringify in httpPostCall', data)
       }
     }
     try {

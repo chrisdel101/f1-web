@@ -1,5 +1,13 @@
 let driverCardsLinks = document.querySelectorAll('.driver-card.mini a')
-
+// use this fake data in dev
+const fakeContext = {
+  tid: '1234567891012131',
+  thread_type: 'USER_TO_PAGE',
+  psid: '1234567891012131',
+  signed_request:
+    '"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"',
+  metadata: null
+}
 // convert to array
 driverCardsLinks = Array.from(driverCardsLinks)
 // array of objs on the page currently selected
@@ -27,10 +35,8 @@ const driverSubmitButton = document.querySelector('button.submit-all-drivers')
 if (driverSubmitButton) {
   driverSubmitButton.addEventListener('click', async () => {
     try {
-      const data = {
-        context,
-        driversArr: returnClickedCardsSlugs(driverObjs)
-      }
+      // construct obj to send to backend
+      const data = dataBundler(context, returnClickedCardsSlugs(driverObjs))
       console.log(data)
       return await postData('/drivers', data)
     } catch (e) {
@@ -38,10 +44,17 @@ if (driverSubmitButton) {
     }
   })
 }
+// makes data in an obj
+function dataBundler(context, drivers_arr) {
+  return {
+    user_id: context.psid,
+    drivers_arr
+  }
+}
 // takes an obj with driversArr prop - calls backend
 async function postData(url, data) {
   try {
-    if (!data.driversArr.length || !data.driversArr)
+    if (!data.drivers_arr.length || !data.drivers_arr)
       return 'No data supplied to fetch'
     console.log('click submit')
     let mode
@@ -212,7 +225,7 @@ function is_touch_device() {
   var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('')
   return mq(query)
 }
-async function getContext() {
+async function getProdContext() {
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line no-undef
     MessengerExtensions.getContext(
@@ -244,10 +257,14 @@ function isDevelopment() {
 window.extAsyncInit = async function() {
   if (!(await isDevelopment())) {
     // eslint-disable-next-line no-undef
-    getContext().then(res => {
+    // get real contxt from FB
+    getProdContext().then(res => {
       // set context to global scope
       context = res
       console.log('contex ready', context)
     })
+  } else {
+    // use fake context for dev
+    context = fakeContext
   }
 }

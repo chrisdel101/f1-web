@@ -63,6 +63,7 @@ async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
     } else if (render === 'card') {
       driverSlug = ctx.params.driver_slug
     }
+    // TODO - add to error message page
     if (!driverSlug) {
       throw new ReferenceError('fetchDriverAPI must have driver_slug')
     }
@@ -71,6 +72,7 @@ async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
       await utils.fetchData(`drivers/${driverSlug}`)
     )
     if (!driverData) {
+      // happens if DB offline
       console.error(
         'fetchDriverAPI: No Drivers found. Incorrect slug or DB is empty'
       )
@@ -87,6 +89,7 @@ async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
       )
       // if slug fails return undefined
       if (!teamData) {
+        // happens if team table empty API
         console.error(
           'fetchDriverAPI: no Teams found. Incorrect slug/id or DB is empty'
         )
