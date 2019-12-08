@@ -1,5 +1,12 @@
 let teamCardLinks = document.querySelectorAll('.team-card.mini a')
-
+const fakeContext = {
+  tid: '1234567891012131',
+  thread_type: 'USER_TO_PAGE',
+  psid: '1234567891012131',
+  signed_request:
+    '"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"',
+  metadata: null
+}
 teamCardLinks = Array.from(teamCardLinks)
 // array of objs on the page currently selected
 let teamObjs = []
@@ -26,10 +33,8 @@ const teamSubmitButton = document.querySelector('button.submit-all-teams')
 if (teamSubmitButton) {
   teamSubmitButton.addEventListener('click', async () => {
     try {
-      const data = {
-        context,
-        teamsArr: await returnClickedCardsSlugs()
-      }
+      const data = dataBundler(context, await returnClickedCardsSlugs(teamObjs))
+
       console.log(data)
       // send to back end
       return await postData('/teams', data)
@@ -38,26 +43,43 @@ if (teamSubmitButton) {
     }
   })
 }
+// makes data in an obj
+function dataBundler(context, teams_arr) {
+  return {
+    user_id: context.psid,
+    teams_arr
+  }
+}
 
 async function postData(url, data) {
-  if (!data.teamsArr.length || !data.teamsArr) return 'No data'
-  console.log('click submit')
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrer: 'no-referrer', // no-referrer, *client
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  })
-  return await response // parses JSON response into native JavaScript objects
+  try {
+    if (!data.teams_arr.length || !data.teams_arr) return 'No data'
+    console.log('click submit')
+    let mode
+    if (!isDevelopment()) {
+      mode = 'cors'
+    } else {
+      mode = 'no-cors'
+    }
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: mode,
+      cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrer: 'no-referrer', // no-referrer, *client
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    })
+    return await response // parses JSON response into native JavaScript objects
+  } catch (e) {
+    console.error('An error in team postData', e)
+  }
 }
 // return arr of team slugs
-async function returnClickedCardsSlugs() {
+async function returnClickedCardsSlugs(teamObjs) {
   try {
     return teamObjs.filter(team => team.clicked).map(team => team.name_slug)
   } catch (e) {
@@ -191,7 +213,7 @@ function is_touch_device() {
   var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('')
   return mq(query)
 }
-async function getContext() {
+async function getProdContext() {
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line no-undef
     MessengerExtensions.getContext(
@@ -208,19 +230,29 @@ async function getContext() {
     )
   })
 }
+// get script from page
 function isDevelopment() {
-  if (window.location.hostname === 'localhost') {
-    return true
-  }
-  return false
+  return new Promise((resolve, reject) => {
+    const env = document.querySelectorAll('script[data-env]')[0].dataset.env
+    if (env === 'development' || env === 'testing') {
+      console.log('env', env)
+      resolve(true)
+    } else {
+      reject(false)
+    }
+  })
 }
-window.extAsyncInit = function() {
-  if (!isDevelopment) {
+window.extAsyncInit = async function() {
+  if (!(await isDevelopment())) {
     // eslint-disable-next-line no-undef
-    getContext().then(res => {
+    // get real contxt from FB
+    getProdContext().then(res => {
       // set context to global scope
       context = res
       console.log('contex ready', context)
     })
+  } else {
+    // use fake context for dev
+    context = fakeContext
   }
 }

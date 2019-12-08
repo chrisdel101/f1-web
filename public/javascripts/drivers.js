@@ -36,7 +36,10 @@ if (driverSubmitButton) {
   driverSubmitButton.addEventListener('click', async () => {
     try {
       // construct obj to send to backend
-      const data = dataBundler(context, returnClickedCardsSlugs(driverObjs))
+      const data = dataBundler(
+        context,
+        await returnClickedCardsSlugs(driverObjs)
+      )
       console.log(data)
       return await postData('/drivers', data)
     } catch (e) {
@@ -77,7 +80,7 @@ async function postData(url, data) {
     })
     return await response // parses JSON response into native JavaScript objects
   } catch (e) {
-    console.error('An error in postData', e)
+    console.error('An error in driver postData', e)
   }
 }
 // returns array of driver slugs with clicked attr
