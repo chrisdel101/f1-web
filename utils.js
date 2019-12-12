@@ -26,7 +26,15 @@ module.exports = {
   },
   httpCall: async url => {
     return new Promise(resolve => {
-      http.get(url, res => {
+      const options = {
+        hostname: 'localhost',
+        port: 5000,
+        path: '/test',
+        headers: {
+          'x-Api-Key': process.env.API_KEY
+        }
+      }
+      http.get(options, res => {
         res.setEncoding('utf8')
         res.on('data', d => {
           resolve(d)

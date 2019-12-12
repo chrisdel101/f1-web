@@ -135,10 +135,11 @@ describe('utils()', () => {
       assert(scope.interceptors[0].statusCode === 200)
     })
   })
-  // LIVE TEST
+  // LIVE TESTS
   describe.only('httpCall()', () => {
-    it('httpCall calls localAPI', function() {
-      utils.httpCall(urls.localDev('drivers'))
+    it.only('httpCall calls localAPI', async function() {
+      let res = await utils.httpCall(urls.localDev('drivers'))
+      console.log(res)
     })
   })
 })

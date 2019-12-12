@@ -13,10 +13,10 @@ const errorHandlers = require('./errorHandlers')
 // error handler
 onerror(app)
 
-app.use(async (ctx, next) => {
-  ctx.set('X-Api-Key', process.env.API_KEY)
-  await next()
-})
+// app.use(async (ctx, next) => {
+//   ctx.set('X-Api-Key', process.env.API_KEY)
+//   await next()
+// })
 // middlewares
 app.use(
   bodyparser({
