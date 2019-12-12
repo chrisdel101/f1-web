@@ -119,7 +119,7 @@ describe('utils()', () => {
       team_data: ['team1', 'team2'],
       user_id: 2
     }
-    it.only('httpPostCall returns 200 status', async function() {
+    it('httpPostCall returns 200 status', async function() {
       const scope = nock(`${urls.localCardsEndpoint}`)
         .post('/test')
         .reply(200, {
@@ -133,6 +133,12 @@ describe('utils()', () => {
         })
       await utils.httpPostCall(`${urls.localCardsEndpoint}/test`, data)
       assert(scope.interceptors[0].statusCode === 200)
+    })
+  })
+  // LIVE TEST
+  describe.only('httpCall()', () => {
+    it('httpCall calls localAPI', function() {
+      utils.httpCall(urls.localDev('drivers'))
     })
   })
 })

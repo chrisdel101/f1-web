@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-const expect = chai.expect
-const assert = chai.assert
+// const expect = chai.expect
+// const assert = chai.assert
 
-describe('driver.js tests', () => {
+describe('teams.js tests', () => {
   describe('returnClickedCardsSlugs()', () => {
     it('returnClickedCardsSlugs returns all objs with clicked', function() {
       const data = [
@@ -34,31 +34,30 @@ describe('driver.js tests', () => {
       )
     })
   })
-  // describe.only('touchCardSelect', () => {
-  //   function initMarkup(markUp) {
-  //     // document.body.innerHTML = ''
-  //     // let div = document.createElement('div')
-  //     // div.innerHTML = 'Hello'
-  //     // document.body.appendChild(div)
-  //     const a = document.createElement('a')
-  //     a.classList.add('driver-click')
-  //     document.body.appendChild(a)
-  //     div.innerHTML = markUp
-  //   }
-  //   initMarkup()
-  //   it('touchCardSelect toggles', function() {})
-  // })
-  describe.only('postData', () => {
+  //   describe.only('touchCardSelect', () => {
+  //     function initMarkup(markUp) {
+  //       // document.body.innerHTML = ''
+  //       // let div = document.createElement('div')
+  //       // div.innerHTML = 'Hello'
+  //       // document.body.appendChild(div)
+  //       const a = document.createElement('a')
+  //       a.classList.add('driver-click')
+  //       document.body.appendChild(a)
+  //       div.innerHTML = markUp
+  //     }
+  //     initMarkup()
+  //     it('touchCardSelect toggles', function() {})
+  //   })
+  describe('postData', () => {
     it('postData stub gets called', async function() {
       const data = {
-        driversArr: ['driver1', 'driver2'],
-        teamsArr: ['team1', 'team2'],
-        user_id: 2
+        drivers_arr: ['driver1', 'driver2'],
+        teams_arr: ['team1', 'team2'],
+        user_id: 3
       }
-      console.log(postData)
-      // let stubedFetch = sinon.stub(window, 'fetch').resolves('called')
-      // const res = await postData('http://localhost:3000/drivers', data)
-      // assert(res === 'called')
+      let stubedFetch = sinon.stub(window, 'fetch').resolves('called')
+      const res = await postData('http://localhost:3000/teams', data)
+      assert(res === 'called')
     })
   })
 })

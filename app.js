@@ -1,6 +1,7 @@
 require('dotenv').config()
 // require('newrelic')
 const Koa = require('koa')
+const helmet = require('koa-helmet')
 const app = new Koa()
 const views = require('koa-views')
 const json = require('koa-json')
@@ -12,12 +13,17 @@ const errorHandlers = require('./errorHandlers')
 // error handler
 onerror(app)
 
+app.use(async (ctx, next) => {
+  ctx.set('X-Api-Key', process.env.API_KEY)
+  await next()
+})
 // middlewares
 app.use(
   bodyparser({
     enableTypes: ['json', 'form', 'text']
   })
 )
+app.use(helmet())
 app.use(json())
 app.use(require('koa-static')(__dirname + '/public'))
 
@@ -27,7 +33,7 @@ app.use(
     pretty: true
   })
 )
-
+// returns routing info to console
 app.use(async (ctx, next) => {
   const start = new Date()
   await next()
