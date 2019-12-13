@@ -24,14 +24,13 @@ router.get('/team/:team_slug', teamsController.renderTeamCard)
 //---- WEBVIEWS
 router.post('/drivers', ctx => {
   if (process.env.LOGs !== 'off') {
-    console.log('/drivers req body', ctx.request.body)
+    console.log('LOGS: /drivers req body', ctx.request.body)
   }
   if (
     process.env.NODE_ENV === 'development' ||
     process.env.NODE_ENV === 'testing'
   ) {
     ctx.response.status = 200
-    ctx.request.headers['X-Api-Key'] = process.env.API_KEY
     // console.log('here', typeof ctx.request.body)
     return API.sendUserData(ctx.request.body, urls.localDev('user'))
   } else {

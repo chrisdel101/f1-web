@@ -6,9 +6,10 @@
     "start": "NODE_ENV=development DEBUG=f1:* nodemon bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
     "prod": "NODE_ENV=production node bin/www",
-    "test": "NODE_ENV=testing mocha --exclude tests/client-side/*.test.js tests/**/*.test.js",
+    "test": "NODE_ENV=testing mocha --exclude tests/client-side/*.test.js tests/**/*.test.js --exclude tests/live.test.js",
     "test:prod": "NODE_ENV=production  mocha tests//*.test.js",
-    "test:client": "LOGS=ON NODE_ENV=testing browser-sync start --server --serveStatic /Users/chrisdielschnieder/desktop/code_work/formula1/f1Web/tests/client-side --browser firefox"
+    "test:client": "LOGS=ON NODE_ENV=testing browser-sync start --server --serveStatic /Users/chrisdielschnieder/desktop/code_work/formula1/f1Web/tests/client-side --browser firefox",
+    "test:live": "LOGS=ON NODE_ENV=testing mocha tests/live.test.js"
   },
   "dependencies": {
     "debug": "^4.1.1",

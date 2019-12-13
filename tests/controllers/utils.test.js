@@ -2,8 +2,10 @@ const assert = require('assert')
 const utils = require('../../utils')
 const urls = require('../../urls')
 let cache = require('../../cache')
-const sinon = require('sinon')
 const nock = require('nock')
+require('dotenv').config(
+  '/Users/chrisdielschnieder/desktop/code_work/formula1/f1Web/.env'
+)
 
 describe('utils()', () => {
   describe('statusCodeChecker()', () => {
@@ -133,13 +135,6 @@ describe('utils()', () => {
         })
       await utils.httpPostCall(`${urls.localCardsEndpoint}/test`, data)
       assert(scope.interceptors[0].statusCode === 200)
-    })
-  })
-  // LIVE TESTS
-  describe.only('httpCall()', () => {
-    it.only('httpCall calls localAPI', async function() {
-      let res = await utils.httpCall(urls.localDev('drivers'))
-      console.log(res)
     })
   })
 })

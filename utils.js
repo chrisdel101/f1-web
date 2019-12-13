@@ -1,6 +1,7 @@
 const https = require('https')
 const http = require('http')
 const urls = require('./urls')
+const url = require('url')
 const puppeteer = require('puppeteer')
 let globalCache = require('./cache')
 const moment = require('moment')
@@ -24,17 +25,20 @@ module.exports = {
     }
     return false
   },
-  httpCall: async url => {
+  httpCall: async _url => {
     return new Promise(resolve => {
+      const url = new URL(_url)
       const options = {
-        hostname: 'localhost',
-        port: 5000,
-        path: '/test',
+        hostname: url.hostname,
+        port: url.port,
+        path: url.pathname,
         headers: {
-          'x-Api-Key': process.env.API_KEY
+          'x-Api-Key': process.env.API_KEY,
+          'Content-Type': 'application/json'
         }
       }
       http.get(options, res => {
+        console.log(res.headers)
         res.setEncoding('utf8')
         res.on('data', d => {
           resolve(d)
@@ -42,9 +46,19 @@ module.exports = {
       })
     })
   },
-  httpsCall: async url => {
+  httpsCall: async _url => {
     return new Promise(resolve => {
-      https.get(url, res => {
+      const url = new URL(_url)
+      const options = {
+        hostname: url.hostname,
+        port: url.port,
+        path: url.pathname,
+        headers: {
+          'x-Api-Key': process.env.API_KEY,
+          'Content-Type': 'application/json'
+        }
+      }
+      https.get(options, res => {
         res.setEncoding('utf8')
         res.on('data', d => {
           resolve(d)
@@ -57,7 +71,7 @@ module.exports = {
     if (typeof data !== 'string') {
       if (process.env.LOGS != 'off') {
         data = JSON.stringify(data)
-        console.log('stringify in httpPostCall', data)
+        console.log('LOGS: stringify in httpPostCall', data)
       }
     }
     try {
@@ -67,15 +81,15 @@ module.exports = {
         path: newUrl.pathname,
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'x-Api-Key': process.env.API_KEY,
           'Content-Length': data.length
         }
       }
 
       const req = http.request(options, res => {
         if (process.env.LOGS != 'off') {
-          console.log(`STATUS: ${res.statusCode}`)
-          console.log(`HEADERS: ${JSON.stringify(res.headers)}`)
+          console.log(`LOGS:  STATUS: ${res.statusCode}`)
+          console.log(`LOGS: HEADERS: ${JSON.stringify(res.headers)}`)
         }
         res.setEncoding('utf8')
       })
@@ -87,7 +101,7 @@ module.exports = {
 
       // Write data to request body
       if (process.env.LOGS !== 'OFF') {
-        console.log('data', data)
+        console.log('LOGS: data', data)
       }
 
       req.write(data)
