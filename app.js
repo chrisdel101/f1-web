@@ -3,6 +3,7 @@ require('dotenv').config()
 const Koa = require('koa')
 const helmet = require('koa-helmet')
 const app = new Koa()
+const cors = require('@koa/cors')
 const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
@@ -12,6 +13,7 @@ const urls = require('./urls')
 const errorHandlers = require('./errorHandlers')
 // error handler
 onerror(app)
+app.use(cors())
 
 // app.use(async (ctx, next) => {
 //   ctx.set('X-Api-Key', process.env.API_KEY)

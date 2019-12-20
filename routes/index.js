@@ -30,10 +30,17 @@ router.post('/drivers', ctx => {
     process.env.NODE_ENV === 'development' ||
     process.env.NODE_ENV === 'testing'
   ) {
-    ctx.response.status = 200
-    // console.log('here', typeof ctx.request.body)
+    try {
+      ctx.response.set('Origin', null)
+      ctx.response.set('Access-Control-Request-Method', 'POST')
+      ctx.response.status = 200
+    } catch (e) {
+      console.error('An error setting headers', e)
+    }
+    console.log(ctx)
     return API.sendUserData(ctx.request.body, urls.localDev('user'))
   } else {
+    ctx.response.status = 200
     return API.sendUserData(ctx.request.body, urls.prodUrl('user'))
   }
 })
@@ -76,7 +83,14 @@ router.post('/test', async ctx => {
   return await ctx.response.status
 })
 router.get('/test', async ctx => {
-  console.log(ctx.request.body)
-  ctx.response.status = 200
+  try {
+    console.log(ctx.request.headers)
+    ctx.response.set('Access-Control-Allow-Origin', 'https//google.com')
+    ctx.response.set('Origin', 'Vary')
+    ctx.response.set('Access-Control-Request-Method', 'POST')
+    ctx.response.status = 200
+  } catch (e) {
+    console.error('An error setting headers', e)
+  }
   return await ctx.response.status
 })

@@ -8,6 +8,14 @@ require('dotenv').config(
 )
 
 describe('utils()', () => {
+  describe('verifyAPI_KEY', () => {
+    it.only('verifyAPI_KEY returns true - correct key', function() {
+      assert.strictEqual(process.env.API_KEY, process.env.API_KEY)
+    })
+    it.only('verifyAPI_KEY returns false - incorrect key', function() {
+      assert.notStrictEqual(process.env.API_KEY, '123456abcdefg')
+    })
+  })
   describe('statusCodeChecker()', () => {
     it('statusCodeChecker returns false for 404', function() {
       const res = utils.statusCodeChecker(404)

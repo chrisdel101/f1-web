@@ -1,12 +1,14 @@
 const https = require('https')
 const http = require('http')
 const urls = require('./urls')
-const url = require('url')
 const puppeteer = require('puppeteer')
 let globalCache = require('./cache')
 const moment = require('moment')
 
 module.exports = {
+  verifyAPI_KEY: apiKey => {
+    return apiKey === process.env.API_KEY ? true : false
+  },
   // check if timestamp is older than mins entered
   verifyTimeStamp: (timeStamp, mins) => {
     // console.log('verify', timeStamp)

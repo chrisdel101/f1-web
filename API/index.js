@@ -5,6 +5,7 @@ const fs = require('fs')
 var puppeteer = require('puppeteer')
 // send post to endpoint
 async function sendUserData(data, url) {
+  utils.verifyAPI_KEY()
   return await utils.httpPostCall(url, data)
 }
 // take screen shot of endpoints entered
