@@ -11,14 +11,11 @@ const bodyparser = require('koa-bodyparser')
 const index = require('./routes/index')
 const urls = require('./urls')
 const errorHandlers = require('./errorHandlers')
+const multer = require('koa-multer')
 // error handler
 onerror(app)
 app.use(cors())
 
-// app.use(async (ctx, next) => {
-//   ctx.set('X-Api-Key', process.env.API_KEY)
-//   await next()
-// })
 // middlewares
 app.use(
   bodyparser({

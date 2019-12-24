@@ -6,7 +6,9 @@ block content
       for driver in driversArr
         +allDriverMixin(driver)
     if size === 'mini'
-      button(type="button" class="btn btn-primary btn-lg submit-all-drivers") Submit
+      form(method='POST',action='/drivers')
+        button(type="button" class="btn btn-primary btn-lg submit-all-drivers") Submit
+
 
       script.
         (function(d, s, id){

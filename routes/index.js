@@ -2,6 +2,7 @@ const router = require('koa-router')()
 const indexController = require('../controllers/index.controller')
 const driversController = require('../controllers/drivers.controller')
 const teamsController = require('../controllers/teams.controller')
+const sessionsController = require('../controllers/sessions.controller')
 const utils = require('../utils')
 const urls = require('../urls')
 const API = require('../API/index')
@@ -10,7 +11,7 @@ const API = require('../API/index')
 router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', utils.viewCache)
 router.get('/fresh-fetch', indexController.freshFetch)
-// ---------templates
+// ---------TEMPLATES
 router.get('/', indexController.renderIndex)
 router.get('/demo', indexController.renderDemo)
 router.get('/teams', teamsController.renderAllTeamsList)
@@ -21,6 +22,9 @@ router.get('/team', teamsController.renderTeamTemplate)
 // render cards
 router.get('/driver/:driver_slug', driversController.renderDriverCard)
 router.get('/team/:team_slug', teamsController.renderTeamCard)
+router.get('/login', sessionsController.renderLoginTemplate)
+//FORMS
+router.post('/login', sessionsController.userLogin)
 //---- WEBVIEWS
 router.post('/drivers', ctx => {
   if (process.env.LOGs !== 'off') {

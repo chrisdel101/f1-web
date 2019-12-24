@@ -57,9 +57,9 @@ function dataBundler(context, drivers_arr) {
 // takes an obj with driversArr prop - calls backend
 async function postData(url, data) {
   try {
+    console.log('click submit')
     if (!data.drivers_arr.length || !data.drivers_arr)
       return 'No data supplied to fetch'
-    console.log('click submit')
     let mode
     if (!isDevelopment()) {
       mode = 'cors'
@@ -72,7 +72,8 @@ async function postData(url, data) {
       cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-Api-Key': '12345'
       },
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client
