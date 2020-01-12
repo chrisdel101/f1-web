@@ -1,3 +1,6 @@
+const utils = require('../utils')
+const urls = require('../urls')
+
 exports.renderLoginTemplate = ctx => {
   return ctx.render('login', {
     method: 'POST',
@@ -6,7 +9,7 @@ exports.renderLoginTemplate = ctx => {
     field_one_for: 'email',
     fieldOne: 'Email',
     field_one_id: 'email-input',
-    field_one_type: 'email',
+    // field_one_type: 'email',
     field_one_placeholder: 'Enter Email',
     field_one_name: 'email',
     // field two
@@ -23,6 +26,6 @@ exports.renderLoginTemplate = ctx => {
     buttonField: 'Submit'
   })
 }
-exports.userLogin = ctx => {
-  console.log(ctx.request.body)
+exports.userLogin = async ctx => {
+  return await utils.httpPostCall(urls.localDev('login'), ctx.request.body)
 }

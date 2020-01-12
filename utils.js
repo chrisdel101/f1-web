@@ -83,6 +83,7 @@ module.exports = {
         path: newUrl.pathname,
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-Api-Key': process.env.API_KEY,
           'Content-Length': data.length
         }

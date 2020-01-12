@@ -5,7 +5,7 @@ block content
     ul.all-drivers
       for driver in driversArr
         +allDriverMixin(driver)
-    if size === 'mini'
+    if size === " mini"
       form(method='POST',action='/drivers')
         button(type="button" class="btn btn-primary btn-lg submit-all-drivers") Submit
 

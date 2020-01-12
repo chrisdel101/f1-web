@@ -7,6 +7,9 @@ const utils = require('../utils')
 const urls = require('../urls')
 const API = require('../API/index')
 
+router.get('/user', () => {
+  utils.httpCall(urls.localDev('user-status'))
+})
 // cache related
 router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', utils.viewCache)
