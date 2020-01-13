@@ -3,6 +3,7 @@ const urls = require('../urls')
 
 exports.renderLoginTemplate = ctx => {
   return ctx.render('login', {
+    process: process,
     method: 'POST',
     action: '/login',
     formID: 'login-form',

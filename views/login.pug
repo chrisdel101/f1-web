@@ -11,26 +11,6 @@ script.
   js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
   fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'Messenger'));
-  const form = document.querySelector('#login-form')
-  console.log(form)
-  form.addEventListener('submit', (e) =>  {
-    e.preventDefault()
-    async function getProdContext() {
-      return new Promise((resolve, reject) => {
-        // eslint-disable-next-line no-undef
-        MessengerExtensions.getContext(
-          '428256864460216',
-          function success(thread_context) {
-            resolve(thread_context)
-          },
-          function error(err) {
-            if (err) {
-              console.error('An error occured in the getContext()', err)
-              reject(err)
-            }
-          }
-        )
-      })
-    }
-    getProdContext()    
-  })
+  //- process only working inside brackets
+script(src="../javascripts/login.js" type="application/javascript" data-env=`${process.env.NODE_ENV}`)
+
