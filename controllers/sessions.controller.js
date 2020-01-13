@@ -5,6 +5,7 @@ exports.renderLoginTemplate = ctx => {
   return ctx.render('login', {
     method: 'POST',
     action: '/login',
+    formID: 'login-form',
     // field one
     field_one_for: 'email',
     fieldOne: 'Email',
@@ -22,7 +23,6 @@ exports.renderLoginTemplate = ctx => {
     button_type: 'submit',
     button_value: 'placeholder-button-value',
     routeName: 'login',
-    buttonValue: 'HELLO',
     buttonField: 'Submit'
   })
 }

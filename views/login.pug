@@ -2,3 +2,35 @@ block content
  
 include  layout.pug
 include _form.pug
+
+script.
+  (function(d, s, id){
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'Messenger'));
+  const form = document.querySelector('#login-form')
+  console.log(form)
+  form.addEventListener('submit', (e) =>  {
+    e.preventDefault()
+    async function getProdContext() {
+      return new Promise((resolve, reject) => {
+        // eslint-disable-next-line no-undef
+        MessengerExtensions.getContext(
+          '428256864460216',
+          function success(thread_context) {
+            resolve(thread_context)
+          },
+          function error(err) {
+            if (err) {
+              console.error('An error occured in the getContext()', err)
+              reject(err)
+            }
+          }
+        )
+      })
+    }
+    getProdContext()    
+  })
