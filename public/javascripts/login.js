@@ -11,8 +11,8 @@ let context
 function isDevelopment() {
   return new Promise((resolve, reject) => {
     const env = document.querySelectorAll('script[data-env]')[0].dataset.env
+    console.log('env', env)
     if (env === 'development' || env === 'testing') {
-      console.log('env', env)
       resolve(true)
     } else {
       reject(false)
@@ -37,13 +37,15 @@ async function getProdContext() {
   })
 }
 window.extAsyncInit = async function() {
+  console.log('load')
   if (!(await isDevelopment())) {
+    console.log('not dev')
     // eslint-disable-next-line no-undef
     // get real contxt from FB
     getProdContext().then(res => {
       // set context to global scope
       context = res
-      console.log('contex ready', context)
+      console.log('prod contex ready', context)
     })
   } else {
     // use fake context for dev
