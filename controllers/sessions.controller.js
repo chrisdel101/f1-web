@@ -27,5 +27,14 @@ exports.renderLoginTemplate = ctx => {
   })
 }
 exports.userLogin = async ctx => {
-  return await utils.httpPostCall(urls.localDev('login'), ctx.request.body)
+  try {
+    if (process.env.NODE_ENV === 'development') {
+      return await utils.httpPostCall(urls.localDev('login'), ctx.request.body)
+    } else if (process.env.NODE_ENV === 'production') {
+      return await utils.httpPostCall(urls.prodUrl('login'), ctx.request.body)
+    }
+  } catch (e) {
+    console.error('error in userLogin', e)
+    return e
+  }
 }
