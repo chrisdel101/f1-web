@@ -15,7 +15,7 @@ function isDevelopment() {
     if (env === 'development' || env === 'testing') {
       resolve(true)
     } else {
-      reject(false)
+      resolve(false)
     }
   })
 }
