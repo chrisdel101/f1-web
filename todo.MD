@@ -6,10 +6,13 @@
 
 - add error handling for when API is not running Error: connect ECONNREFUSED 127.0.0.1:5000
 
-### Stories
+### Card Must-haves
 
-- show driver and basics stats
-- show driver image
+- show driver/team and basics stats
+- show driver/team image
+
+### Nice to haves
+
 - be able to pick from multiple years data
 - be able to pick from multiple leagues f1, fE, etc
 - be able to tap and flip card for more stats

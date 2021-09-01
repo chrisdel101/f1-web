@@ -22,28 +22,31 @@ async function takeCardScreenShot(ctx, type) {
     // access checks if file exists - takes path
     if (process.env.NODE_ENV === 'testing') {
       // err - if file does not exist
-      fs.access('./tests/api/test.png', err => {
+      fs.access('./tests/api/test.png', (err) => {
         if (!err) {
           console.log('myfile exists')
-          fs.unlink('./tests/api/test.png', err => {
+          fs.unlink('./tests/api/test.png', (err) => {
             // unlink err
-            if (err) throw err
+            if (err) throw Error('An error occured in unlinking', err)
           })
         } else {
           console.log('myfile does not exist')
         }
       })
     } else {
-      fs.access('./example.png', err => {
-        if (!err) {
-          console.log('myfile exists')
-          fs.unlink('./example.png', err => {
-            if (err) throw err
-          })
-        } else {
-          console.log('myfile does not exist')
-        }
-      })
+      //   fs.access('./example.png', (err) => {
+      //     if (!err) {
+      //       console.log('myfile exists HERE')
+      //       fs.unlink('./example.png', (err) => {
+      //         if (err) {
+      //           console.error('An error occured in unlinking', err)
+      //           throw Error('An error occured in unlinking')
+      //         }
+      //       })
+      //     } else {
+      //       console.log('myfile does not exist')
+      //     }
+      //   })
     }
   } catch (err) {
     console.error('Unlinking file error', err)
@@ -51,7 +54,7 @@ async function takeCardScreenShot(ctx, type) {
 
   try {
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     })
     const page = await browser.newPage()
     if (process.env.NODE_ENV === 'development') {
@@ -60,13 +63,13 @@ async function takeCardScreenShot(ctx, type) {
           await page.setViewport({
             width: 400,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         } else {
           await page.setViewport({
             width: 1000,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         }
         const req = await page.goto(
@@ -82,13 +85,13 @@ async function takeCardScreenShot(ctx, type) {
           await page.setViewport({
             width: 600,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         } else {
           await page.setViewport({
             width: 900,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         }
         const req = await page.goto(
@@ -106,13 +109,13 @@ async function takeCardScreenShot(ctx, type) {
           await page.setViewport({
             width: 400,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         } else {
           await page.setViewport({
             width: 1000,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         }
         const req = await page.goto(
@@ -128,13 +131,13 @@ async function takeCardScreenShot(ctx, type) {
           await page.setViewport({
             width: 600,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         } else {
           await page.setViewport({
             width: 900,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         }
         const req = await page.goto(
@@ -152,13 +155,13 @@ async function takeCardScreenShot(ctx, type) {
           await page.setViewport({
             width: 600,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         } else {
           await page.setViewport({
             width: 900,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         }
         console.log(
@@ -177,13 +180,13 @@ async function takeCardScreenShot(ctx, type) {
           await page.setViewport({
             width: 400,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         } else {
           await page.setViewport({
             width: 1000,
             height: 600,
-            deviceScaleFactor: 1
+            deviceScaleFactor: 1,
           })
         }
         // console.log(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
@@ -198,7 +201,7 @@ async function takeCardScreenShot(ctx, type) {
       }
       await page.screenshot({
         path: './tests/api/test.png',
-        fullPage: true
+        fullPage: true,
       })
       await browser.close()
       return fs.createReadStream('./tests/api/test.png')
@@ -217,5 +220,5 @@ async function takeCardScreenShot(ctx, type) {
 }
 module.exports = {
   takeCardScreenShot,
-  sendUserData
+  sendUserData,
 }
