@@ -6,7 +6,7 @@ let globalCache = require('./cache')
 const moment = require('moment')
 
 module.exports = {
-  verifyAPI_KEY: apiKey => {
+  verifyAPI_KEY: (apiKey) => {
     return apiKey === process.env.API_KEY ? true : false
   },
   // check if timestamp is older than mins entered
@@ -21,14 +21,14 @@ module.exports = {
     // less than 30 mins true, else false
     return diff < mins ? true : false
   },
-  isObjEmpty: obj => {
+  isObjEmpty: (obj) => {
     if (Object.keys(obj).length === 0 && obj.constructor === Object) {
       return true
     }
     return false
   },
-  httpCall: async _url => {
-    return new Promise(resolve => {
+  httpCall: async (_url) => {
+    return new Promise((resolve) => {
       const url = new URL(_url)
       const options = {
         hostname: url.hostname,
@@ -36,20 +36,20 @@ module.exports = {
         path: url.pathname,
         headers: {
           'x-Api-Key': process.env.API_KEY,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       }
-      http.get(options, res => {
+      http.get(options, (res) => {
         console.log(res.headers)
         res.setEncoding('utf8')
-        res.on('data', d => {
+        res.on('data', (d) => {
           resolve(d)
         })
       })
     })
   },
-  httpsCall: async _url => {
-    return new Promise(resolve => {
+  httpsCall: async (_url) => {
+    return new Promise((resolve) => {
       const url = new URL(_url)
       const options = {
         hostname: url.hostname,
@@ -57,12 +57,12 @@ module.exports = {
         path: url.pathname,
         headers: {
           'x-Api-Key': process.env.API_KEY,
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       }
-      https.get(options, res => {
+      https.get(options, (res) => {
         res.setEncoding('utf8')
-        res.on('data', d => {
+        res.on('data', (d) => {
           resolve(d)
         })
       })
@@ -85,11 +85,11 @@ module.exports = {
         headers: {
           'Content-Type': 'application/json',
           'x-Api-Key': process.env.API_KEY,
-          'Content-Length': data.length
-        }
+          'Content-Length': data.length,
+        },
       }
 
-      const req = http.request(options, res => {
+      const req = http.request(options, (res) => {
         if (process.env.LOGS != 'off') {
           console.log(`LOGS:  STATUS: ${res.statusCode}`)
           console.log(`LOGS: HEADERS: ${JSON.stringify(res.headers)}`)
@@ -97,7 +97,7 @@ module.exports = {
         res.setEncoding('utf8')
       })
 
-      req.on('error', e => {
+      req.on('error', (e) => {
         console.error(`problem with request: ${e.message}`)
         throw Error(`problem with request: ${e.message}`)
       })
@@ -114,7 +114,7 @@ module.exports = {
       console.error('Error in httpPostCall', e)
     }
   },
-  fetchData: async params => {
+  fetchData: async (params) => {
     try {
       if (
         process.env.NODE_ENV === 'development' ||
@@ -125,9 +125,10 @@ module.exports = {
         // console.log('REM', remoteJson)
         return remoteJson
       } else if (process.env.NODE_ENV === 'production') {
+        console.log('PARAM', params)
         const call = module.exports.httpsCall(urls.prodUrl(params))
         let remoteJson = await call
-        // console.log('REM', remoteJson)
+        console.log('REM', remoteJson)
         return remoteJson
       }
     } catch (e) {
@@ -135,7 +136,7 @@ module.exports = {
     }
   },
   // cap beginning of each seperate word
-  capitalize: word => {
+  capitalize: (word) => {
     return word && word[0].toUpperCase() + word.slice(1)
   },
   viewCache: (ctx, type) => {
@@ -191,11 +192,11 @@ module.exports = {
       console.error('An error in viewCache', e)
     }
   },
-  takeImage: async ctx => {
+  takeImage: async (ctx) => {
     //
     try {
       const browser = await puppeteer.launch({
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       })
       const page = await browser.newPage()
       if (process.env.NODE_ENV === 'development') {
@@ -220,5 +221,5 @@ module.exports = {
       return false
     }
     return true
-  }
+  },
 }

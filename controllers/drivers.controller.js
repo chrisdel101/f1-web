@@ -9,7 +9,7 @@ module.exports = {
   renderDriverTemplate,
   renderDriverCard,
   renderAllDriversList,
-  makeAllDriversObjs
+  makeAllDriversObjs,
 }
 //TODO
 //get array post
@@ -49,7 +49,7 @@ function compileDriverTemplateResObj(
     routeName: 'driver',
     driverData: driverData,
     teamData: teamData,
-    allData: { ...driverData, ...teamData }
+    allData: { ...driverData, ...teamData },
   }
 }
 
@@ -71,6 +71,7 @@ async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
     const driverData = JSON.parse(
       await utils.fetchData(`drivers/${driverSlug}`)
     )
+    console.log('SLUG', driverSlug)
     if (!driverData) {
       // happens if DB offline
       console.error(
@@ -99,7 +100,7 @@ async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
 
     return {
       driverData,
-      teamData
+      teamData,
     }
   } catch (e) {
     console.error('An error in driverController.fetchDriverAPI()', e)
@@ -112,7 +113,7 @@ async function fetchDriversAPI() {
     const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
     return {
       driversObj,
-      teamsObj
+      teamsObj,
     }
   } catch (e) {
     console.error('An error in driverController.fetchDriversAPI()', e)
@@ -136,7 +137,7 @@ async function makeAllDriversObjs(ctx, driverSlug, size = 'full') {
       main_image: driverData.main_image,
       name_slug: driverData.name_slug,
       size,
-      sender_ID: ctx.query.id
+      sender_ID: ctx.query.id,
     }
     return options
   } catch (e) {
@@ -148,9 +149,10 @@ async function renderAllDriversList(ctx) {
   try {
     // must have module.exports to work in tests
     const { driversObj } = await module.exports.fetchDriversAPI()
+    console.log('FETCH', driversObj)
     // allDriversObj contain partial info for allDriversPage
     const allDriverObjs = async () => {
-      const promises = driversObj.driversArr.map(async driver => {
+      const promises = driversObj.driversArr.map(async (driver) => {
         return await module.exports.makeAllDriversObjs(ctx, driver.name_slug)
       })
       return Promise.all(promises)
@@ -160,7 +162,7 @@ async function renderAllDriversList(ctx) {
     const driversArrObj = {
       driversArr,
       size: driversArr[0].size,
-      sender_ID: driversArr.sender_ID
+      sender_ID: driversArr.sender_ID,
     }
     return await ctx.render('allDrivers', driversArrObj)
   } catch (e) {
@@ -186,7 +188,7 @@ async function renderDriverCard(ctx) {
       addClass: 'driver-card-page',
       routeName: 'driverCard',
       driverData: driverData,
-      teamData: teamData
+      teamData: teamData,
     })
   } catch (e) {
     console.error('An error in renderDriverCard', e)

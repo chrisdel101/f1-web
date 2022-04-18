@@ -29,7 +29,7 @@ router.get('/login', sessionsController.renderLoginTemplate)
 //FORMS
 router.post('/login', sessionsController.userLogin)
 //---- WEBVIEWS
-router.post('/drivers', ctx => {
+router.post('/drivers', (ctx) => {
   if (process.env.LOGs !== 'off') {
     console.log('LOGS: /drivers req body', ctx.request.body)
   }
@@ -51,45 +51,45 @@ router.post('/drivers', ctx => {
     return API.sendUserData(ctx.request.body, urls.prodUrl('user'))
   }
 })
-router.post('/teams', ctx => {
+router.post('/teams', (ctx) => {
   console.log('teams', ctx.request.body)
   return API.sendUserData(ctx.request.body, urls.localDev('user'))
 })
 // API - take images of cards
 // moblie size - uses puppeteer viewport to get
-router.get('/api/mobile/driver/:driver_slug', async ctx => {
-  return API.takeCardScreenShot(ctx, 'driver').then(res => {
+router.get('/api/mobile/driver/:driver_slug', async (ctx) => {
+  return API.takeCardScreenShot(ctx, 'driver').then((res) => {
     return (ctx.body = res)
   })
 })
-router.get('/api/mobile/team/:team_slug', async ctx => {
-  return API.takeCardScreenShot(ctx, 'team').then(res => {
+router.get('/api/mobile/team/:team_slug', async (ctx) => {
+  return API.takeCardScreenShot(ctx, 'team').then((res) => {
     return (ctx.body = res)
   })
 })
-router.get('/api/driver/:driver_slug', async ctx => {
-  return API.takeCardScreenShot(ctx, 'driver').then(res => {
+router.get('/api/driver/:driver_slug', async (ctx) => {
+  return API.takeCardScreenShot(ctx, 'driver').then((res) => {
     return (ctx.body = res)
   })
 })
-router.get('/api/team/:team_slug', async ctx => {
-  return API.takeCardScreenShot(ctx, 'team').then(res => {
+router.get('/api/team/:team_slug', async (ctx) => {
+  return API.takeCardScreenShot(ctx, 'team').then((res) => {
     return (ctx.body = res)
   })
 })
-router.get('/test/:driver_slug', async ctx => {
+router.get('/test/:driver_slug', async (ctx) => {
   const image = await API.takeCardScreenShot(ctx, ctx.params.driver_slug)
   console.log('image', image)
   ctx.body = image
 })
 module.exports = router
 // TEST ROUTE
-router.post('/test', async ctx => {
+router.post('/test', async (ctx) => {
   console.log(ctx.request.body)
   ctx.response.status = 200
   return await ctx.response.status
 })
-router.get('/test', async ctx => {
+router.get('/test', async (ctx) => {
   try {
     console.log(ctx.request.headers)
     ctx.response.set('Access-Control-Allow-Origin', 'https//google.com')
