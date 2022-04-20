@@ -1,5 +1,5 @@
 mixin teamCardMixinSm(data)
-  //- - console.log('SM DATA',data)
+  - console.log('SM DATA',data)
   .card.team-card
     .team-title
       h5 #{data.full_team_name}
@@ -29,6 +29,10 @@ mixin teamCardMixinSm(data)
                   span.stat-val #{data.power_unit}
               tr 
                 td
+                  span.stat-key Chassis: 
+                  span.stat-val #{data.chassis}
+              tr 
+                td
                   span.stat-key Team Chief: 
                   span.stat-val #{data.team_chief}
               tr 
@@ -43,10 +47,6 @@ mixin teamCardMixinSm(data)
                 td
                   span.stat-key Championships: 
                   span.stat-val #{data.championship_titles}
-              tr 
-                td
-                  span.stat-key Podiums: 
-                  span.stat-val #{data.podium_finishes}
               tr 
                 td
                   span.stat-key Pole Positions: 

@@ -1,5 +1,5 @@
 mixin driverCardMixinLg(data)
-  //- - console.log('mixin', data)
+  - console.log('mixin', data)
   .card.driver-card
     .driver-inner-container
       .column.left-column
@@ -19,7 +19,7 @@ mixin driverCardMixinLg(data)
               tr 
                 td
                   span.stat-key Current Position: 
-                  span.stat-val #{data.position}
+                  span.stat-val #{data.standings_position}
               tr 
                 td
                   span.stat-key Points: 
