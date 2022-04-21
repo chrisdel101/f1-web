@@ -1,5 +1,5 @@
 mixin driverCardMixinSm(data)
-  //- - console.log('mixin', data)
+  //- - console.log('mixin sm', data)
   .card.driver-card
     .driver-title
       h6  #{data.driver_name}
@@ -17,7 +17,7 @@ mixin driverCardMixinSm(data)
             tr 
               td
                 span.stat-key Current Position: 
-                span.stat-val #{data.position}
+                span.stat-val #{data.standings_position}
             tr 
               td
                 span.stat-key Points: 

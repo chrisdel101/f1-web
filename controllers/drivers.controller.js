@@ -27,8 +27,8 @@ function compileDriverTemplateResObj(
   const teamUrl = `/team?team=${driverData.team_name_slug}`
   // add link to team to driver
   driverData['teamUrl'] = teamUrl
-  driverData['logo_url'] = teamData.logo_url
-
+  driverData['logo_url'] = teamData.main_logo_url
+  // console.log('driverData', driverData)
   return {
     //  +++ index params +++
     urls: ctx.urls,
@@ -149,7 +149,7 @@ async function renderAllDriversList(ctx) {
   try {
     // must have module.exports to work in tests
     const { driversObj } = await module.exports.fetchDriversAPI()
-    console.log('FETCH', driversObj)
+    // console.log('FETCH', driversObj)
     // allDriversObj contain partial info for allDriversPage
     const allDriverObjs = async () => {
       const promises = driversObj.driversArr.map(async (driver) => {
@@ -179,7 +179,7 @@ async function renderDriverCard(ctx) {
     const teamUrl = `/team?team=${driverData.team_name_slug}`
     // add link to team to driver
     driverData['teamUrl'] = teamUrl
-    driverData['logo_url'] = teamData.logo_url
+    driverData['logo_url'] = teamData.main_logo_url
     // console.log('Driver Data', driverData)
     return await ctx.render('driverPage', {
       //  +++ index params +++
@@ -201,7 +201,8 @@ async function renderDriverTemplate(ctx) {
     'page'
   )
   const { driversObj, teamsObj } = await module.exports.fetchDriversAPI()
-  // console.log(driverData)
+  console.log('driverData', driverData)
+  // console.log('driversObj', driversObj)
   if (!driverData) {
     throw new ReferenceError('renderDriverTemplate.driverData() is undefined')
   } else if (!teamData) {
