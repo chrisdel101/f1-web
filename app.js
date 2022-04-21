@@ -18,7 +18,7 @@ app.use(cors())
 // middlewares
 app.use(
   bodyparser({
-    enableTypes: ['json', 'form', 'text']
+    enableTypes: ['json', 'form', 'text'],
   })
 )
 app.use(helmet())
@@ -28,7 +28,7 @@ app.use(require('koa-static')(__dirname + '/public'))
 app.use(
   views(__dirname + '/views', {
     extension: 'pug',
-    pretty: true
+    pretty: true,
   })
 )
 // returns routing info to console
@@ -53,7 +53,8 @@ app.use(index.routes(), index.allowedMethods())
 
 // set locals
 app.context.title = 'Formula 1 Cards'
-app.context.subTitle = `Like baseball cards for Formula 1`
+app.context.subTitle1 = `Like baseball cards for Formula 1`
+app.context.subTitle2 = `All the F1 Stats`
 app.context.urls = urls
 app.context.driverFormText = 'Choose a Driver'
 app.context.teamFormText = 'Choose a Team'

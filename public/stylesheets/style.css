@@ -1,5 +1,5 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -9,18 +9,18 @@ img {
   max-width: 100%;
 }
 .title {
-  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
   text-align: center;
 }
 .navbar .title {
   font-size: 25px;
 }
 .sub-title {
-  font-family: "Lobster", cursive;
+  font-family: 'Lobster', cursive;
   text-align: center;
 }
 .index-hero {
-  background-image: url("/images/max.jpg");
+  background-image: url('/images/max.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
@@ -40,29 +40,14 @@ img {
 .index-title-container {
   padding-top: 50px;
 }
+.index-title-container .demo-button {
+  display: flex;
+  justify-content: center;
+}
 .index-main {
   background-color: whitesmoke;
 }
 
-.messenger-btn {
-  width: 100px;
-  align-self: center;
-  border-width: 2.5px !important;
-}
-.messenger-btn:hover {
-  background-color: white;
-}
-.messenger-btn i {
-  color: white;
-}
-/* .messenger-btn i {
-  color: #0084ff;
-} */
-.how-it-works li {
-  border: black solid 1px;
-  border-radius: 5px;
-  min-height: 50px;
-}
 .driver-page,
 .team-page {
   padding: 0 50px;
@@ -145,7 +130,7 @@ button.submit-all-drivers {
   align-self: center;
 }
 .select-text {
-  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
 }
 .driver-select {
   border-bottom: solid gray;
@@ -213,7 +198,7 @@ button.submit-all-drivers {
 }
 .driver-title h6 {
   align-self: center;
-  font-family: "Montserat", sans-serif;
+  font-family: 'Montserat', sans-serif;
   font-size: 25px;
   margin-right: 10px;
 }
@@ -221,7 +206,7 @@ button.submit-all-drivers {
   align-self: center;
 }
 .team-title {
-  font-family: "Montserat", sans-serif;
+  font-family: 'Montserat', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;

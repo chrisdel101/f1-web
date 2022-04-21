@@ -1,34 +1,17 @@
 extends layout
-include mixins/_messengerButton-mixin
 block content
   .index-hero
     .index-title-container
-      h3.sub-title= subTitle
-      h5.title On Messenger
-    +messengerButton()
+      h2.sub-title= subTitle
+      .demo-button 
+        a(href="/demo") 
+          button.btn-lg.btn-primary Try Demo
+
+     
   //- button(type="button" class="btn btn-lg btn-light messenger-btn")
 
-  //- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
-      <div>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
-      <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
+  //- //- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
+  //-     <div>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
+  //-     <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
   main.index-main.container
-    h2.title How it Works
-  
-    ol.how-it-works
-      li Visit us on Messenger
-        +messengerButton()
-      li Pick the teams and drivers you want to hear about. 
-
-      li Subscribe and your Formula 1 cards will automatically arrive before every grand-prix weekend.
-  
-
-  script. 
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId            : '428256864460216',
-        autoLogAppEvents : true,
-        xfbml            : true,
-        version          : 'v5.0'
-      });
-    };
-  script(async defer src="https://connect.facebook.net/en_US/sdk.js")
+   
