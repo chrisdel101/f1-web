@@ -1,8 +1,12 @@
 const utils = require('../utils')
 const cache = require('../cache')
 const cacheController = require('./cache.controller')
+const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
+const { fetchTeams, fetchTeam } = require('../clients/team.client')
 
 module.exports = {
+  fetchDriver,
+  fetchDrivers,
   compileDriverTemplateResObj,
   fetchDriverAPI,
   fetchDriversAPI,
@@ -52,7 +56,6 @@ function compileDriverTemplateResObj(
     allData: { ...driverData, ...teamData },
   }
 }
-
 // fetchs the driver info from the api to use in render func
 async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
   try {
@@ -69,7 +72,7 @@ async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
     }
     // query driver by slug
     const driverData = JSON.parse(
-      await utils.fetchData(`drivers/${driverSlug}`)
+      await utils.fetchEndpoint(`drivers/${driverSlug}`)
     )
     console.log('SLUG', driverSlug)
     if (!driverData) {
@@ -81,12 +84,12 @@ async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
     }
     // look up drivers team by id
     let teamData = JSON.parse(
-      await utils.fetchData(`teams/${driverData.team_id}`)
+      await utils.fetchEndpoint(`teams/${driverData.team_id}`)
     )
     // if id fails try slug
     if (!teamData) {
       teamData = JSON.parse(
-        await utils.fetchData(`teams/${driverData.team_name_slug}`)
+        await utils.fetchEndpoint(`teams/${driverData.team_name_slug}`)
       )
       // if slug fails return undefined
       if (!teamData) {
@@ -149,7 +152,7 @@ async function renderAllDriversList(ctx) {
   try {
     // must have module.exports to work in tests
     const { driversObj } = await module.exports.fetchDriversAPI()
-    // console.log('FETCH', driversObj)
+    console.log('FETCH', driversObj)
     // allDriversObj contain partial info for allDriversPage
     const allDriverObjs = async () => {
       const promises = driversObj.driversArr.map(async (driver) => {
@@ -171,7 +174,9 @@ async function renderAllDriversList(ctx) {
 }
 // use driver api data to rendercard only
 async function renderDriverCard(ctx) {
+  console.log('CCCCTTTXXX', ctx.query)
   try {
+    // const { driver}
     const { driverData, teamData } = await fetchDriverAPI(ctx, 'card')
     if (!driverData || !teamData) {
       throw Error('data undefined in renderDriverCard. Check fetchDriverAPI')
@@ -196,30 +201,47 @@ async function renderDriverCard(ctx) {
 }
 // use driver api data to render full template
 async function renderDriverTemplate(ctx) {
-  const { driverData, teamData } = await module.exports.fetchDriverAPI(
-    ctx,
-    'page'
-  )
-  const { driversObj, teamsObj } = await module.exports.fetchDriversAPI()
-  console.log('driverData', driverData)
-  // console.log('driversObj', driversObj)
-  if (!driverData) {
-    throw new ReferenceError('renderDriverTemplate.driverData() is undefined')
-  } else if (!teamData) {
-    throw new ReferenceError('renderDriverTemplate.teamData() is undefined')
-  } else if (!driversObj) {
-    throw new ReferenceError('renderDriverTemplate.driversObj() is undefined')
-  } else if (!teamsObj) {
-    throw new ReferenceError('renderDriverTemplate.teamsObj() is undefined')
+  console.log('XXX', ctx.title)
+  if (!ctx.query.driver) {
+    return (ctx.body = 'No Driver Query')
   }
+  const driverData = await fetchDriver(ctx.query.driver)
+  const driversArr = await fetchDrivers()
+  const teamData = await fetchTeam(driverData.team_id)
+  const teamsNames = await fetchTeams()
+  console.log('driversArr', driversArr)
+  // console.log('driversObj', driversObj)
+  if (!driverData || !teamData || !driversArr?.length || !teamsNames?.length) {
+    throw new ReferenceError('renderDriverTemplate data is missing')
+  }
+  // call team endpoint
+  const teamUrl = `/team/${driverData.team_name_slug}`
+  // add link to team to driver
+  driverData['teamUrl'] = teamUrl
+  driverData['logo_url'] = teamData.main_logo_url
 
-  const options = module.exports.compileDriverTemplateResObj(
-    ctx,
-    driversObj,
-    teamsObj,
-    driverData,
-    teamData
-  )
-  // console.log(options)
+  let options = {
+    //  +++ index params +++
+    urls: ctx.urls,
+    method: 'GET',
+    title: ctx.title,
+    driverAction: '/driver',
+    teamAction: '/team',
+    buttonField: 'Submit',
+    buttonType: 'submit',
+    buttonValue: 'submit',
+    driverSelectName: 'driver',
+    driverEnums: driversArr,
+    teamSelectName: 'team',
+    teamEnums: teamsNames,
+    driverFormText: ctx.driverFormText,
+    teamFormText: ctx.teamFormText,
+    // +++ mixin data  +++
+    routeName: 'driver',
+    driverData: driverData,
+    teamData: teamData,
+    allData: { ...driverData, ...teamData },
+  }
+  console.log('options', options)
   return await ctx.render('driverPage', options)
 }

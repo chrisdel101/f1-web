@@ -1,7 +1,7 @@
 const cache = require('../cache')
 const utils = require('../utils')
 
-exports.addDataToDriversObj = driversObj => {
+exports.addDataToDriversObj = (driversObj) => {
   try {
     driversObj.driverText = 'Choose a Driver'
     driversObj.selectName = 'driver'
@@ -11,7 +11,7 @@ exports.addDataToDriversObj = driversObj => {
     console.error('An error in addDataToDriversObj', e)
   }
 }
-exports.addDataToTeamsObj = teamsObj => {
+exports.addDataToTeamsObj = (teamsObj) => {
   try {
     teamsObj.teamText = 'Choose a Team'
     teamsObj.selectName = 'team'
@@ -28,11 +28,11 @@ exports.handleTeamsCache = async (cache, expiryTime, manualFetch = false) => {
     if (!manualFetch) {
       // if teams not in cache - add it
       if (!cache.hasOwnProperty('teams')) {
-        const teamsArr = JSON.parse(await utils.fetchData('teams'))
+        const teamsArr = JSON.parse(await utils.fetchEndpoint('teams'))
         console.log('handleTeamsCache() - NOT FROM CACHE')
         cache['teams'] = {
           teamsArr: teamsArr,
-          timestamp: new Date().getTime()
+          timestamp: new Date().getTime(),
         }
         return this.addDataToTeamsObj(cache['teams'])
         // if team exists but timestamp, older than 24 hours, fails - add it
@@ -40,11 +40,11 @@ exports.handleTeamsCache = async (cache, expiryTime, manualFetch = false) => {
         cache.hasOwnProperty('teams') &&
         !utils.verifyTimeStamp(cache['teams'].timestamp, expiryTime)
       ) {
-        const teamsArr = JSON.parse(await utils.fetchData('teams'))
+        const teamsArr = JSON.parse(await utils.fetchEndpoint('teams'))
         console.log('handleTeamsCache() - NOT FROM CACHE')
         cache['teams'] = {
           teamsArr: teamsArr,
-          timeStamp: new Date().getTime()
+          timeStamp: new Date().getTime(),
         }
         return this.addDataToTeamsObj(cache['teams'])
         // if drivers exists but timestamp pass - use cache
@@ -71,23 +71,28 @@ exports.handleDriversCache = async (cache, expiryTime, manualFetch = false) => {
     if (!manualFetch) {
       // if drivers not in cache - add it and new timestamp
       if (!cache.hasOwnProperty('drivers')) {
-        const fetchedDriversArr = JSON.parse(await utils.fetchData('drivers'))
+        const fetchedDriversArr = JSON.parse(
+          await utils.fetchEndpoint('drivers')
+        )
         console.log('handleDriversCache() - NOT FROM CACHE 1')
         cache['drivers'] = {
           driversArr: fetchedDriversArr,
-          timestamp: new Date().getTime()
+          timestamp: new Date().getTime(),
         }
+        console.log('cache', cache)
         return this.addDataToDriversObj(cache['drivers'])
         // if drivers exists but timestamp, older than 24 hours, fails - add it and new timestamp
       } else if (
         cache.hasOwnProperty('drivers') &&
         !utils.verifyTimeStamp(cache['drivers'].timestamp, expiryTime)
       ) {
-        const fetchedDriversArr = JSON.parse(await utils.fetchData('drivers'))
+        const fetchedDriversArr = JSON.parse(
+          await utils.fetchEndpoint('drivers')
+        )
         console.log('handleDriversCache() - NOT FROM CACHE 2')
         cache['drivers'] = {
           driversArr: fetchedDriversArr,
-          timeStamp: new Date().getTime()
+          timeStamp: new Date().getTime(),
         }
         return this.addDataToDriversObj(cache['drivers'])
         // if drivers exists but timestamp pass - use cache

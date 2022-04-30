@@ -1,6 +1,6 @@
 const https = require('https')
 const http = require('http')
-const urls = require('./urls')
+const urls = require('./envUrls')
 const puppeteer = require('puppeteer')
 let globalCache = require('./cache')
 const moment = require('moment')
@@ -114,25 +114,24 @@ module.exports = {
       console.error('Error in httpPostCall', e)
     }
   },
-  fetchData: async (params) => {
+  fetchEndpoint: async (params) => {
     try {
-      if (
-        process.env.NODE_ENV === 'development' ||
-        process.env.NODE_ENV === 'testing'
-      ) {
-        const call = module.exports.httpCall(urls.localDev(params))
-        let remoteJson = await call
-        // console.log('REM', remoteJson)
-        return remoteJson
-      } else if (process.env.NODE_ENV === 'production') {
-        console.log('PARAM', params)
-        const call = module.exports.httpsCall(urls.prodUrl(params))
-        let remoteJson = await call
-        console.log('REM', remoteJson)
-        return remoteJson
+      switch (process.env.NODE_ENV) {
+        case 'testing':
+        case 'development':
+          const localCall = module.exports.httpCall(urls.localF1(params))
+          let remoteJson1 = await localCall
+          // console.log('REM', remoteJson)
+          return remoteJson1
+        case 'prod_testing':
+        case 'production':
+          const prodCall = module.exports.httpCall(urls.prodF1(params))
+          let remoteJson2 = await prodCall
+          // console.log('REM', remoteJson2)
+          return remoteJson2
       }
     } catch (e) {
-      console.error('An error in util.fetchData', e)
+      console.error('An error in util.fetchEndpoint', e)
     }
   },
   // cap beginning of each seperate word

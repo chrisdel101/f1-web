@@ -4,11 +4,11 @@ const driversController = require('../controllers/drivers.controller')
 const teamsController = require('../controllers/teams.controller')
 const sessionsController = require('../controllers/sessions.controller')
 const utils = require('../utils')
-const urls = require('../urls')
+const urls = require('../envUrls')
 const API = require('../API/index')
 
 router.get('/user', () => {
-  utils.httpCall(urls.localDev('user-status'))
+  utils.httpCall(urls.localF1('user-status'))
 })
 // cache related
 router.get('/reset-cache', utils.resetCache)
@@ -19,7 +19,7 @@ router.get('/', indexController.renderIndex)
 router.get('/demo', indexController.renderDemo)
 router.get('/teams', teamsController.renderAllTeamsList)
 router.get('/drivers', driversController.renderAllDriversList)
-// render full template with query params- like POST
+// render full tems plate with query params- like POST
 router.get('/driver', driversController.renderDriverTemplate)
 router.get('/team', teamsController.renderTeamTemplate)
 // render cards
@@ -45,15 +45,15 @@ router.post('/drivers', (ctx) => {
       console.error('An error setting headers', e)
     }
     console.log(ctx)
-    return API.sendUserData(ctx.request.body, urls.localDev('user'))
+    return API.sendUserData(ctx.request.body, urls.localF1('user'))
   } else {
     ctx.response.status = 200
-    return API.sendUserData(ctx.request.body, urls.prodUrl('user'))
+    return API.sendUserData(ctx.request.body, urls.prodF1('user'))
   }
 })
 router.post('/teams', (ctx) => {
   console.log('teams', ctx.request.body)
-  return API.sendUserData(ctx.request.body, urls.localDev('user'))
+  return API.sendUserData(ctx.request.body, urls.localF1('user'))
 })
 // API - take images of cards
 // moblie size - uses puppeteer viewport to get

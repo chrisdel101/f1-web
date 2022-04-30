@@ -1,7 +1,7 @@
 const utils = require('../utils')
-const urls = require('../urls')
+const urls = require('../envUrls')
 
-exports.renderLoginTemplate = ctx => {
+exports.renderLoginTemplate = (ctx) => {
   return ctx.render('login', {
     process: process,
     method: 'POST',
@@ -24,15 +24,15 @@ exports.renderLoginTemplate = ctx => {
     button_type: 'submit',
     button_value: 'placeholder-button-value',
     routeName: 'login',
-    buttonField: 'Submit'
+    buttonField: 'Submit',
   })
 }
-exports.userLogin = async ctx => {
+exports.userLogin = async (ctx) => {
   try {
     if (process.env.NODE_ENV === 'development') {
-      return await utils.httpPostCall(urls.localDev('login'), ctx.request.body)
+      return await utils.httpPostCall(urls.localF1('login'), ctx.request.body)
     } else if (process.env.NODE_ENV === 'production') {
-      return await utils.httpPostCall(urls.prodUrl('login'), ctx.request.body)
+      return await utils.httpPostCall(urls.prodF1('login'), ctx.request.body)
     }
   } catch (e) {
     console.error('error in userLogin', e)

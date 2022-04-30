@@ -2,6 +2,7 @@ extends layout
 
 include mixins/_select
 block content
+  - console.log('driverEnums', driverEnums)
   .demo-container.container
     .driver-select
       h6.select-text= driverFormText
@@ -13,7 +14,6 @@ block content
         buttonType: buttonType,
         buttonValue: buttonValue,
         buttonField: buttonField,
-        driverText: driverText
       }) 
     .team-select
       h6.select-text=  teamFormText
@@ -25,7 +25,6 @@ block content
         buttonType: buttonType,
         buttonValue: buttonValue,
         buttonField: buttonField,
-        teamText:teamText
       }) 
     
 

@@ -9,7 +9,7 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const index = require('./routes/index')
-const urls = require('./urls')
+const urls = require('./envUrls')
 const errorHandlers = require('./errorHandlers')
 // error handler
 onerror(app)
@@ -67,7 +67,10 @@ app.context.teamFormText = 'Choose a Team'
 app.use(errorHandlers.notFound)
 
 // Otherwise this was a really bad error we didn't expect! Shoot eh
-if (process.env.NODE_ENV === 'development') {
+if (
+  process.env.NODE_ENV === 'development' ||
+  process.env.NODE_ENV.includes('test')
+) {
   /* Development Error Handler - Prints stack trace */
   app.use(errorHandlers.developmentErrors)
 } else {

@@ -6,9 +6,9 @@
   catchErrors(), catch any errors they throw, and pass it along to our express middleware with next()
 */
 
-exports.catchErrors = fn => {
-  return function(ctx, next) {
-    return fn(ctx.request, res.response, next).catch(next)
+exports.catchErrors = (fn) => {
+  return function (ctx, next) {
+    return fn(ctx, next).catch(next)
   }
 }
 
@@ -23,7 +23,7 @@ exports.notFound = (ctx, next) => {
   err.message = 'Not Found'
   err.detail = ctx.request.path
 
-  ctx.state.err = err;
+  ctx.state.err = err
   next()
 }
 
@@ -33,15 +33,15 @@ exports.notFound = (ctx, next) => {
     In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
   */
 exports.productionErrors = exports.developmentErrors = async (ctx, next) => {
-  let err;
-  let req;
-  let res;
+  let err
+  let req
+  let res
 
-  if (!ctx.state.err) return next();
+  if (!ctx.state.err) return next()
 
-  err = ctx.state.err;
-  req = ctx.request;
-  res = ctx.response;
+  err = ctx.state.err
+  req = ctx.request
+  res = ctx.response
 
   const errorDetails = {
     message: err.message,
@@ -59,5 +59,5 @@ exports.productionErrors = exports.developmentErrors = async (ctx, next) => {
    * await ctx.render('error', errorDetails)
    * but I can't quite get it to work.
    */
-  res.body = errorDetails;
+  res.body = errorDetails
 }
