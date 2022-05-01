@@ -59,8 +59,6 @@ async function renderAllTeamsList(ctx) {
 }
 async function combineDriverDataOnTeam(teamDataObj) {
   try {
-    console.log('teamDataObj!!', teamDataObj)
-    return
     // get name slug
     const driver1Slug = teamDataObj.drivers_scraped[0].name_slug
     const driver2Slug = teamDataObj.drivers_scraped[1].name_slug
@@ -79,7 +77,7 @@ async function combineDriverDataOnTeam(teamDataObj) {
         if (driver.name_slug === driversDataArr[i].name_slug) {
           driver['flag_img_url'] = driversDataArr[i]['flag_img_url']
           driver['api_call'] = `drivers/${driver.name_slug}`
-          driver['page_url'] = `/demo/driver?driver=${driver.name_slug}`
+          driver['page_url'] = `/demo/driver?demo-driver=${driver.name_slug}`
         }
       }
     })
@@ -128,7 +126,7 @@ async function createTeamDemoCard(ctx, teamData) {
   return {
     isDemo: true,
     ...teamData,
-    ...combineDriverDataOnTeam(teamData),
+    ...(await combineDriverDataOnTeam(teamData)),
   }
 }
 // use driver api data to rendercard only
