@@ -4,8 +4,8 @@ const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeams, fetchTeam } = require('../clients/team.client')
 const { indexControllerErrors } = require('../utilities/errorManager')
 const { catchErrors } = require('../errorHandlers')
-const { createDriverCard } = require('./drivers.controller')
-const { createTeamCard } = require('./teams.controller')
+const { createDriverDemoCard } = require('./drivers.controller')
+const { createTeamDemoCard } = require('./teams.controller')
 module.exports = {
   renderDemo,
   renderIndex,
@@ -32,11 +32,11 @@ async function renderDemo(ctx) {
     catchErrors(
       indexControllerErrors.queryDriverDataError(ctx, driverData, teamData)
     )
-    data['driverCardData'] = createDriverCard(ctx, driverData, teamData)
+    data['driverCardData'] = createDriverDemoCard(ctx, driverData, teamData)
   } else if (ctx.query['demo-team']) {
     const teamData = await fetchTeam(ctx.query['demo-team'])
     catchErrors(indexControllerErrors.queryTeamDataError(ctx, teamData))
-    data['teamCardData'] = await createTeamCard(ctx, teamData)
+    data['teamCardData'] = await createTeamDemoCard(ctx, teamData)
   }
   data['demoFormData'] = [
     {

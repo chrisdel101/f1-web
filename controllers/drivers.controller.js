@@ -5,7 +5,7 @@ const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeams, fetchTeam } = require('../clients/team.client')
 
 module.exports = {
-  createDriverCard,
+  createDriverDemoCard,
   fetchDriver,
   fetchDrivers,
   compileDriverTemplateResObj,
@@ -173,34 +173,29 @@ async function renderAllDriversList(ctx) {
     console.error('Error in renderAllDriversList', e)
   }
 }
-function createDriverCard(ctx, driverData, teamData) {
+function createDriverDemoCard(ctx, driverData, teamData) {
   return {
     ...driverData,
-    teamUrl: `/team?team=${driverData.team_name_slug}`,
+    teamUrl: `/demo/team?demo-team=${driverData.team_name_slug}`,
     logo_url: teamData.main_logo_url,
   }
 }
-// use driver api data to rendercard only
 async function renderDriverCard(ctx) {
-  console.log('CCCCTTTXXX', ctx.query)
-  try {
-    const teamUrl = `/team?team=${driverData.team_name_slug}`
-    // add link to team to driver
-    driverData['teamUrl'] = teamUrl
-    driverData['logo_url'] = teamData.main_logo_url
-    // console.log('Driver Data', driverData)
-    return await ctx.render('driverPage', {
-      //  +++ index params +++
-      urls: ctx.urls,
-      method: 'GET',
-      addClass: 'driver-card-page',
-      routeName: 'driverCard',
-      driverData: driverData,
-      teamData: teamData,
-    })
-  } catch (e) {
-    console.error('An error in renderDriverCard', e)
-  }
+  const driverData = fetchDriver()
+  const teamUrl = `/team?team=${driverData.team_name_slug}`
+  // add link to team to driver
+  driverData['teamUrl'] = teamUrl
+  driverData['logo_url'] = teamData.main_logo_url
+  // console.log('Driver Data', driverData)
+  return await ctx.render('driverPage', {
+    //  +++ index params +++
+    urls: ctx.urls,
+    method: 'GET',
+    addClass: 'driver-card-page',
+    routeName: 'driverCard',
+    driverData: driverData,
+    teamData: teamData,
+  })
 }
 // use driver api data to render full template
 async function renderDriverTemplate(ctx) {
