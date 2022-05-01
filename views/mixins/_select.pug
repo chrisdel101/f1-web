@@ -1,13 +1,10 @@
+//-data is passed into from demo
 mixin select(data)
-  - console.log('SELECT',data)
-  
   form(method=data.method action=data.action)
-
     .row.form-group
       .select.col-sm-8.col-md-6.center
         select(name=data.selectName).form-control.form-control-lg
           each d in data.enums 
-            //- - console.log("DD"  ,d)
             option(value=d.name_slug) #{(d.driver_name || d.full_team_name)}
       .btn-container.col-sm-4.col-md-6.center
         button.btn.btn-primary(type=data.buttonType value=data.buttonValue) #{data.buttonField}

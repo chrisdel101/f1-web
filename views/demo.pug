@@ -1,31 +1,35 @@
 extends layout
+include mixins/_driverCardMixinLg
+include mixins/_driverCardMixinSm
+include mixins/_teamCardMixinSm
+include mixins/_teamCardMixinLg
 
 include mixins/_select
 block content
-  - console.log('driverEnums', driverEnums)
   .demo-container.container
-    .driver-select
-      h6.select-text= driverFormText
-      +select({
-        method:method,
-        action: driverAction,
-        selectName: driverSelectName,
-        enums: driverEnums, 
-        buttonType: buttonType,
-        buttonValue: buttonValue,
-        buttonField: buttonField,
-      }) 
-    .team-select
-      h6.select-text=  teamFormText
-      +select({
-        method:method,
-        action: teamAction,
-        selectName: teamSelectName,
-        enums: teamEnums, 
-        buttonType: buttonType,
-        buttonValue: buttonValue,
-        buttonField: buttonField,
-      }) 
-    
-
+    - console.log('data', data)
+    each item in data.demoFormData
+      class(div=`${item.selectName}-select`)
+        h6.select-text= item.formNameText
+        +select({
+          method:item.method,
+          action: item.action,
+          selectName: item.selectName,
+          enums: item.enum, 
+          buttonType: 'submit',
+          buttonValue: 'submit',
+          buttonField: 'Submit',
+        }) 
+  if data.driverCardData
+    .driver-card-demo
+      .driver-card-container-sm
+        +driverCardMixinSm(data.driverCardData)
+      .driver-card-container-lg
+        +driverCardMixinLg(data.driverCardData)
+  if data.teamCardData
+    .team-card-demo
+      .team-card-container-sm
+        +teamCardMixinSm(data.teamCardData)
+      .team-card-container-lg
+        +teamCardMixinLg(data.teamCardData)
 

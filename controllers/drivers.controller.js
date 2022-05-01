@@ -5,6 +5,7 @@ const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeams, fetchTeam } = require('../clients/team.client')
 
 module.exports = {
+  createDriverCard,
   fetchDriver,
   fetchDrivers,
   compileDriverTemplateResObj,
@@ -172,15 +173,17 @@ async function renderAllDriversList(ctx) {
     console.error('Error in renderAllDriversList', e)
   }
 }
+function createDriverCard(ctx, driverData, teamData) {
+  return {
+    ...driverData,
+    teamUrl: `/team?team=${driverData.team_name_slug}`,
+    logo_url: teamData.main_logo_url,
+  }
+}
 // use driver api data to rendercard only
 async function renderDriverCard(ctx) {
   console.log('CCCCTTTXXX', ctx.query)
   try {
-    // const { driver}
-    const { driverData, teamData } = await fetchDriverAPI(ctx, 'card')
-    if (!driverData || !teamData) {
-      throw Error('data undefined in renderDriverCard. Check fetchDriverAPI')
-    }
     const teamUrl = `/team?team=${driverData.team_name_slug}`
     // add link to team to driver
     driverData['teamUrl'] = teamUrl
@@ -202,10 +205,10 @@ async function renderDriverCard(ctx) {
 // use driver api data to render full template
 async function renderDriverTemplate(ctx) {
   console.log('XXX', ctx.title)
-  if (!ctx.query.driver) {
+  if (!ctx.query['demo-driver']) {
     return (ctx.body = 'No Driver Query')
   }
-  const driverData = await fetchDriver(ctx.query.driver)
+  const driverData = await fetchDriver(ctx.query['demo-driver'])
   const driversArr = await fetchDrivers()
   const teamData = await fetchTeam(driverData.team_id)
   const teamsNames = await fetchTeams()

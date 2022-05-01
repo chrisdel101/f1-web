@@ -2,6 +2,7 @@ const cacheController = require('./cache.controller')
 const cache = require('../cache')
 const utils = require('../utils')
 module.exports = {
+  createTeamCard,
   renderTeamTemplate,
   renderTeamCard,
   fetchTeamAPI,
@@ -123,7 +124,13 @@ async function fetchTeamsAPI() {
     console.error('An error in teamsController.fetchDriversAPI()', e)
   }
 }
-
+async function createTeamCard(ctx, teamData) {
+  return {
+    ...teamData,
+    teamUrl: `/team?team=${teamData.team_name_slug}`,
+    ...combineDriverDataOnTeam(teamData),
+  }
+}
 // use driver api data to rendercard only
 async function renderTeamCard(ctx) {
   let { teamData } = await fetchTeamAPI(ctx, 'card')
@@ -143,6 +150,7 @@ async function renderTeamCard(ctx) {
     teamData: teamData,
   })
 }
+
 async function compileTeamTemplateResObj(ctx, driversObj, teamsObj, teamData) {
   // add driver data to team obj
   teamData = await combineDriverDataOnTeam(teamData)

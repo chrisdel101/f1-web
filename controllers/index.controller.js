@@ -4,6 +4,8 @@ const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeams, fetchTeam } = require('../clients/team.client')
 const { indexControllerErrors } = require('../utilities/errorManager')
 const { catchErrors } = require('../errorHandlers')
+const { createDriverCard } = require('./drivers.controller')
+const { createTeamCard } = require('./teams.controller')
 module.exports = {
   renderDemo,
   renderIndex,
@@ -16,27 +18,43 @@ async function renderIndex(ctx) {
     subTitle: ctx.subTitle2,
   })
 }
+// render demo page and select forms
 async function renderDemo(ctx) {
+  let data = {}
   const teamsNamesArr = await fetchTeams()
   const driverNamesArr = await fetchDrivers()
   catchErrors(
     indexControllerErrors.renderDemoError(ctx, driverNamesArr, teamsNamesArr)
   )
-  await ctx.render('demo', {
-    title: ctx.title,
-    method: 'GET',
-    driverAction: '/driver',
-    teamAction: '/team',
-    buttonField: 'Submit',
-    buttonType: 'submit',
-    buttonValue: 'submit',
-    driverFormText: ctx.driverText,
-    teamText: ctx.teamText,
-    driverSelectName: 'driver',
-    driverEnums: driverNamesArr,
-    teamSelectName: 'team',
-    teamEnums: teamsNamesArr,
-  })
+  if (ctx.query['demo-driver']) {
+    const driverData = await fetchDriver(ctx.query['demo-driver'])
+    const teamData = await fetchTeam(driverData.team_id)
+    catchErrors(
+      indexControllerErrors.queryDriverDataError(ctx, driverData, teamData)
+    )
+    data['driverCardData'] = createDriverCard(ctx, driverData, teamData)
+  } else if (ctx.query['demo-team']) {
+    const teamData = await fetchTeam(ctx.query['demo-team'])
+    catchErrors(indexControllerErrors.queryTeamDataError(ctx, teamData))
+    data['teamCardData'] = await createTeamCard(ctx, teamData)
+  }
+  data['demoFormData'] = [
+    {
+      formNameText: ctx.driverFormText,
+      action: '/demo/driver',
+      method: 'GET',
+      selectName: 'demo-driver',
+      enum: driverNamesArr,
+    },
+    {
+      formNameText: ctx.teamFormText,
+      method: 'GET',
+      action: '/demo/team',
+      selectName: 'demo-team',
+      enum: teamsNamesArr,
+    },
+  ]
+  await ctx.render('demo', { data })
 }
 // fetch from DB manually - skip cache
 async function freshFetch() {
