@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'American Captian';
+  src: url(../fonts/AmericanCaptain-MdEY.otf);
+}
+@font-face {
+  font-family: 'Breezed Caps';
+  src: url(../fonts/BreezedcapsBoldoblique-Epvj.ttf);
+}
 body {
   font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
 }
@@ -9,11 +17,11 @@ img {
   max-width: 100%;
 }
 .title {
-  font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+  font-family: 'American Captian', 'PT Sans', Helvetica, Arial, sans-serif;
   text-align: center;
 }
 .navbar .title {
-  font-size: 25px;
+  font-size: 35px;
 }
 .sub-title {
   font-family: 'Lobster', cursive;
@@ -126,22 +134,31 @@ img {
 .all-drivers .mini .main-image-container img {
   pointer-events: none;
 }
-button.submit-all-drivers {
-  align-self: center;
+.demo-container .btn-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+.demo-container .btn-container .btn {
+  width: 30%;
 }
 .select-text {
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
 }
-.driver-select {
+h6.select-text {
+  align-self: center;
+}
+.demo-driver-select {
   border-bottom: solid gray;
   margin-bottom: 15px;
 }
-.driver-select,
-.team-select {
+.demo-driver-select,
+.demo-team-select {
   margin-top: 10px;
   min-height: 100px;
+  display: flex;
+  flex-direction: column;
 }
-
 .main-image {
   max-width: 100%;
 }
@@ -205,17 +222,16 @@ button.submit-all-drivers {
   max-width: 150px;
   margin: 10px 0;
 }
-.driver-table-container {
+.table-container {
   display: flex;
   justify-content: center;
+  font-size: 1rem;
+  padding-bottom: 20px;
 }
 .stat-key {
   font-weight: bold;
 }
-table.stats {
-  padding: 0 5px;
-  margin: auto;
-}
+
 .stats-columns {
   display: flex;
   justify-content: center;
@@ -238,14 +254,20 @@ ul.navbar-nav {
   color: white;
 }
 
-/* add after it hits this*/
+/* From this and up */
 @media (min-width: 576px) {
-  .navbar .title {
-    font-size: 35px;
+  .table-container {
+    font-size: 1.2rem;
   }
-}
-/* add up until it hits this */
-@media (max-width: 576px) {
+  .demo-container .btn-container .btn {
+    width: initial;
+  }
+  .demo-container .btn-container {
+    margin: initial;
+  }
+  .navbar .title {
+    font-size: 3em;
+  }
   .index-hero {
     min-height: 400px;
   }
@@ -253,16 +275,15 @@ ul.navbar-nav {
     display: flex;
     justify-content: center;
   }
-  .select-text {
-    font-size: 1.2rem;
-    text-align: center;
-  }
-  .btn-container {
-    margin-top: 10px;
+  h6.select-text {
+    align-self: flex-start;
   }
 }
-/* add when hits 768 or greater */
+/* From this and up */
 @media (min-width: 768px) {
+  .navbar .title {
+    font-size: 4em;
+  }
   .left-column {
     width: 50%;
   }
@@ -284,5 +305,18 @@ ul.navbar-nav {
   }
   .team-card-container-lg .drivers .driver {
     margin: 5px 0;
+  }
+  .table-container {
+    height: 100%;
+    align-items: center;
+  }
+}
+/* From this and up */
+@media (min-width: 999px) {
+  .table-container {
+    font-size: 1.2rem;
+  }
+  .team-card-container-lg .drivers {
+    font-size: 24px;
   }
 }

@@ -7,9 +7,9 @@ include mixins/_teamCardMixinLg
 include mixins/_select
 block content
   .demo-container.container
-    - console.log('data', data)
+    //- - console.log('data', data)
     each item in data.demoFormData
-      class(div=`${item.selectName}-select`)
+      div(class=`${item.selectName}-select`)
         h6.select-text= item.formNameText
         +select({
           method:item.method,
@@ -22,8 +22,6 @@ block content
         }) 
   if data.driverCardData
     .driver-card-demo
-      //- .driver-card-container-sm
-      //-   +driverCardMixinSm(data.driverCardData)
       .driver-card-container-lg
         +driverCardMixinLg(data.driverCardData)
   if data.teamCardData

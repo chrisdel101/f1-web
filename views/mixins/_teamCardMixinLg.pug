@@ -16,44 +16,45 @@ mixin teamCardMixinLg(data)
           a(href=data.drivers_scraped[1].page_url)
             span #{data.drivers_scraped[1].driver_name}
             img.flag(src=data.drivers_scraped[1].flag_img_url)
-      table.stats
-        tbody
-          tr 
-            td
-              span.stat-key Base: 
-              span.stat-val #{data.base}
-          tr 
-            td
-              span.stat-key Power Unit: 
-              span.stat-val #{data.power_unit}
-          tr 
-            td
-              span.stat-key Chassis: 
-              span.stat-val #{data.chassis}
-          tr 
-            td
-              span.stat-key Team Chief: 
-              span.stat-val #{data.team_chief}
-          tr 
-            td
-              span.stat-key Techical Chief: 
-              span.stat-val #{data.technical_chief}
-          tr 
-            td
-              span.stat-key Highest Finish: 
-              span.stat-val #{data.highest_race_finish}
-          tr 
-            td
-              span.stat-key Championships: 
-              span.stat-val #{data.championship_titles}
-          tr 
-            td
-              span.stat-key Pole Positions: 
-              span.stat-val #{data.pole_positions}
-          tr 
-            td
-              span.stat-key First Team Entry: 
-              span.stat-val #{data.first_team_entry}
+      .team-table-container.table-container
+        table.stats
+          tbody
+            tr 
+              td
+                span.stat-key Base: 
+                span.stat-val #{data.base}
+            tr 
+              td
+                span.stat-key Power Unit: 
+                span.stat-val #{data.power_unit}
+            tr 
+              td
+                span.stat-key Chassis: 
+                span.stat-val #{data.chassis}
+            tr 
+              td
+                span.stat-key Team Chief: 
+                span.stat-val #{data.team_chief}
+            tr 
+              td
+                span.stat-key Techical Chief: 
+                span.stat-val #{data.technical_chief}
+            tr 
+              td
+                span.stat-key Highest Finish: 
+                span.stat-val #{data.highest_race_finish}
+            tr 
+              td
+                span.stat-key Championships: 
+                span.stat-val #{data.championship_titles}
+            tr 
+              td
+                span.stat-key Pole Positions: 
+                span.stat-val #{data.pole_positions}
+            tr 
+              td
+                span.stat-key First Team Entry: 
+                span.stat-val #{data.first_team_entry}
               
             
               
