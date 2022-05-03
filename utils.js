@@ -35,17 +35,26 @@ module.exports = {
         port: url.port,
         path: url.pathname,
         headers: {
-          'x-Api-Key': process.env.API_KEY,
+          'x-Api-Key': process.env.API_KEY ?? '12345',
           'Content-Type': 'application/json',
         },
       }
-      http.get(options, (res) => {
+      const req = http.get(options, (res) => {
         console.log(res.headers)
         res.setEncoding('utf8')
         res.on('data', (d) => {
           resolve(d)
         })
-      })
+
+
+      }).on('error', (e) => {
+        console.error(`HTTP error: ${e.message}`);
+        if (e.code === 'ECONNREFUSED') {
+          console.log('Local DB is not running')
+          req.shouldKeepAlive = false
+          req.destroy()
+        }
+      });
     })
   },
   httpsCall: async (_url) => {
@@ -56,7 +65,7 @@ module.exports = {
         port: url.port,
         path: url.pathname,
         headers: {
-          'x-Api-Key': process.env.API_KEY,
+          'x-Api-Key': process.env.API_KEY ?? '12345',
           'Content-Type': 'application/json',
         },
       }
@@ -66,7 +75,14 @@ module.exports = {
           resolve(d)
         })
       })
-    })
+    }).on('error', (e) => {
+      console.error(`HTTP error: ${e.message}`);
+      if (e.code === 'ECONNREFUSED') {
+        console.log('Local DB is not running')
+        req.shouldKeepAlive = false
+        req.destroy()
+      }
+    });
   },
   httpPostCall: async (url, data) => {
     const newUrl = new URL(url)
@@ -84,7 +100,7 @@ module.exports = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-Api-Key': process.env.API_KEY,
+          'x-Api-Key': process.env.API_KEY ?? '12345',
           'Content-Length': data.length,
         },
       }
