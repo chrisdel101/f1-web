@@ -8,12 +8,12 @@ module.exports = {
   createDriverDemoCard,
   fetchDriver,
   fetchDrivers,
-  compileDriverTemplateResObj,
-  fetchDriverAPI,
-  fetchDriversAPI,
+  // compileDriverTemplateResObj,
+  // fetchDriverAPI,
+  // fetchDriversAPI,
   renderDriverTemplate,
   renderDriverCard,
-  renderAllDriversList,
+  renderAllDrivers,
   makeAllDriversObjs,
 }
 //TODO
@@ -21,108 +21,108 @@ module.exports = {
 // send post to webhook - recieved
 // close webhook send post with sender_ID to add to res obj
 //ask user next question on msgr
-function compileDriverTemplateResObj(
-  ctx,
-  driversObj,
-  teamsObj,
-  driverData,
-  teamData
-) {
-  // call team endpoint
-  const teamUrl = `/team?team=${driverData.team_name_slug}`
-  // add link to team to driver
-  driverData['teamUrl'] = teamUrl
-  driverData['logo_url'] = teamData.main_logo_url
-  // console.log('driverData', driverData)
-  return {
-    //  +++ index params +++
-    urls: ctx.urls,
-    method: 'GET',
-    title: ctx.title,
-    driverAction: driversObj.driverAction,
-    teamAction: teamsObj.teamAction,
-    buttonField: 'Submit',
-    buttonType: 'submit',
-    buttonValue: 'submit',
-    driverSelectName: driversObj.selectName,
-    driverEnums: driversObj.driversArr,
-    teamSelectName: teamsObj.selectName,
-    teamEnums: teamsObj.teamsArr,
-    driverFormText: ctx.driverFormText,
-    teamFormText: ctx.teamFormText,
-    // +++ mixin data  +++
-    routeName: 'driver',
-    driverData: driverData,
-    teamData: teamData,
-    allData: { ...driverData, ...teamData },
-  }
-}
+// function compileDriverTemplateResObj(
+//   ctx,
+//   driversObj,
+//   teamsObj,
+//   driverData,
+//   teamData
+// ) {
+//   // call team endpoint
+//   const teamUrl = `/team?team=${driverData.team_name_slug}`
+//   // add link to team to driver
+//   driverData['teamUrl'] = teamUrl
+//   driverData['logo_url'] = teamData.main_logo_url
+//   // console.log('driverData', driverData)
+//   return {
+//     //  +++ index params +++
+//     urls: ctx.urls,
+//     method: 'GET',
+//     title: ctx.title,
+//     driverAction: driversObj.driverAction,
+//     teamAction: teamsObj.teamAction,
+//     buttonField: 'Submit',
+//     buttonType: 'submit',
+//     buttonValue: 'submit',
+//     driverSelectName: driversObj.selectName,
+//     driverEnums: driversObj.driversArr,
+//     teamSelectName: teamsObj.selectName,
+//     teamEnums: teamsObj.teamsArr,
+//     driverFormText: ctx.driverFormText,
+//     teamFormText: ctx.teamFormText,
+//     // +++ mixin data  +++
+//     routeName: 'driver',
+//     driverData: driverData,
+//     teamData: teamData,
+//     allData: { ...driverData, ...teamData },
+//   }
+// }
 // fetchs the driver info from the api to use in render func
-async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
-  try {
-    // get the input params diff depending on type
-    if (render === 'page') {
-      // get query params from GET req
-      driverSlug = ctx.query.driver
-    } else if (render === 'card') {
-      driverSlug = ctx.params.driver_slug
-    }
-    // TODO - add to error message page
-    if (!driverSlug) {
-      throw new ReferenceError('fetchDriverAPI must have driver_slug')
-    }
-    // query driver by slug
-    const driverData = JSON.parse(
-      await utils.fetchEndpoint(`drivers/${driverSlug}`)
-    )
-    console.log('SLUG', driverSlug)
-    if (!driverData) {
-      // happens if DB offline
-      console.error(
-        'fetchDriverAPI: No Drivers found. Incorrect slug or DB is empty'
-      )
-      return
-    }
-    // look up drivers team by id
-    let teamData = JSON.parse(
-      await utils.fetchEndpoint(`teams/${driverData.team_id}`)
-    )
-    // if id fails try slug
-    if (!teamData) {
-      teamData = JSON.parse(
-        await utils.fetchEndpoint(`teams/${driverData.team_name_slug}`)
-      )
-      // if slug fails return undefined
-      if (!teamData) {
-        // happens if team table empty API
-        console.error(
-          'fetchDriverAPI: no Teams found. Incorrect slug/id or DB is empty'
-        )
-        return
-      }
-    }
+// async function fetchDriverAPI(ctx, render, driverSlug = undefined) {
+//   try {
+//     // get the input params diff depending on type
+//     if (render === 'page') {
+//       // get query params from GET req
+//       driverSlug = ctx.query.driver
+//     } else if (render === 'card') {
+//       driverSlug = ctx.params.driver_slug
+//     }
+//     // TODO - add to error message page
+//     if (!driverSlug) {
+//       throw new ReferenceError('fetchDriverAPI must have driver_slug')
+//     }
+//     // query driver by slug
+//     const driverData = JSON.parse(
+//       await utils.fetchEndpoint(`drivers/${driverSlug}`)
+//     )
+//     console.log('SLUG', driverSlug)
+//     if (!driverData) {
+//       // happens if DB offline
+//       console.error(
+//         'fetchDriverAPI: No Drivers found. Incorrect slug or DB is empty'
+//       )
+//       return
+//     }
+//     // look up drivers team by id
+//     let teamData = JSON.parse(
+//       await utils.fetchEndpoint(`teams/${driverData.team_id}`)
+//     )
+//     // if id fails try slug
+//     if (!teamData) {
+//       teamData = JSON.parse(
+//         await utils.fetchEndpoint(`teams/${driverData.team_name_slug}`)
+//       )
+//       // if slug fails return undefined
+//       if (!teamData) {
+//         // happens if team table empty API
+//         console.error(
+//           'fetchDriverAPI: no Teams found. Incorrect slug/id or DB is empty'
+//         )
+//         return
+//       }
+//     }
 
-    return {
-      driverData,
-      teamData,
-    }
-  } catch (e) {
-    console.error('An error in driverController.fetchDriverAPI()', e)
-  }
-}
+//     return {
+//       driverData,
+//       teamData,
+//     }
+//   } catch (e) {
+//     console.error('An error in driverController.fetchDriverAPI()', e)
+//   }
+// }
 // fetchs the driver info from the api to use in render func
-async function fetchDriversAPI() {
-  try {
-    const driversObj = await cacheController.handleDriversCache(cache, 1440)
-    const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
-    return {
-      driversObj,
-      teamsObj,
-    }
-  } catch (e) {
-    console.error('An error in driverController.fetchDriversAPI()', e)
-  }
-}
+// async function fetchDriversAPI() {
+//   try {
+//     const driversObj = await cacheController.handleDriversCache(cache, 1440)
+//     const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
+//     return {
+//       driversObj,
+//       teamsObj,
+//     }
+//   } catch (e) {
+//     console.error('An error in driverController.fetchDriversAPI()', e)
+//   }
+// }
 // takes slug, calls API and combines props
 async function makeAllDriversObjs(ctx, driverSlug, size = 'full') {
   try {
@@ -148,29 +148,21 @@ async function makeAllDriversObjs(ctx, driverSlug, size = 'full') {
     console.error('Error in makeAllDriversObjs', e)
   }
 }
-// calls all drivers, fetchs makeAllDriversObjs, and renders tmplt
-async function renderAllDriversList(ctx) {
+async function renderAllDrivers(ctx) {
   try {
-    // must have module.exports to work in tests
-    const { driversObj } = await module.exports.fetchDriversAPI()
-    console.log('FETCH', driversObj)
-    // allDriversObj contain partial info for allDriversPage
-    const allDriverObjs = async () => {
-      const promises = driversObj.driversArr.map(async (driver) => {
-        return await module.exports.makeAllDriversObjs(ctx, driver.name_slug)
+    const driverNamesArr = await fetchDrivers()
+    // loop over names and get each driver
+    const driversDataArr = await Promise.all(
+      driverNamesArr.map(async (driver) => {
+        return await fetchDriver(driver.name_slug)
       })
-      return Promise.all(promises)
-    }
-    const driversArr = await allDriverObjs()
-    // needs to have key name to work in template
-    const driversArrObj = {
-      driversArr,
-      size: driversArr[0].size,
-      sender_ID: driversArr.sender_ID,
-    }
-    return await ctx.render('allDrivers', driversArrObj)
+    )
+    return await ctx.render('allDrivers', {
+      driversDataArr,
+      cardSize: ctx.query === 'mini' ? 'mini' : 'full',
+    })
   } catch (e) {
-    console.error('Error in renderAllDriversList', e)
+    console.error('Error in renderAllDrivers', e)
   }
 }
 function createDriverDemoCard(ctx, driverData, teamData) {

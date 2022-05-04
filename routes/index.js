@@ -18,7 +18,7 @@ router.get('/fresh-fetch', indexController.freshFetch)
 router.get('/', indexController.renderIndex)
 router.get('/demo', indexController.renderDemo)
 router.get('/teams', teamsController.renderAllTeamsList)
-router.get('/drivers', driversController.renderAllDriversList)
+router.get('/drivers', driversController.renderAllDrivers)
 // render full tems plate with query params- like POST
 router.get('/demo/driver', indexController.renderDemo)
 router.get('/demo/team', indexController.renderDemo)

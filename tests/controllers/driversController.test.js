@@ -62,8 +62,8 @@ describe('driversController', () => {
     })
   })
 
-  describe('renderAllDriversList()', () => {
-    it('renderAllDriversList calls fetchDriver API', function () {
+  describe('renderAllDrivers()', () => {
+    it('renderAllDrivers calls fetchDriver API', function () {
       const mockCtx = {
         query: {
           driver: 'lewis-hamilton',
@@ -74,21 +74,23 @@ describe('driversController', () => {
         },
       }
       sinon.spy(driversController, 'fetchDriversAPI')
-      return Promise.resolve(
-        driversController.renderAllDriversList(mockCtx)
-      ).then(() => {
-        return driversController.fetchDriversAPI.returnValues[0].then((res) => {
-          // intercepted API call has correct props
-          assert(res.hasOwnProperty('driversObj'))
-          assert(res.hasOwnProperty('teamsObj'))
-          // intercepted API call has correct props is not blank
-          assert(res.driversObj.driversArr.length)
-          assert(res.teamsObj.teamsArr.length)
-          driversController.fetchDriversAPI.restore()
-        })
-      })
+      return Promise.resolve(driversController.renderAllDrivers(mockCtx)).then(
+        () => {
+          return driversController.fetchDriversAPI.returnValues[0].then(
+            (res) => {
+              // intercepted API call has correct props
+              assert(res.hasOwnProperty('driversObj'))
+              assert(res.hasOwnProperty('teamsObj'))
+              // intercepted API call has correct props is not blank
+              assert(res.driversObj.driversArr.length)
+              assert(res.teamsObj.teamsArr.length)
+              driversController.fetchDriversAPI.restore()
+            }
+          )
+        }
+      )
     })
-    it('renderAllDriversList calls makeAllDriversObjs()', function () {
+    it('renderAllDrivers calls makeAllDriversObjs()', function () {
       const mockCtx = {
         query: {
           driver: 'alexander-albon',
@@ -100,28 +102,29 @@ describe('driversController', () => {
         },
       }
       sinon.spy(driversController, 'makeAllDriversObjs')
-      return Promise.resolve(
-        driversController.renderAllDriversList(mockCtx)
-      ).then(() => {
-        return driversController.makeAllDriversObjs.returnValues[0].then(
-          (resOuter) => {
-            // compare direct call to makeAllDriversObjs and value given inside spy
-            // they should be equal if function is correct
-            const makeAllDriversObjsCall = driversController.makeAllDriversObjs(
-              mockCtx,
-              mockCtx.query.driver
-            )
-            return makeAllDriversObjsCall.then((resInner) => {
-              console.log(resInner)
-              // direct call and spied call should be equal
-              assert.deepEqual(resInner, resOuter)
-              driversController.makeAllDriversObjs.restore()
-            })
-          }
-        )
-      })
+      return Promise.resolve(driversController.renderAllDrivers(mockCtx)).then(
+        () => {
+          return driversController.makeAllDriversObjs.returnValues[0].then(
+            (resOuter) => {
+              // compare direct call to makeAllDriversObjs and value given inside spy
+              // they should be equal if function is correct
+              const makeAllDriversObjsCall =
+                driversController.makeAllDriversObjs(
+                  mockCtx,
+                  mockCtx.query.driver
+                )
+              return makeAllDriversObjsCall.then((resInner) => {
+                console.log(resInner)
+                // direct call and spied call should be equal
+                assert.deepEqual(resInner, resOuter)
+                driversController.makeAllDriversObjs.restore()
+              })
+            }
+          )
+        }
+      )
     })
-    it('renderAllDriversList calls render', function () {
+    it('renderAllDrivers calls render', function () {
       const mockCtx = {
         query: {
           driver: 'lewis-hamilton',
@@ -132,12 +135,12 @@ describe('driversController', () => {
         },
       }
       sinon.spy(mockCtx, 'render')
-      return Promise.resolve(
-        driversController.renderAllDriversList(mockCtx)
-      ).then(() => {
-        assert(mockCtx.render.calledOnce)
-        mockCtx.render.restore()
-      })
+      return Promise.resolve(driversController.renderAllDrivers(mockCtx)).then(
+        () => {
+          assert(mockCtx.render.calledOnce)
+          mockCtx.render.restore()
+        }
+      )
     })
   })
   describe('fetchDriverAPI()', () => {

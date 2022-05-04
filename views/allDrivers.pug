@@ -3,19 +3,8 @@ include mixins/_allDriversMixin
 block content
   .all-drivers-container
     ul.all-drivers
-      for driver in driversArr
-        +allDriverMixin(driver)
-    if size === " mini"
+      for driver in driversDataArr
+        +allDriverMixin(driver, cardSize)
+    if cardSize === " mini"
       form(method='POST',action='/drivers')
         button(type="button" class="btn btn-primary btn-lg submit-all-drivers") Submit
-
-
-      script.
-        (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
-        fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'Messenger'));
-      script(src="../javascripts/drivers.js" type="application/javascript" data-env=`${process.env.NODE_ENV}`)
