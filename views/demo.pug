@@ -7,8 +7,8 @@ include mixins/_teamCardMixinLg
 include mixins/_select
 block content
   .demo-container.container
-    //- - console.log('data', data)
-    each item in data.demoFormData
+    - console.log('data', teamCardData)
+    each item in demoFormData
       div(class=`${item.selectName}-select`)
         h6.select-text= item.formNameText
         +select({
@@ -20,12 +20,12 @@ block content
           buttonValue: 'submit',
           buttonField: 'Submit',
         }) 
-  if data.driverCardData
+  if driverCardData
     .driver-card-demo
       .driver-card-container-lg
-        +driverCardMixinLg(data.driverCardData)
-  if data.teamCardData
+        +driverCardMixinLg(driverCardData)
+  if teamCardData
     .team-card-demo
       .team-card-container-lg
-        +teamCardMixinLg(data.teamCardData)
+        +teamCardMixinLg(teamCardData)
 

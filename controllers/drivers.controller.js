@@ -3,9 +3,12 @@ const cache = require('../cache')
 const cacheController = require('./cache.controller')
 const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeams, fetchTeam } = require('../clients/team.client')
+const { catchErrors } = require('../errorHandlers')
+const { errorHandler } = require('../utilities/errorManager')
 
 module.exports = {
-  createDriverDemoCard,
+  makeDriverCard,
+  // createDriverDemoCard,
   fetchDriver,
   fetchDrivers,
   // compileDriverTemplateResObj,
@@ -13,7 +16,7 @@ module.exports = {
   // fetchDriversAPI,
   renderDriverTemplate,
   renderDriverCard,
-  renderAllDrivers,
+  renderAllDriversPage,
   makeAllDriversObjs,
 }
 //TODO
@@ -148,7 +151,7 @@ async function makeAllDriversObjs(ctx, driverSlug, size = 'full') {
     console.error('Error in makeAllDriversObjs', e)
   }
 }
-async function renderAllDrivers(ctx) {
+async function renderAllDriversPage(ctx) {
   try {
     const driverNamesArr = await fetchDrivers()
     // loop over names and get each driver
@@ -162,13 +165,23 @@ async function renderAllDrivers(ctx) {
       cardSize: ctx.query === 'mini' ? 'mini' : 'full',
     })
   } catch (e) {
-    console.error('Error in renderAllDrivers', e)
+    console.error('Error in renderAllDriversPage', e)
   }
 }
-function createDriverDemoCard(ctx, driverData, teamData) {
+// function createDriverDemoCard(ctx, driverData, teamData) {
+//   return {
+//     ...driverData,
+//     teamUrl: `/demo/team?demo-team=${driverData.team_name_slug}`,
+//     logo_url: teamData.main_logo_url,
+//   }
+// }
+async function makeDriverCard(name_slug) {
+  const driverData = await fetchDriver(name_slug)
+  const teamData = await fetchTeam(driverData.team_id)
+  catchErrors(errorHandler.queryDriverDataError(driverData, teamData))
   return {
     ...driverData,
-    teamUrl: `/demo/team?demo-team=${driverData.team_name_slug}`,
+    teamUrl: `/demo/?demo-team=${driverData.team_name_slug}`,
     logo_url: teamData.main_logo_url,
   }
 }

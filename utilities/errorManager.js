@@ -1,22 +1,17 @@
-exports.indexControllerErrors = {
-  renderDemoError: (ctx, driverNamesArr, teamsNamesArr) => {
+exports.errorHandler = {
+  renderDemoError: (driverNamesArr, teamsNamesArr) => {
     console.log(driverNamesArr, teamsNamesArr)
     if (!driverNamesArr?.length || !teamsNamesArr?.length) {
-      ctx.body = 'renderDemo data missing'
-      throw new ReferenceError('Error: renderDriverTemplate data is missing')
+      throw new ReferenceError('Error: renderDemoError is missing data')
     }
   },
-  queryDriverDataError: (ctx, driverData, teamData) => {
+  queryDriverDataError: (driverData, teamData) => {
     if (!driverData || !teamData) {
-      ctx.body = 'queryDriverDataError data missing'
-      throw new ReferenceError(
-        'queryDriverDataError: queried driver data is undefined'
-      )
+      throw new ReferenceError('queryDriverDataError: driver data is undefined')
     }
   },
-  queryTeamDataError: (ctx, teamData) => {
+  queryTeamDataError: (teamData) => {
     if (!teamData) {
-      ctx.body = 'queryTeamDataError data missing'
       throw new ReferenceError(
         'queryTeamDataError: queried team data is undefined'
       )
