@@ -6,12 +6,10 @@ const { errorHandler } = require('../utilities/errorManager')
 const { fetchTeam } = require('../clients/team.client')
 module.exports = {
   makeTeamCard,
-  renderTeamTemplate,
   renderTeamCard,
   fetchTeamAPI,
   fetchTeamsAPI,
-  combineDriverDataOnTeam,
-  compileTeamTemplateResObj,
+  getDriversData,
   renderAllTeamsList,
   makeAllTeamsObjs,
 }
@@ -22,7 +20,7 @@ async function makeAllTeamsObjs(ctx, teamSlug, size = 'full') {
     if (ctx.query && ctx.query.size === 'mini') {
       size = 'mini'
     }
-    const { teamData } = await module.exports.fetchTeamAPI(ctx, null, teamSlug)
+    const teamData = await fetchTeam(teamSlug)
     const options = {
       full_team_name: teamData.full_team_name,
       main_image: teamData.main_image,
@@ -44,23 +42,23 @@ async function renderAllTeamsList(ctx) {
     // allDriversObj contain partial info for allDriversPage
     const allTeamObjs = async () => {
       const promises = teamsObj.teamsArr.map(async (team) => {
-        return await module.exports.makeAllTeamsObjs(ctx, team.name_slug)
+        return await fetchTeam(team.teamSlug)
       })
       return Promise.all(promises)
     }
     // needs to have key name to work in template
+
     const teamsArr = await allTeamObjs()
     const teamsArrObj = {
       teamsArr,
-      // take size from first arr ite,
-      size: teamsArr[0].size,
+      cardSize: ctx.query === 'mini' ? 'mini' : 'full',
     }
     return await ctx.render('allTeams', teamsArrObj)
   } catch (e) {
     console.error('Error in renderAllTeamsList', e)
   }
 }
-async function combineDriverDataOnTeam(teamDataObj) {
+async function getDriversData(teamDataObj) {
   try {
     // get name slug
     const driver1Slug = teamDataObj.drivers_scraped[0].name_slug
@@ -86,7 +84,7 @@ async function combineDriverDataOnTeam(teamDataObj) {
     })
     return teamDataObj
   } catch (e) {
-    return 'Error in combineDriverDataOnTeam', e
+    return 'Error in getDriversData', e
   }
 }
 // fetch single teams dataObj
@@ -130,73 +128,17 @@ async function makeTeamCard(name_slug) {
   catchErrors(errorHandler.queryTeamDataError(teamData))
   return {
     ...teamData,
-    ...(await combineDriverDataOnTeam(teamData)),
+    ...(await getDriversData(teamData)),
   }
 }
 // use driver api data to rendercard only
 async function renderTeamCard(ctx) {
-  let { teamData } = await fetchTeamAPI(ctx, 'card')
-  console.log('teamData', teamData)
-  const teamUrl = `/team?team=${teamData.team_name_slug}`
-  // add link to team to driver
-  teamData['teamUrl'] = teamUrl
-  // add driver data to team obj
-  teamData = await combineDriverDataOnTeam(teamData)
-  // console.log('Team Data', teamData)
-  return await ctx.render('teamPage', {
-    //  +++ index params +++
-    urls: ctx.urls,
-    method: 'GET',
-    addClass: 'team-card-page',
-    routeName: 'teamCard',
-    teamData: teamData,
-  })
-}
-
-async function compileTeamTemplateResObj(ctx, driversObj, teamsObj, teamData) {
-  // add driver data to team obj
-  teamData = await combineDriverDataOnTeam(teamData)
-  console.log('XXXXteamData', teamData)
-  return {
-    //  +++ index params +++
-    urls: ctx.urls,
-    title: ctx.title,
-    driverEnums: driversObj.driversArr,
-    driverAction: driversObj.driverAction,
-    teamEnums: teamsObj.teamsArr,
-    method: 'GET',
-    buttonField: 'Submit',
-    buttonType: 'submit',
-    buttonValue: 'submit',
-    teamAction: teamsObj.teamAction,
-    teamSelectName: teamsObj.selectName,
-    driverSelectName: driversObj.selectName,
-    driverFormText: ctx.driverFormText,
-    teamFormText: ctx.teamFormText,
-    // +++ mixin data  +++
-    routeName: 'team',
-    teamData: teamData,
+  try {
+    const teamCard = await makeTeamCard(ctx.params.name_slug)
+    return await ctx.render('teamPage', {
+      teamData: teamCard,
+    })
+  } catch (e) {
+    console.error('Error in renderTeamCard', e)
   }
-}
-async function renderTeamTemplate(ctx) {
-  // console.log(ctx)
-  const { teamData } = await module.exports.fetchTeamAPI(ctx, 'page')
-  const { driversObj, teamsObj } = await module.exports.fetchTeamsAPI()
-  console.log('TEAMDATS', teamData)
-  if (!teamData) {
-    throw new ReferenceError('renderDriverTemplate.teamData() is undefined')
-  } else if (!driversObj) {
-    throw new ReferenceError('renderDriverTemplate.driversObj() is undefined')
-  } else if (!teamsObj) {
-    throw new ReferenceError('renderDriverTemplate.teamsObj() is undefined')
-  }
-
-  const options = await module.exports.compileTeamTemplateResObj(
-    ctx,
-    driversObj,
-    teamsObj,
-    teamData
-  )
-  // console.log('options', options)
-  return await ctx.render('teamPage', options)
 }

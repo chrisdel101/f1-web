@@ -1,15 +1,15 @@
-mixin allTeamsMixin(data)
-  //- - console.log('data', data)
-  if data.size === "full"
-    .card.team-card(class=data.size data-slug=data.team_name_slug)
+mixin allTeamsMixin(data, cardSize)
+  - console.log('data', data)
+  if cardSize === "full"
+    .card.team-card(class=cardSize data-slug=data.team_name_slug)
       li
         a(href=`/team?team=${data.team_name_slug}`)
           .team-title
             h5 #{data.full_team_name}
         .main-image
           img(src=data.main_image)
-  else if data.size === "mini"
-    .card.team-card(class=data.size data-slug=data.team_name_slug)
+  else if cardSize === "mini"
+    .card.team-card(class=cardSize data-slug=data.team_name_slug)
       li
         a(href=`javascript:void(0);`)
           .team-title
