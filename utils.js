@@ -45,8 +45,6 @@ module.exports = {
         res.on('data', (d) => {
           resolve(d)
         })
-
-
       }).on('error', (e) => {
         console.error(`HTTP error: ${e.message}`);
         if (e.code === 'ECONNREFUSED') {
@@ -74,15 +72,15 @@ module.exports = {
         res.on('data', (d) => {
           resolve(d)
         })
-      })
-    }).on('error', (e) => {
-      console.error(`HTTP error: ${e.message}`);
-      if (e.code === 'ECONNREFUSED') {
-        console.log('Local DB is not running')
-        req.shouldKeepAlive = false
-        req.destroy()
-      }
-    });
+      }).on('error', (e) => {
+        console.error(`HTTPS error: ${e.message}`);
+        if (e.code === 'ECONNREFUSED') {
+          console.log('Local DB is not running')
+          req.shouldKeepAlive = false
+          req.destroy()
+        }
+      });
+    })
   },
   httpPostCall: async (url, data) => {
     const newUrl = new URL(url)
@@ -139,11 +137,11 @@ module.exports = {
           let remoteJson1 = await localCall
           // console.log('REM', remoteJson)
           return remoteJson1
-        case 'prod_testing':
-        case 'production':
-          const prodCall = module.exports.httpCall(urls.prodF1(params))
+        default: //'prod_testing':,'production':
+          console.log('xx', urls.prodF1(params));
+          const prodCall = module.exports.httpsCall(urls.prodF1(params))
           let remoteJson2 = await prodCall
-          // console.log('REM', remoteJson2)
+          console.log('REM', remoteJson2)
           return remoteJson2
       }
     } catch (e) {
