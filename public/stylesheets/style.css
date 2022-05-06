@@ -2,10 +2,12 @@
   font-family: 'American Captian';
   src: url(../fonts/AmericanCaptain-MdEY.otf);
 }
+
 @font-face {
   font-family: 'Breezed Caps';
   src: url(../fonts/BreezedcapsBoldoblique-Epvj.ttf);
 }
+
 body {
   font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
 }
@@ -13,20 +15,25 @@ body {
 a {
   color: #00b7ff;
 }
+
 img {
   max-width: 100%;
 }
+
 .title {
   font-family: 'American Captian', 'PT Sans', Helvetica, Arial, sans-serif;
   text-align: center;
 }
+
 .navbar .title {
   font-size: 35px;
 }
+
 .sub-title {
   font-family: 'Lobster', cursive;
   text-align: center;
 }
+
 .index-hero {
   background-image: url('/images/max.jpg');
   background-repeat: no-repeat;
@@ -39,35 +46,44 @@ img {
   width: 100%;
   flex-direction: column;
 }
+
 .index-hero h1 {
   font-size: 3.5rem;
 }
+
 .index-hero h5 {
   font-size: 1.75rem;
 }
+
 .index-title-container {
   padding-top: 50px;
 }
+
 .index-title-container .demo-button {
   display: flex;
   justify-content: center;
 }
+
 .index-main {
   background-color: whitesmoke;
 }
 
+.driver-card-page,
+.team-card-page,
 .driver-card-demo,
 .team-card-demo {
   padding: 0 50px;
   margin-bottom: 50px;
 }
-.team-card-page,
-.driver-card-page,
+
+.team-card,
+.driver-card,
 .all-drivers,
 .all-teams {
   margin-top: 50px;
   margin-bottom: 50px;
 }
+
 .all-drivers,
 .all-teams {
   display: flex;
@@ -76,82 +92,102 @@ img {
   padding-left: 0;
   list-style: none;
 }
+
 .all-drivers-container,
 .all-teams-container {
   display: flex;
   flex-direction: column;
 }
+
 .all-teams-container {
   align-items: center;
 }
+
 .all-drivers a:hover,
 .all-teams a:hover {
   text-decoration: none;
 }
+
 .all-drivers li,
 .all-teams li {
   transition: border 0.1s;
 }
+
 .all-drivers .driver-card.mini li:hover,
 .all-teams .team-card.mini li:hover {
   border: 2px solid blue;
 }
+
 .all-drivers .driver-card.mini li,
 .all-teams .team-card.mini li {
   border: 2px solid transparent;
 }
+
 .all-teams li {
   overflow: auto;
 }
+
 .all-teams .team-card.mini li.selected,
 .all-drivers .driver-card.mini li.selected {
   border: 2px solid blue;
 }
+
 .all-drivers .driver-card.mini,
 .all-teams .team-card.mini {
   width: 200px;
   overflow: auto;
 }
+
 .all-drivers .driver-card.full,
 .all-teams .team-card.full {
   max-width: 400px;
   margin-bottom: 20px;
   margin-right: 10px;
 }
+
 .all-drivers .driver-title-container {
   display: flex;
   align-items: center;
 }
+
 .all-drivers .mini .driver-title-container {
   min-height: 50px;
 }
+
 .all-drivers .full .driver-title-container {
   min-height: 100px;
 }
+
 .all-drivers .mini .driver-title-container,
 .all-drivers .mini .driver-title-container h6,
 .all-drivers .mini .main-image-container,
 .all-drivers .mini .main-image-container img {
   pointer-events: none;
 }
+
 .demo-container .btn-container {
   display: flex;
   justify-content: center;
   margin: 10px;
 }
+
 .demo-container .btn-container .btn {
   width: 30%;
 }
+
 .select-text {
   font-family: 'PT Sans', Helvetica, Arial, sans-serif;
 }
+
 h6.select-text {
   align-self: center;
 }
+
 .demo-driver-select {
   border-bottom: solid gray;
   margin-bottom: 15px;
 }
+
 .demo-driver-select,
 .demo-team-select {
   margin-top: 10px;
@@ -159,55 +195,68 @@ h6.select-text {
   display: flex;
   flex-direction: column;
 }
+
 .main-image {
   max-width: 100%;
 }
+
 .car-image {
   max-width: 50%;
   align-self: flex-end;
 }
+
 .right-column {
   display: flex;
   background-color: whitesmoke;
   flex-direction: column;
 }
+
 .team-card .drivers {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
+
 .team-card .driver span {
   margin-right: 10px;
 }
+
 .team-card .driver .flag {
   max-width: 35px;
 }
+
 .team-card .drivers {
   min-height: 60px;
   margin-bottom: 10px;
 }
+
 .team-title-container {
   display: flex;
   justify-content: center;
 }
+
 .driver-title-container {
   display: flex;
   justify-content: space-around;
 }
+
 .driver-title {
   display: flex;
   min-height: 60px;
   justify-content: center;
 }
+
 .driver-title h6 {
   align-self: center;
   font-family: 'Montserat', sans-serif;
   font-size: 25px;
   margin-right: 10px;
 }
+
 .driver-title .flag-img-container {
   align-self: center;
 }
+
 .team-title {
   font-family: 'Montserat', sans-serif;
   display: flex;
@@ -216,18 +265,21 @@ h6.select-text {
   min-height: 60px;
   text-align: center;
 }
+
 .driver-logo-container {
   min-height: 60px;
   align-self: center;
   max-width: 150px;
   margin: 10px 0;
 }
+
 .table-container {
   display: flex;
   justify-content: center;
   font-size: 1rem;
   padding-bottom: 20px;
 }
+
 .stat-key {
   font-weight: bold;
 }
@@ -236,9 +288,11 @@ h6.select-text {
   display: flex;
   justify-content: center;
 }
+
 .flag-img-container {
   max-width: 50px;
 }
+
 #navbarSupportedContent {
   position: absolute;
   right: 0;
@@ -247,9 +301,11 @@ h6.select-text {
   width: 100px;
   text-align: center;
 }
+
 ul.navbar-nav {
   background: rgba(0, 0, 0, 0.8);
 }
+
 .navbar-nav li a {
   color: white;
 }
@@ -259,64 +315,81 @@ ul.navbar-nav {
   .table-container {
     font-size: 1.2rem;
   }
+
   .demo-container .btn-container .btn {
     width: initial;
   }
+
   .demo-container .btn-container {
     margin: initial;
   }
+
   .navbar .title {
     font-size: 3em;
   }
+
   .index-hero {
     min-height: 400px;
   }
+
   .center {
     display: flex;
     justify-content: center;
   }
+
   h6.select-text {
     align-self: flex-start;
   }
 }
+
 /* From this and up */
 @media (min-width: 768px) {
   .navbar .title {
     font-size: 4em;
   }
+
   .left-column {
     width: 50%;
   }
+
   .right-column {
     width: 50%;
   }
+
   .card.driver-card,
   .card.team-card {
     flex-direction: row;
   }
+
   .driver-table-container {
     margin-top: 15px;
   }
-  .team-card-container-lg {
+
+  /* .team-card-container {
     flex-direction: column;
-  }
-  .team-card-container-lg .drivers {
+  } */
+
+  .team-card .drivers {
     font-size: 18px;
   }
-  .team-card-container-lg .drivers .driver {
+
+  .team-card .drivers .driver {
     margin: 5px 0;
   }
+
   .table-container {
     height: 100%;
     align-items: center;
   }
 }
+
 /* From this and up */
 @media (min-width: 999px) {
   .table-container {
     font-size: 1.2rem;
   }
-  .team-card-container-lg .drivers {
+
+  .team-card .drivers {
     font-size: 24px;
   }
 }

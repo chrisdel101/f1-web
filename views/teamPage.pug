@@ -5,17 +5,6 @@ include mixins/_teamCardMixinLg
 include mixins/_teamCardMixinSm
   //- append the card content to page
 block append content
-  //add class on card-only page
-  if addClass === 'team-card-page'
-    .team-page.team-card-page
-      .team-card-container-sm
-        //hide and show each template based on page size
-        +teamCardMixinSm(teamData)
-      .team-card-container-lg
-        +teamCardMixinLg(teamData)
-  else
     .team-page
-      .team-card-container-sm
-        +teamCardMixinSm(teamData)
-      .team-card-container-lg
+      .team-card
         +teamCardMixinLg(teamData)

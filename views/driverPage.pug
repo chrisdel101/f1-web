@@ -1,18 +1,9 @@
+extends layout
 block content
-  
+
   include mixins/_driverCardMixinLg
   include mixins/_driverCardMixinSm
   block append content
-    if addClass === 'driver-card-page'
-      .driver-page.driver-card-page
-        .driver-card-container-sm
-          //hide and show each template based on page size
-          +driverCardMixinSm(driverData)
-        .driver-card-container-lg
-          +driverCardMixinLg(driverData)
-    else
-      .driver-page
-        .driver-card-container-sm
-          +driverCardMixinSm(driverData)
-        .driver-card-container-lg
-          +driverCardMixinLg(driverData)
+      .driver-card-page
+        .driver-card
+          +driverCardMixinLg(driverData)  

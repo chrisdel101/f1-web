@@ -2,7 +2,7 @@ const utils = require('../utils')
 const cache = require('../cache')
 const cacheController = require('./cache.controller')
 const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
-const { fetchTeams, fetchTeam } = require('../clients/team.client')
+const { fetchTeam } = require('../clients/team.client')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 
