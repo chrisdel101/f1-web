@@ -1,15 +1,8 @@
 block content
-  if routeName == 'driverCard'
-    //set hidenav to true
-    block vars
-    - let hideNav = true
-    include layout.pug
-  else
-    include demo.pug
+  
   include mixins/_driverCardMixinLg
   include mixins/_driverCardMixinSm
   block append content
-    //add class on card-only page
     if addClass === 'driver-card-page'
       .driver-page.driver-card-page
         .driver-card-container-sm

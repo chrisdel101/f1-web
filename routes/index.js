@@ -14,7 +14,6 @@ router.get('/user', () => {
 router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', utils.viewCache)
 router.get('/fresh-fetch', indexController.freshFetch)
-// ---------TEMPLATES
 router.get('/', indexController.renderIndex)
 router.get('/demo', indexController.renderDemo)
 router.get('/teams', teamsController.renderAllTeamsList)
@@ -23,8 +22,8 @@ router.get('/drivers', driversController.renderAllDriversPage)
 router.get('/demo/driver', indexController.renderDemo)
 router.get('/demo/team', indexController.renderDemo)
 // render cards
-router.get('/driver/:driver_slug', driversController.renderDriverCard)
-router.get('/team/:team_slug', teamsController.renderTeamCard)
+router.get('/driver/:name_slug', driversController.renderDriverCard)
+router.get('/team/:name_slug', teamsController.renderTeamCard)
 router.get('/login', sessionsController.renderLoginTemplate)
 //FORMS
 router.post('/login', sessionsController.userLogin)

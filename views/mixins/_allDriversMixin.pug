@@ -13,7 +13,7 @@ mixin allDriverMixin(data, cardSize)
     .card.driver-card(class=cardSize data-slug=data.name_slug)
       li
         .driver-title-container 
-          a(href=`/driver?driver=${data.name_slug}`).driver-click
+          a(href=`/demo?demo-driver=${data.name_slug}`).driver-click
             h4  #{data.driver_name}
           .flag-img-container
             img(src=data.flag_img_url)

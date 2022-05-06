@@ -5,10 +5,17 @@ exports.errorHandler = {
       throw new ReferenceError('Error: renderDemoError is missing data')
     }
   },
-  queryDriverDataError: (driverData, teamData) => {
+  makeDriverCardError: (driverData, teamData) => {
     if (!driverData || !teamData) {
-      throw new ReferenceError('queryDriverDataError: driver data is undefined')
+      throw new ReferenceError('makeDriverCardError: driver data is undefined')
     }
+  },
+  renderDriverCardError: (cxt) => {
+    console.log('CTX', ctx)
+    // if (!ctx.params) {
+    //   console.error('renderDriverCardError: Invalid or missing query params')
+    //   ctx.res.end = 'Missing'
+    // }
   },
   queryTeamDataError: (teamData) => {
     if (!teamData) {
