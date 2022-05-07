@@ -3,59 +3,31 @@ const cache = require('../cache')
 const utils = require('../utils')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
-const { fetchTeam } = require('../clients/team.client')
+const { fetchTeam, fetchTeams } = require('../clients/team.client')
 module.exports = {
   makeTeamCard,
   renderTeamCard,
-  fetchTeamAPI,
-  fetchTeamsAPI,
   getDriversData,
-  renderAllTeamsList,
-  makeAllTeamsObjs,
+  renderAllTeamsPage,
 }
-// takes slug, calls API and combines props
-async function makeAllTeamsObjs(ctx, teamSlug, size = 'full') {
+async function renderAllTeamsPage(ctx) {
   try {
-    // add size to options for css class styles
-    if (ctx.query && ctx.query.size === 'mini') {
-      size = 'mini'
-    }
-    const teamData = await fetchTeam(teamSlug)
-    const options = {
-      full_team_name: teamData.full_team_name,
-      main_image: teamData.main_image,
-      team_name_slug: teamData.team_name_slug,
-      url_name_slug: teamData.url_name_slug,
-      size,
-    }
-    return options
-  } catch (e) {
-    console.error('Error in makeAllTeamsObjs', e)
-  }
-}
-// calls all drivers, fetchs makeAllDriversObjs, and renders tmplt
-async function renderAllTeamsList(ctx) {
-  try {
-    // must have module.exports to work in tests
-    const { teamsObj } = await module.exports.fetchTeamsAPI()
-    console.log('Teams Obj', teamsObj)
-    // allDriversObj contain partial info for allDriversPage
-    const allTeamObjs = async () => {
-      const promises = teamsObj.teamsArr.map(async (team) => {
-        return await fetchTeam(team.teamSlug)
+    const teamNamesArr = await fetchTeams()
+    console.log('Teams Obj', teamNamesArr)
+    // loop over names and get each team
+    const teamsDataArr = await Promise.all(
+      teamNamesArr.map(async (team) => {
+        return await fetchTeam(team.name_slug)
       })
-      return Promise.all(promises)
-    }
-    // needs to have key name to work in template
-
-    const teamsArr = await allTeamObjs()
-    const teamsArrObj = {
-      teamsArr,
+    )
+    return await ctx.render('allTeams', {
+      teamsDataArr,
       cardSize: ctx.query === 'mini' ? 'mini' : 'full',
-    }
-    return await ctx.render('allTeams', teamsArrObj)
+    })
   } catch (e) {
-    console.error('Error in renderAllTeamsList', e)
+    console.error('Error in renderAllTeamsPage', e)
+    // TODO add prod errors on page DEV only
+    ctx.response.body = `Error in renderAllTeamsPage: ${e}`
   }
 }
 async function getDriversData(teamDataObj) {
@@ -68,7 +40,7 @@ async function getDriversData(teamDataObj) {
       JSON.parse(await utils.fetchEndpoint(`drivers/${driver1Slug}`)),
       JSON.parse(await utils.fetchEndpoint(`drivers/${driver2Slug}`)),
     ]
-    console.log('driversDataArr', driversDataArr)
+    // console.log('driversDataArr', driversDataArr)
     // loop over drivers on team
     teamDataObj.drivers_scraped.forEach((driver) => {
       // console.log('driver', driver)
@@ -88,41 +60,6 @@ async function getDriversData(teamDataObj) {
   }
 }
 // fetch single teams dataObj
-async function fetchTeamAPI(ctx, render, teamSlug = undefined) {
-  try {
-    // console.log('render', ctx.query,)
-    // get query params from GET req
-    if (render === 'page') {
-      teamSlug = ctx.query.team
-    } else if (render === 'card') {
-      teamSlug = ctx.params.team_slug
-    }
-    if (!teamSlug) {
-      throw new ReferenceError('fetchTeamAPI must have teamSlug')
-    }
-    // query team by slug
-    const teamData = JSON.parse(await utils.fetchEndpoint(`teams/${teamSlug}`))
-    if (teamData) return { teamData }
-    else throw Error('fetchTeamAPI teamSlug is not valid. Check teamSlug.')
-  } catch (e) {
-    console.error('Error in fetchTeamAPI', e)
-  }
-}
-// fetchs the driver info from the api to use in render func
-async function fetchTeamsAPI() {
-  try {
-    const teamsObj = await cacheController.handleTeamsCache(cache, 1440)
-    console.log('TEAM', teamsObj)
-    const driversObj = await cacheController.handleDriversCache(cache, 1440)
-
-    return {
-      teamsObj,
-      driversObj,
-    }
-  } catch (e) {
-    console.error('An error in teamsController.fetchDriversAPI()', e)
-  }
-}
 async function makeTeamCard(name_slug) {
   const teamData = await fetchTeam(name_slug)
   catchErrors(errorHandler.queryTeamDataError(teamData))

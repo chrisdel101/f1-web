@@ -51,6 +51,8 @@ async function renderAllDriversPage(ctx) {
     })
   } catch (e) {
     console.error('Error in renderAllDriversPage', e)
+    // TODO add prod errors on page DEV only
+    ctx.response.body = `Error in renderAllDriversPage: ${e}`
   }
 }
 async function makeDriverCard(name_slug) {

@@ -56,8 +56,8 @@ describe('teams.controllers', function () {
       assert(result.size)
     })
   })
-  describe('renderAllTeamsList()', () => {
-    it('renderAllTeamsList calls fetchTeamsAPI', async function () {
+  describe('renderAllTeamsPage()', () => {
+    it('renderAllTeamsPage calls fetchTeamsAPI', async function () {
       const ctx = {
         params: {
           team_name_slug: 'some-team',
@@ -69,11 +69,11 @@ describe('teams.controllers', function () {
         },
       }
       sinon.spy(teamsController, 'fetchTeamsAPI')
-      await teamsController.renderAllTeamsList(ctx)
+      await teamsController.renderAllTeamsPage(ctx)
       assert(teamsController.fetchTeamsAPI.calledOnce)
       teamsController.fetchTeamsAPI.restore()
     })
-    it('renderAllTeamsList calls makeAllTeamsObjs', async function () {
+    it('renderAllTeamsPage calls makeAllTeamsObjs', async function () {
       const ctx = {
         params: {
           team_name_slug: 'some-team',
@@ -85,7 +85,7 @@ describe('teams.controllers', function () {
         },
       }
       sinon.spy(teamsController, 'makeAllTeamsObjs')
-      await teamsController.renderAllTeamsList(ctx)
+      await teamsController.renderAllTeamsPage(ctx)
       assert(teamsController.makeAllTeamsObjs.called)
       teamsController.makeAllTeamsObjs.restore()
     })

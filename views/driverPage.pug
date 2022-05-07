@@ -2,8 +2,6 @@ extends layout
 block content
 
   include mixins/_driverCardMixinLg
-  include mixins/_driverCardMixinSm
   block append content
       .driver-card-page
-        .driver-card
           +driverCardMixinLg(driverData)  

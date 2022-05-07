@@ -4,7 +4,7 @@ include mixins/_allTeamsMixin
 block content
   .all-teams-container
     ul.all-teams
-      for team in teamsArr
-        +allTeamsMixin(team)
+      for team in teamsDataArr
+        +allTeamsMixin(team, cardSize)
     if size
       button(type="button" class="btn btn-primary btn-lg submit-all-teams") Submit

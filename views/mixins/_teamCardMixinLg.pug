@@ -8,14 +8,13 @@ mixin teamCardMixinLg(data)
         img(src=data.main_image)
     .column.right-column
       .drivers
-        .driver
-          a(href=data.drivers_scraped[0].page_url)
-            span #{data.drivers_scraped[0].driver_name}
-            img.flag(src=data.drivers_scraped[0].flag_img_url)
-        .driver 
-          a(href=data.drivers_scraped[1].page_url)
-            span #{data.drivers_scraped[1].driver_name}
-            img.flag(src=data.drivers_scraped[1].flag_img_url)
+        a.driver(href=data.drivers_scraped[0].page_url)
+          span #{data.drivers_scraped[0].driver_name}
+          img.flag(src=data.drivers_scraped[0].flag_img_url)
+     
+        a.driver(href=data.drivers_scraped[1].page_url)
+          span #{data.drivers_scraped[1].driver_name}
+          img.flag(src=data.drivers_scraped[1].flag_img_url)
       .team-table-container.table-container
         table.stats
           tbody

@@ -16,7 +16,7 @@ router.get('/view-cache', utils.viewCache)
 router.get('/fresh-fetch', indexController.freshFetch)
 router.get('/', indexController.renderIndex)
 router.get('/demo', indexController.renderDemo)
-router.get('/teams', teamsController.renderAllTeamsList)
+router.get('/teams', teamsController.renderAllTeamsPage)
 router.get('/drivers', driversController.renderAllDriversPage)
 // render full tems plate with query params- like POST
 router.get('/demo/driver', indexController.renderDemo)

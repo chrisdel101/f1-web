@@ -39,20 +39,22 @@ module.exports = {
           'Content-Type': 'application/json',
         },
       }
-      const req = http.get(options, (res) => {
-        console.log(res.headers)
-        res.setEncoding('utf8')
-        res.on('data', (d) => {
-          resolve(d)
+      const req = http
+        .get(options, (res) => {
+          console.log(res.headers)
+          res.setEncoding('utf8')
+          res.on('data', (d) => {
+            resolve(d)
+          })
         })
-      }).on('error', (e) => {
-        console.error(`HTTP error: ${e.message}`);
-        if (e.code === 'ECONNREFUSED') {
-          console.log('Local DB is not running')
-          req.shouldKeepAlive = false
-          req.destroy()
-        }
-      });
+        .on('error', (e) => {
+          console.error(`HTTP error: ${e.message}`)
+          if (e.code === 'ECONNREFUSED') {
+            console.log('Local DB is not running')
+            req.shouldKeepAlive = false
+            req.destroy()
+          }
+        })
     })
   },
   httpsCall: async (_url) => {
@@ -67,19 +69,21 @@ module.exports = {
           'Content-Type': 'application/json',
         },
       }
-      https.get(options, (res) => {
-        res.setEncoding('utf8')
-        res.on('data', (d) => {
-          resolve(d)
+      https
+        .get(options, (res) => {
+          res.setEncoding('utf8')
+          res.on('data', (d) => {
+            resolve(d)
+          })
         })
-      }).on('error', (e) => {
-        console.error(`HTTPS error: ${e.message}`);
-        if (e.code === 'ECONNREFUSED') {
-          console.log('Local DB is not running')
-          req.shouldKeepAlive = false
-          req.destroy()
-        }
-      });
+        .on('error', (e) => {
+          console.error(`HTTPS error: ${e.message}`)
+          if (e.code === 'ECONNREFUSED') {
+            console.log('Local DB is not running')
+            req.shouldKeepAlive = false
+            req.destroy()
+          }
+        })
     })
   },
   httpPostCall: async (url, data) => {
@@ -138,7 +142,7 @@ module.exports = {
           // console.log('REM', remoteJson)
           return remoteJson1
         default: //'prod_testing':,'production':
-          console.log('xx', urls.prodF1(params));
+          // console.log('xx', urls.prodF1(params));
           const prodCall = module.exports.httpsCall(urls.prodF1(params))
           let remoteJson2 = await prodCall
           console.log('REM', remoteJson2)

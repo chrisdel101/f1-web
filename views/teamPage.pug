@@ -1,10 +1,10 @@
-- console.log ('TEAM', teamData)
+extends layout
 block content
+  - console.log ('TEAM', teamData)
 
-include mixins/_teamCardMixinLg
-include mixins/_teamCardMixinSm
-  //- append the card content to page
-block append content
-    .team-page
-      .team-card
-        +teamCardMixinLg(teamData)
+
+  include mixins/_teamCardMixinLg
+    //- append the card content to page
+  block append content
+      .team-card-page
+          +teamCardMixinLg(teamData)
