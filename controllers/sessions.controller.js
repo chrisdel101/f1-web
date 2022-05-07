@@ -1,5 +1,5 @@
 const utils = require('../utils')
-const urls = require('../envUrls')
+const { urls } = require('../constants')
 
 exports.renderLoginTemplate = (ctx) => {
   return ctx.render('login', {

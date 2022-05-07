@@ -1,10 +1,11 @@
 const router = require('koa-router')()
 const indexController = require('../controllers/index.controller')
 const driversController = require('../controllers/drivers.controller')
+const demoController = require('../controllers/demo.controller')
 const teamsController = require('../controllers/teams.controller')
 const sessionsController = require('../controllers/sessions.controller')
 const utils = require('../utils')
-const urls = require('../envUrls')
+const { urls } = require('../constants')
 const API = require('../API/index')
 
 router.get('/user', () => {
@@ -15,12 +16,12 @@ router.get('/reset-cache', utils.resetCache)
 router.get('/view-cache', utils.viewCache)
 router.get('/fresh-fetch', indexController.freshFetch)
 router.get('/', indexController.renderIndex)
-router.get('/demo', indexController.renderDemo)
+router.get('/demo', demoController.renderDemo)
 router.get('/teams', teamsController.renderAllTeamsPage)
 router.get('/drivers', driversController.renderAllDriversPage)
 // render full tems plate with query params- like POST
-router.get('/demo/driver', indexController.renderDemo)
-router.get('/demo/team', indexController.renderDemo)
+router.get('/demo/driver', demoController.renderDemo)
+router.get('/demo/team', demoController.renderDemo)
 // render cards
 router.get('/drivers/:name_slug', driversController.renderDriverCard)
 router.get('/teams/:name_slug', teamsController.renderTeamCard)

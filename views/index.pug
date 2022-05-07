@@ -2,16 +2,34 @@ extends layout
 block content
   .index-hero
     .index-title-container
-      h2.sub-title= subTitle
-      .demo-button 
-        a(href="/demo") 
-          button.btn-lg.btn-primary Try Demo
+    #carouselExampleIndicators.carousel.slide(data-ride='carousel')
+      ol.carousel-indicators
+        each _,i in urls
+          li.active(data-target='#carouselExampleIndicators' data-slide-to=i)
+      .carousel-inner
+        each url,i in urls
+          if i === 0
+            .carousel-item.active
+              img.d-block.w-100(src=url alt='')
+          else 
+            .carousel-item
+              img.d-block.w-100(src=url alt='')
+      a.carousel-control-prev(href='#carouselExampleIndicators' role='button' data-slide='prev')
+        span.carousel-control-prev-icon(aria-hidden='true')
+        span.sr-only Previous
+      a.carousel-control-next(href='#carouselExampleIndicators' role='button' data-slide='next')
+        span.carousel-control-next-icon(aria-hidden='true')
+        span.sr-only Next
+        //- h2.sub-title= subTitle
+        //- .demo-button 
+        //-   a(href="/demo") 
+        //-     button.btn-lg.btn-primary Try Demo
 
-     
-  //- button(type="button" class="btn btn-lg btn-light messenger-btn")
+      
+    //- button(type="button" class="btn btn-lg btn-light messenger-btn")
 
-  //- //- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
-  //-     <div>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
-  //-     <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
+    //- //- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
+    //-     <div>Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
+    //-     <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/"             title="Flaticon">www.flaticon.com</a></div>
   main.index-main.container
    

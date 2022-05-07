@@ -1,6 +1,6 @@
 // HANDLES CALLS TO OTHER SERVERS
 const utils = require('../utils')
-const urls = require('../envUrls')
+const { urls } = require('../constants')
 const fs = require('fs')
 var puppeteer = require('puppeteer')
 // send post to endpoint

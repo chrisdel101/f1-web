@@ -58,16 +58,16 @@ ul.navbar-nav {
   text-align: center;
 }
 .index-hero {
-  background-image: url('/images/max.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
   display: flex;
   min-height: 600px;
   color: peachpuff;
   background-color: rgba(0, 0, 0, 0.3);
   width: 100%;
   flex-direction: column;
+}
+.carousel-item img {
+  max-width: 800px;
+  height: auto;
 }
 .index-hero h1 {
   font-size: 3.5rem;
