@@ -22,8 +22,8 @@ router.get('/drivers', driversController.renderAllDriversPage)
 router.get('/demo/driver', indexController.renderDemo)
 router.get('/demo/team', indexController.renderDemo)
 // render cards
-router.get('/driver/:name_slug', driversController.renderDriverCard)
-router.get('/team/:name_slug', teamsController.renderTeamCard)
+router.get('/drivers/:name_slug', driversController.renderDriverCard)
+router.get('/teams/:name_slug', teamsController.renderTeamCard)
 router.get('/login', sessionsController.renderLoginTemplate)
 //FORMS
 router.post('/login', sessionsController.userLogin)
