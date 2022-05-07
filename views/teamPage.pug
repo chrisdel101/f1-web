@@ -3,8 +3,8 @@ block content
   - console.log ('TEAM', teamData)
 
 
-  include mixins/_teamCardMixinLg
+  include mixins/_teamCardMixin
     //- append the card content to page
   block append content
       .team-card-page
-          +teamCardMixinLg(teamData)
+          +teamCardMixin(teamData)

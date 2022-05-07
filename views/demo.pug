@@ -1,8 +1,6 @@
 extends layout
-include mixins/_driverCardMixinLg
-include mixins/_driverCardMixinSm
-include mixins/_teamCardMixinSm
-include mixins/_teamCardMixinLg
+include mixins/_driverCardMixin
+include mixins/_teamCardMixin
 
 include mixins/_select
 block content
@@ -22,8 +20,8 @@ block content
         }) 
   if driverCardData
     .driver-card-demo
-        +driverCardMixinLg(driverCardData)
+        +driverCardMixin(driverCardData)
   if teamCardData
     .team-card-demo
-        +teamCardMixinLg(teamCardData)
+        +teamCardMixin(teamCardData)
 
