@@ -1,6 +1,6 @@
 const assert = require('assert')
 const utils = require('../../utils')
-const urls = require('../../envUrls')
+const urls = require('../../constants')
 let cache = require('../../cache')
 const nock = require('nock')
 require('dotenv').config(

@@ -52,11 +52,6 @@ ul.navbar-nav {
   font-family: 'American Captian', 'PT Sans', Helvetica, Arial, sans-serif;
   text-align: center;
 }
-/* index page hero */
-.sub-title {
-  font-family: 'Lobster', cursive;
-  text-align: center;
-}
 .index-hero {
   display: flex;
   min-height: 600px;
@@ -66,17 +61,25 @@ ul.navbar-nav {
   flex-direction: column;
 }
 .carousel-item img {
-  max-width: 800px;
-  height: auto;
+  max-width: 100%;
+  max-height: 400px;
 }
-.index-hero h1 {
-  font-size: 3.5rem;
-}
-.index-hero h5 {
-  font-size: 1.75rem;
+.carousel-item figcaption {
+  display: none;
 }
 .index-title-container {
-  padding-top: 50px;
+  background-color: transparent;
+  position: absolute;
+  top: 50%;
+  left: 30vw;
+  color: black;
+  z-index: 2;
+  border: 1px solid whitesmoke;
+  padding: 15px;
+}
+.index-title-container .sub-title {
+  font-family: 'American Captian', Arial, Helvetica, sans-serif;
+  color: whitesmoke;
 }
 .index-title-container .demo-button {
   display: flex;

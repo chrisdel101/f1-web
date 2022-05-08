@@ -53,14 +53,10 @@ app.use(index.routes(), index.allowedMethods())
 // set locals
 app.context.title = 'Formula 1 Cards'
 app.context.subTitle1 = `Like baseball cards for Formula 1`
-app.context.subTitle2 = `All the F1 Stats`
+app.context.subTitle2 = `All Drivers and Teams Stats`
 app.context.urls = urls
 app.context.driverFormText = 'Choose a Driver'
 app.context.teamFormText = 'Choose a Team'
-// // error-handling
-// app.on('error', (err, ctx) => {
-//   console.error('server error', err, ctx)
-// })
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound)
