@@ -8,21 +8,24 @@ block content
           button.btn-lg.btn-primary Try Demo
     #carouselExampleIndicators.carousel.slide(data-ride='carousel')
       ol.carousel-indicators
-        each _,i in images
+        each _,i in carouselImages
           li.active(data-target='#carouselExampleIndicators' data-slide-to=i)
       .carousel-inner
-        each image,i in images
+        each image, i in carouselImages
           if i === 0
             .carousel-item.active
-              figure
-                source(media="(min-width: 576px)" srcset=image.src)
-                img.d-block.w-100(src=image.src alt='A race car')
+              picture 
+                source(srcset=`${image.smallSrc}` media=`(max-width: 500px)`)                
+                source(srcset=`${image.medSrc}` media=`(max-width: 768px)`)
+                img(src=`${image.medSrc}`)
                 figcaption
                   cite= image.cite
           else 
-           .carousel-item
-              figure
-                img.d-block.w-100(src=image.src alt='A race car')
+            .carousel-item
+              picture
+                source(srcset=`${image.smallSrc}` media=`(max-width: 500px)`)                
+                source(srcset=`${image.medSrc}` media=`(max-width: 768px)`)
+                img(src=`${image.medSrc}`)
                 figcaption
                   cite= image.cite
       a.carousel-control-prev(href='#carouselExampleIndicators' role='button' data-slide='prev')

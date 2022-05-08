@@ -1,6 +1,6 @@
 const cache = require('../cache')
 const cacheController = require('./cache.controller')
-const { indexBackgrouundImages } = require('../constants')
+const { carouselImages } = require('../constants')
 module.exports = {
   renderIndex,
   cache,
@@ -10,7 +10,7 @@ module.exports = {
 async function renderIndex(ctx) {
   await ctx.render('index', {
     subTitle: ctx.subTitle2,
-    images: indexBackgrouundImages.breakPoint2,
+    carouselImages,
   })
 }
 // fetch from DB manually - skip cache

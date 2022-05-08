@@ -54,15 +54,15 @@ ul.navbar-nav {
 }
 .index-hero {
   display: flex;
-  min-height: 600px;
   color: peachpuff;
-  background-color: rgba(0, 0, 0, 0.3);
   width: 100%;
   flex-direction: column;
 }
+.carousel-item source,
 .carousel-item img {
   max-width: 100%;
-  max-height: 400px;
+  height: 300px;
+  object-fit: cover;
 }
 .carousel-item figcaption {
   display: none;
@@ -279,7 +279,13 @@ h6.select-text {
 .flag-img-container {
   max-width: 50px;
 }
-
+/* From this and up */
+@media (min-width: 500px) {
+  .carousel-item source,
+  .carousel-item img {
+    height: 500px;
+  }
+}
 /* From this and up */
 @media (min-width: 576px) {
   /* /////////NAVBAR///////// */
@@ -300,9 +306,6 @@ h6.select-text {
   }
   .demo-container .btn-container {
     margin: initial;
-  }
-  .index-hero {
-    min-height: 400px;
   }
   .center {
     display: flex;
