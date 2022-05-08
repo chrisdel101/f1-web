@@ -67,26 +67,24 @@ ul.navbar-nav {
 .carousel-item figcaption {
   display: none;
 }
-.index-title-container {
-  background-color: transparent;
-  position: absolute;
-  top: 50%;
-  left: 30vw;
-  color: black;
-  z-index: 2;
-  border: 1px solid whitesmoke;
-  padding: 15px;
-}
-.index-title-container .sub-title {
-  font-family: 'American Captian', Arial, Helvetica, sans-serif;
-  color: whitesmoke;
-}
-.index-title-container .demo-button {
-  display: flex;
-  justify-content: center;
-}
 .index-main {
-  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  min-height: 60vh;
+}
+.main-title-container {
+  text-align: center;
+  background-color: red;
+  padding-top: 25px;
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+}
+.main-title-container .sub-title {
+  font-family: 'American Captian', Arial, Helvetica, sans-serif;
+  position: relative;
+  top: 20px;
 }
 
 .driver-card-demo,
@@ -280,14 +278,11 @@ h6.select-text {
   max-width: 50px;
 }
 /* From this and up */
-@media (min-width: 500px) {
+@media (min-width: 576px) {
   .carousel-item source,
   .carousel-item img {
     height: 500px;
   }
-}
-/* From this and up */
-@media (min-width: 576px) {
   /* /////////NAVBAR///////// */
   .navbar .title {
     font-size: 3em;
@@ -350,9 +345,35 @@ h6.select-text {
     height: 100%;
     align-items: center;
   }
+  .carousel-item source,
+  .carousel-item img {
+    height: 600px;
+  }
+  .main-title-container {
+    background-color: black;
+    opacity: 0.7;
+    position: absolute;
+    top: 50%;
+    left: 30vw;
+    color: whitesmoke;
+    z-index: 2;
+    border: 3px solid whitesmoke;
+    padding: 50px;
+  }
 }
 /* From this and up */
-@media (min-width: 999px) {
+@media (min-width: 902px) {
+  .main-title-container {
+    background-color: black;
+    opacity: 0.7;
+    position: absolute;
+    top: 50%;
+    left: 30vw;
+    color: whitesmoke;
+    z-index: 2;
+    border: 3px solid whitesmoke;
+    padding: 100px;
+  }
   .navbar .navbar-brand {
     margin-right: 8rem;
   }
@@ -381,5 +402,15 @@ h6.select-text {
   }
   .team-card-container-lg .drivers {
     font-size: 24px;
+  }
+  .carousel-item source,
+  .carousel-item img {
+    height: 850px;
+  }
+}
+@media (min-width: 1200px) {
+  .carousel-item source,
+  .carousel-item img {
+    height: 1000px;
   }
 }

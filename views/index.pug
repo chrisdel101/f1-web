@@ -1,11 +1,6 @@
 extends layout
 block content
   .index-hero
-    .index-title-container
-      h2.sub-title= subTitle
-      .demo-button 
-        a(href="/demo") 
-          button.btn-lg.btn-primary Try Demo
     #carouselExampleIndicators.carousel.slide(data-ride='carousel')
       ol.carousel-indicators
         each _,i in carouselImages
@@ -17,6 +12,7 @@ block content
               picture 
                 source(srcset=`${image.smallSrc}` media=`(max-width: 500px)`)                
                 source(srcset=`${image.medSrc}` media=`(max-width: 768px)`)
+                source(srcset=`${image.lgSrc}` media=`(min-width: 900px)`)
                 img(src=`${image.medSrc}`)
                 figcaption
                   cite= image.cite
@@ -25,6 +21,7 @@ block content
               picture
                 source(srcset=`${image.smallSrc}` media=`(max-width: 500px)`)                
                 source(srcset=`${image.medSrc}` media=`(max-width: 768px)`)
+                source(srcset=`${image.lgSrc}` media=`(min-width: 900px)`)
                 img(src=`${image.medSrc}`)
                 figcaption
                   cite= image.cite
@@ -34,5 +31,10 @@ block content
       a.carousel-control-next(href='#carouselExampleIndicators' role='button' data-slide='next')
         span.carousel-control-next-icon(aria-hidden='true')
         span.sr-only Next
-  main.index-main.container
-   
+  main.index-main.fill
+     .main-title-container
+        h2.sub-title.flex-fill= subTitle
+        .demo-button.flex-fill
+          a(href="/demo") 
+            button.btn-lg.btn-secondary Try Demo
+    

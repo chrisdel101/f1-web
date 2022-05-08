@@ -53,7 +53,7 @@ app.use(index.routes(), index.allowedMethods())
 // set locals
 app.context.title = 'Formula 1 Cards'
 app.context.subTitle1 = `Like baseball cards for Formula 1`
-app.context.subTitle2 = `All Drivers and Teams Stats`
+app.context.subTitle2 = `View All Driver and Team Stats`
 app.context.urls = urls
 app.context.driverFormText = 'Choose a Driver'
 app.context.teamFormText = 'Choose a Team'
