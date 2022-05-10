@@ -16,6 +16,12 @@ a {
 img {
   max-width: 100%;
 }
+footer {
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  min-height: 40vh;
+}
 .navbar .title {
   font-size: 1.6em;
 }
@@ -70,8 +76,9 @@ ul.navbar-nav {
 .index-main {
   display: flex;
   flex-direction: column;
-  background-color: black;
-  min-height: 60vh;
+}
+.main-title-container-floating {
+  display: none;
 }
 .main-title-container {
   text-align: center;
@@ -349,31 +356,9 @@ h6.select-text {
   .carousel-item img {
     height: 600px;
   }
-  .main-title-container {
-    background-color: black;
-    opacity: 0.7;
-    position: absolute;
-    top: 50%;
-    left: 30vw;
-    color: whitesmoke;
-    z-index: 2;
-    border: 3px solid whitesmoke;
-    padding: 50px;
-  }
 }
 /* From this and up */
 @media (min-width: 902px) {
-  .main-title-container {
-    background-color: black;
-    opacity: 0.7;
-    position: absolute;
-    top: 50%;
-    left: 30vw;
-    color: whitesmoke;
-    z-index: 2;
-    border: 3px solid whitesmoke;
-    padding: 100px;
-  }
   .navbar .navbar-brand {
     margin-right: 8rem;
   }
@@ -407,8 +392,34 @@ h6.select-text {
   .carousel-item img {
     height: 850px;
   }
+  .main-title-container-floating h2 {
+    font-family: 'Breezed Caps';
+  }
+  .main-title-container-floating {
+    border-radius: 5px;
+    text-align: center;
+    min-height: 40vh;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    opacity: 0.6;
+    position: absolute;
+    top: 50%;
+    left: 30vw;
+    color: whitesmoke;
+    z-index: 2;
+    border: 3px groove whitesmoke;
+    padding: 50px;
+  }
 }
 @media (min-width: 1200px) {
+  .main-title-container-floating {
+    left: 25vw;
+    width: 50vw;
+  }
+  .main-title-container h2 {
+    font-size: 3em;
+  }
   .carousel-item source,
   .carousel-item img {
     height: 1000px;
