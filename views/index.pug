@@ -10,18 +10,18 @@ block content
           if i === 0
             .carousel-item.active
               picture 
-                source(srcset=`${image.smallSrc}` media=`(max-width: 500px)`)                
-                source(srcset=`${image.medSrc}` media=`(max-width: 768px)`)
-                source(srcset=`${image.lgSrc}` media=`(min-width: 900px)`)
+                //- source(srcset=`${image.smallSrc}` media=`(max-width: 500px)`)                
+                //- source(srcset=`${image.medSrc}` media=`(max-width: 768px)`)
+                //- source(srcset=`${image.lgSrc}` media=`(min-width: 900px)`)
                 img(src=`${image.medSrc}`)
                 figcaption
                   cite= image.cite
           else 
             .carousel-item
               picture
-                source(srcset=`${image.smallSrc}` media=`(max-width: 500px)`)                
-                source(srcset=`${image.medSrc}` media=`(max-width: 768px)`)
-                source(srcset=`${image.lgSrc}` media=`(min-width: 900px)`)
+                //- source(srcset=`${image.smallSrc}` media=`(max-width: 500px)`)                
+                //- source(srcset=`${image.medSrc}` media=`(max-width: 768px)`)
+                //- source(srcset=`${image.lgSrc}` media=`(min-width: 900px)`)
                 img(src=`${image.medSrc}`)
                 figcaption
                   cite= image.cite
@@ -32,15 +32,16 @@ block content
         span.carousel-control-next-icon(aria-hidden='true')
         span.sr-only Next
   main.index-main.fill
-     .main-title-container
-        h2.sub-title.flex-fill= subTitle
-        .demo-button.flex-fill
-          a(href="/demo") 
-            button.btn-lg.btn-secondary Try Demo
      .main-title-container-floating
-        h2.sub-title.flex-fill See Some Stats
+        h2.sub-title.flex-fill Get Stats
         .demo-button.flex-fill
           a(href="/demo") 
-            button.btn-lg.btn-secondary Try Demo
+            button.btn-lg.btn-secondary Try It
+     .main-title-container
+        h2.sub-title= subTitle
+        h4.flex-fill Get all the latest stats
+        .demo-button.flex-fill
+          a(href="/demo") 
+            button.btn-lg.btn-secondary Demo
   footer
     

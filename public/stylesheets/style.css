@@ -64,10 +64,14 @@ ul.navbar-nav {
   width: 100%;
   flex-direction: column;
 }
+picture {
+  height: 300px;
+}
 .carousel-item source,
 .carousel-item img {
-  max-width: 100%;
-  height: 300px;
+  max-width: inherit;
+  width: inherit;
+  height: inherit;
   object-fit: cover;
 }
 .carousel-item figcaption {
@@ -77,8 +81,23 @@ ul.navbar-nav {
   display: flex;
   flex-direction: column;
 }
+.main-title-container-floating h2 {
+  font-family: 'Breezed Caps';
+}
 .main-title-container-floating {
-  display: none;
+  border-radius: 5px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  opacity: 0.6;
+  position: absolute;
+  top: 20%;
+  left: 15vw;
+  color: whitesmoke;
+  z-index: 2;
+  border: 3px groove whitesmoke;
+  padding: 10px;
 }
 .main-title-container {
   text-align: center;
@@ -88,7 +107,8 @@ ul.navbar-nav {
   display: flex;
   flex-direction: column;
 }
-.main-title-container .sub-title {
+.main-title-container h2,
+.main-title-container h4 {
   font-family: 'American Captian', Arial, Helvetica, sans-serif;
   position: relative;
   top: 20px;
@@ -285,9 +305,14 @@ h6.select-text {
   max-width: 50px;
 }
 /* From this and up */
+@media (min-width: 500px) {
+  picture {
+    height: 350px;
+  }
+}
+/* From this and up */
 @media (min-width: 576px) {
-  .carousel-item source,
-  .carousel-item img {
+  picture {
     height: 500px;
   }
   /* /////////NAVBAR///////// */
@@ -315,6 +340,11 @@ h6.select-text {
   }
   h6.select-text {
     align-self: flex-start;
+  }
+  .main-title-container-floating {
+    top: 40%;
+    left: 25vw;
+    padding: 30px;
   }
 }
 /* From this and up */
@@ -352,9 +382,14 @@ h6.select-text {
     height: 100%;
     align-items: center;
   }
-  .carousel-item source,
-  .carousel-item img {
+  picture {
     height: 600px;
+  }
+  .main-title-container-floating {
+    top: 30%;
+    left: 25vw;
+    padding: 30px;
+    width: 50%;
   }
 }
 /* From this and up */
@@ -388,27 +423,13 @@ h6.select-text {
   .team-card-container-lg .drivers {
     font-size: 24px;
   }
-  .carousel-item source,
-  .carousel-item img {
-    height: 850px;
-  }
   .main-title-container-floating h2 {
     font-family: 'Breezed Caps';
   }
   .main-title-container-floating {
-    border-radius: 5px;
-    text-align: center;
-    min-height: 40vh;
-    display: flex;
-    flex-direction: column;
-    background-color: black;
-    opacity: 0.6;
-    position: absolute;
-    top: 50%;
-    left: 30vw;
-    color: whitesmoke;
-    z-index: 2;
-    border: 3px groove whitesmoke;
+    top: 60%;
+    left: 25vw;
+    width: 50%;
     padding: 50px;
   }
 }
@@ -420,8 +441,7 @@ h6.select-text {
   .main-title-container h2 {
     font-size: 3em;
   }
-  .carousel-item source,
-  .carousel-item img {
+  picture {
     height: 1000px;
   }
 }
