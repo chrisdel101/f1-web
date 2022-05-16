@@ -1,0 +1,18 @@
+mixin toggleSwitch(pageType, urls, locals)
+  link(rel='stylesheet', href='/stylesheets/toggleSwitch.css')
+  script(src='/javascripts/script.js')
+ 
+  - const endPoint = locals.ENV === 'development' ? urls.   localCardsEndpoint : urls.prodCardsEndpoint
+
+  if pageType == 'drivers'
+    label.switch(data-src=`${endPoint}/drivers`)
+      input(type='checkbox' checked=toggleState)
+      span.slider.round
+  else if pageType == 'teams'
+    label.switch(data-src=`${endPoint}/teams`)
+        input(type='checkbox' checked=toggleState)
+        span.slider.round
+  else
+    label.switch
+      input(type='checkbox' checked=toggleState)
+      span.slider.round

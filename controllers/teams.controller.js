@@ -4,6 +4,8 @@ const utils = require('../utils')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 const { fetchTeam, fetchTeams } = require('../clients/team.client')
+const { urls } = require('../constants')
+
 module.exports = {
   makeTeamCard,
   renderTeamCard,
@@ -22,7 +24,10 @@ async function renderAllTeamsPage(ctx) {
     )
     return await ctx.render('allTeams', {
       teamsDataArr,
-      cardSize: ctx.query === 'mini' ? 'mini' : 'full',
+      cardSize: ctx.query.size === 'mini' ? 'mini' : 'full',
+      urls,
+      locals: ctx.state,
+      toggleState: ctx?.query?.size === 'mini' ? false : true,
     })
   } catch (e) {
     console.error('Error in renderAllTeamsPage', e)

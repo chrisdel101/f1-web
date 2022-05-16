@@ -4,6 +4,7 @@ const { urls } = require('./constants')
 const puppeteer = require('puppeteer')
 let globalCache = require('./cache')
 const moment = require('moment')
+const app = require('./app')
 
 module.exports = {
   verifyAPI_KEY: (apiKey) => {
@@ -132,21 +133,23 @@ module.exports = {
       console.error('Error in httpPostCall', e)
     }
   },
-  fetchEndpoint: async (params) => {
+  fetchEndpoint: async (params, ENV) => {
     try {
-      switch (process.env.NODE_ENV) {
+      switch (ENV) {
         case 'testing':
         case 'development':
-          const localCall = module.exports.httpCall(urls.localF1(params))
-          let remoteJson1 = await localCall
+          const localEndPoint = await module.exports.httpCall(
+            urls.localF1(params)
+          )
           // console.log('REM', remoteJson)
-          return remoteJson1
+          return localEndPoint
         default: //'prod_testing':,'production':
           // console.log('xx', urls.prodF1(params));
-          const prodCall = module.exports.httpsCall(urls.prodF1(params))
-          let remoteJson2 = await prodCall
-          console.log('REM', remoteJson2)
-          return remoteJson2
+          const prodEndPoint = await module.exports.httpsCall(
+            urls.prodF1(params)
+          )
+          // console.log('REM', remoteJson2)
+          return prodEndPoint
       }
     } catch (e) {
       console.error('An error in util.fetchEndpoint', e)

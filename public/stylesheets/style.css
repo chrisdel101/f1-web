@@ -129,11 +129,11 @@ picture {
 .driver-card-page {
   margin: 50px;
 }
-.all-drivers,
+/* .all-drivers,
 .all-teams {
   margin-top: 50px;
   margin-bottom: 50px;
-}
+} */
 .all-drivers,
 .all-teams {
   display: flex;
@@ -146,6 +146,8 @@ picture {
 .all-teams-container {
   display: flex;
   flex-direction: column;
+  /* margin-top: 50px; */
+  margin-bottom: 50px;
 }
 .all-teams-container {
   align-items: center;
@@ -177,6 +179,7 @@ picture {
 .all-teams .team-card.mini {
   width: 200px;
   overflow: auto;
+  margin-left: 5px;
 }
 .all-drivers .driver-card.full,
 .all-teams .team-card.full {
@@ -309,6 +312,16 @@ h6.select-text {
 }
 .flag-img-container {
   max-width: 50px;
+}
+.toggle-switch-container {
+  margin: 25px 0;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 20px;
+  align-items: center;
+}
+.toggle-text {
+  margin-right: 10px;
 }
 /* From this and up */
 @media (min-width: 500px) {

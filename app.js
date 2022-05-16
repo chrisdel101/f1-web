@@ -10,6 +10,8 @@ const bodyparser = require('koa-bodyparser')
 const index = require('./routes/index')
 const { urls } = require('./constants')
 const errorHandlers = require('./errorHandlers')
+const ENV =
+  process.env?.NODE_ENV === 'development' ? 'development' : ' production'
 // error handler
 onerror(app)
 app.use(cors())
@@ -47,9 +49,20 @@ app.use(async (ctx, next) => {
     ctx.status = err.status || 500
   }
 })
+
+app.use(async (ctx, next) => {
+  // set locals
+  ctx.state.title = 'Formula 1 Cards'
+  ctx.state.subTitle1 = `Like baseball cards for Formula 1`
+  ctx.state.subTitle2 = `All Drivers and Teams`
+  ctx.state.urls = urls
+  ctx.state.driverFormText = 'Choose a Driver'
+  ctx.state.teamFormText = 'Choose a Team'
+  ctx.state.ENV = ENV
+  await next()
+})
 // routes
 app.use(index.routes(), index.allowedMethods())
-
 // set locals
 app.context.title = 'Formula 1 Cards'
 app.context.subTitle1 = `Like baseball cards for Formula 1`

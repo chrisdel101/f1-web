@@ -5,17 +5,18 @@ mixin allDriverMixin(data, cardSize)
         a(href="javascript:void(0);").driver-click
           .driver-title-container 
             h6  #{data.driver_name}
-            .flag-img-container
+            figure.flag-img-container
               img(src=data.flag_img_url)
-          .main-image-container
-            img(src=data.main_image)
+          figure.main-image-container
+            .ratio-box
+              img(src=data.main_image)
   else if cardSize === "full"
     .card.driver-card(class=cardSize data-slug=data.name_slug)
       li
         .driver-title-container 
           a(href=`/demo?demo-driver=${data.name_slug}`).driver-click
             h4  #{data.driver_name}
-          .flag-img-container
+          figure.flag-img-container
             img(src=data.flag_img_url)
-        .main-image-container
+        figure.main-image-container
           img(src=data.main_image)

@@ -1,5 +1,6 @@
 const utils = require('../utils')
 const cache = require('../cache')
+const { urls } = require('../constants')
 const cacheController = require('./cache.controller')
 const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeam } = require('../clients/team.client')
@@ -47,7 +48,10 @@ async function renderAllDriversPage(ctx) {
     )
     return await ctx.render('allDrivers', {
       driversDataArr,
-      cardSize: ctx.query === 'mini' ? 'mini' : 'full',
+      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
+      urls,
+      locals: ctx.state,
+      toggleState: ctx?.query?.size === 'mini' ? false : true,
     })
   } catch (e) {
     console.error('Error in renderAllDriversPage', e)
