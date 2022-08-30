@@ -69,6 +69,7 @@ ul.navbar-nav {
   width: 100%;
   flex-direction: column;
 }
+/* hero imgs */
 picture {
   height: 300px;
   width: inherit;
@@ -129,11 +130,6 @@ picture {
 .driver-card-page {
   margin: 50px;
 }
-/* .all-drivers,
-.all-teams {
-  margin-top: 50px;
-  margin-bottom: 50px;
-} */
 .all-drivers,
 .all-teams {
   display: flex;
@@ -168,9 +164,7 @@ picture {
 .all-teams .team-card.mini li {
   border: 2px solid transparent;
 }
-.all-teams li {
-  overflow: auto;
-}
+
 .all-teams .team-card.mini li.selected,
 .all-drivers .driver-card.mini li.selected {
   border: 2px solid blue;
@@ -186,6 +180,7 @@ picture {
   max-width: 400px;
   margin-bottom: 20px;
   margin-right: 10px;
+  overflow: hidden;
 }
 .all-drivers .driver-title-container {
   display: flex;
@@ -195,7 +190,16 @@ picture {
   min-height: 50px;
 }
 .all-drivers .full .driver-title-container {
-  min-height: 100px;
+  min-height: 70px;
+}
+.all-drivers .driver-card.full .main-image-container {
+  height: 100%;
+  width: 100%;
+}
+.all-drivers .driver-card.full .main-image-container img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
 }
 .all-drivers .mini .driver-title-container,
 .all-drivers .mini .driver-title-container h6,
@@ -228,8 +232,13 @@ h6.select-text {
   display: flex;
   flex-direction: column;
 }
-.main-image {
+.img {
   max-width: 100%;
+  height: 100%;
+}
+.imgimg {
+  object-fit: cover;
+  height: 100%;
 }
 .car-image {
   max-width: 50%;
@@ -259,6 +268,14 @@ h6.select-text {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.team-card .main-image {
+  height: 100%;
+}
+.team-card .main-image img {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
 }
 .team-title-container {
   display: flex;
@@ -325,6 +342,7 @@ h6.select-text {
 }
 /* From this and up */
 @media (min-width: 500px) {
+  /* hero imgs */
   picture {
     height: 350px;
   }
@@ -334,6 +352,7 @@ h6.select-text {
 }
 /* From this and up */
 @media (min-width: 576px) {
+  /* hero imgs */
   picture {
     height: 500px;
   }
@@ -377,14 +396,16 @@ h6.select-text {
     font-size: 4em;
   }
   .left-column {
-    width: 50%;
+    height: auto;
   }
   .right-column {
-    width: 50%;
+    width: 150%;
   }
   .card.driver-card,
   .card.team-card {
+    height: auto;
     flex-direction: row;
+    overflow: hidden;
   }
   .team-card .driver {
     display: flex;
@@ -406,6 +427,7 @@ h6.select-text {
     height: 100%;
     align-items: center;
   }
+  /* hero imgs */
   picture {
     height: 600px;
   }
@@ -460,6 +482,7 @@ h6.select-text {
   .main-title-container h2 {
     font-size: 3em;
   }
+  /* hero imgs */
   picture {
     height: 1000px;
   }
