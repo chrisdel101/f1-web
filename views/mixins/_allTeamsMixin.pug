@@ -11,7 +11,7 @@ mixin allTeamsMixin(data, cardSize)
   else if cardSize === "mini"
     .card.team-card(class=cardSize data-slug=data.team_name_slug)
       li
-        a(href=`javascript:void(0);`)
+        a(href=`/teams/${data.team_name_slug}`)
           .team-title
             h6 #{data.full_team_name}
           .main-image

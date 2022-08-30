@@ -172,8 +172,7 @@ picture {
 .all-drivers .driver-card.mini,
 .all-teams .team-card.mini {
   width: 200px;
-  overflow: auto;
-  margin-left: 5px;
+  margin: 5px;
 }
 .all-drivers .driver-card.full,
 .all-teams .team-card.full {
@@ -298,6 +297,9 @@ h6.select-text {
 }
 .driver-title .flag-img-container {
   align-self: center;
+}
+.team-card.mini .team-title {
+  min-height: 40px;
 }
 .team-title {
   font-family: 'Montserat', sans-serif;

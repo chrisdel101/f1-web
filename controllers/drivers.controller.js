@@ -10,6 +10,7 @@ const { errorHandler } = require('../utilities/errorManager')
 module.exports = {
   makeDriverCard,
   renderDriverCard,
+  renderDriverCardPage,
   renderAllDriversPage,
   makeAllDriversObjs,
 }
@@ -72,10 +73,22 @@ async function makeDriverCard(name_slug) {
     console.error('Error in makeDriverCard', e)
   }
 }
+// renders just the card html for sending
 async function renderDriverCard(ctx) {
   try {
     const driverCard = await makeDriverCard(ctx.params.name_slug)
-    console.log('Driver Data', driverCard)
+    console.log('renderDriverCard func', driverCard)
+    return await ctx.render('driverCard', {
+      driverData: driverCard,
+    })
+  } catch (e) {
+    console.error('Error in renderDriverCard', e)
+  }
+}
+async function renderDriverCardPage(ctx) {
+  try {
+    const driverCard = await makeDriverCard(ctx.params.name_slug)
+    // console.log('renderDriverCard func', driverCard)
     return await ctx.render('driverPage', {
       driverData: driverCard,
     })

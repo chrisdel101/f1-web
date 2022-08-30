@@ -23,7 +23,8 @@ router.get('/drivers', driversController.renderAllDriversPage)
 router.get('/demo/driver', demoController.renderDemo)
 router.get('/demo/team', demoController.renderDemo)
 // render cards
-router.get('/drivers/:name_slug', driversController.renderDriverCard)
+router.get('/drivers/:name_slug', driversController.renderDriverCardPage)
+router.get('/driverss/:name_slug', driversController.renderDriverCard)
 router.get('/teams/:name_slug', teamsController.renderTeamCard)
 router.get('/login', sessionsController.renderLoginTemplate)
 //FORMS
@@ -67,10 +68,15 @@ router.get('/api/mobile/team/:team_slug', async (ctx) => {
     return (ctx.body = res)
   })
 })
-router.get('/api/driver/:driver_slug', async (ctx) => {
-  return API.takeCardScreenShot(ctx, 'driver').then((res) => {
-    return (ctx.body = res)
-  })
+router.get('/api/drivers/:driver_slug', async (ctx) => {
+  // send html version
+  if (ctx.query.html === 'true') {
+  } else {
+    // send image
+    return API.takeCardScreenShot(ctx, 'driver').then((res) => {
+      return (ctx.body = res)
+    })
+  }
 })
 router.get('/api/team/:team_slug', async (ctx) => {
   return API.takeCardScreenShot(ctx, 'team').then((res) => {
