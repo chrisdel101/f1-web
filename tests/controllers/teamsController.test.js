@@ -21,8 +21,6 @@ const teamDataObj = {
   id: 21,
   logo_url:
     'https://www.formula1.com//content/fom-website/en/teams/Mercedes/_jcr_content/logo.img.jpg/1486740144183.jpg',
-  main_image:
-    'https://www.formula1.com//content/fom-website/en/teams/Mercedes/_jcr_content/image16x9.img.1536.medium.jpg/1561122939027.jpg',
   podium_finishes: '181',
   pole_positions: '101',
   power_unit: 'Mercedes',
@@ -50,7 +48,6 @@ describe('teams.controllers', function () {
         ctx.params.team_name_slug
       )
       assert(result.full_team_name)
-      assert(result.main_image)
       assert(result.team_name_slug)
       assert(result.url_name_slug)
       assert(result.size)

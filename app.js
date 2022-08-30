@@ -10,12 +10,10 @@ const bodyparser = require('koa-bodyparser')
 const index = require('./routes/index')
 const { urls } = require('./constants')
 const errorHandlers = require('./errorHandlers')
-const ENV =
-  process.env?.NODE_ENV === 'development' ? 'development' : ' production'
+const { ENV, randomNumInRange } = require('./utils')
 // error handler
 onerror(app)
 app.use(cors())
-
 // middlewares
 app.use(
   bodyparser({
@@ -59,6 +57,7 @@ app.use(async (ctx, next) => {
   ctx.state.driverFormText = 'Choose a Driver'
   ctx.state.teamFormText = 'Choose a Team'
   ctx.state.ENV = ENV
+  ctx.state.randomNumInRange = randomNumInRange
   await next()
 })
 // routes

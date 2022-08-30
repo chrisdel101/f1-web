@@ -4,11 +4,15 @@ const { urls } = require('./constants')
 const puppeteer = require('puppeteer')
 let globalCache = require('./cache')
 const moment = require('moment')
-const app = require('./app')
 
 module.exports = {
+  ENV: process.env?.NODE_ENV === 'development' ? 'development' : ' production',
   verifyAPI_KEY: (apiKey) => {
     return apiKey === process.env.API_KEY ? true : false
+  },
+  // https://stackoverflow.com/a/1527820/5972531
+  randomNumInRange: (min, max) => {
+    return Math.random() * (max - min) + min
   },
   // check if timestamp is older than mins entered
   verifyTimeStamp: (timeStamp, mins) => {
@@ -133,9 +137,9 @@ module.exports = {
       console.error('Error in httpPostCall', e)
     }
   },
-  fetchEndpoint: async (params, ENV) => {
+  fetchEndpoint: async (params) => {
     try {
-      switch (ENV) {
+      switch (module.exports.ENV) {
         case 'testing':
         case 'development':
           const localEndPoint = await module.exports.httpCall(
@@ -144,7 +148,7 @@ module.exports = {
           // console.log('REM', remoteJson)
           return localEndPoint
         default: //'prod_testing':,'production':
-          // console.log('xx', urls.prodF1(params));
+          console.log('xx', urls.prodF1(params))
           const prodEndPoint = await module.exports.httpsCall(
             urls.prodF1(params)
           )
@@ -219,11 +223,11 @@ module.exports = {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       })
       const page = await browser.newPage()
-      if (process.env.NODE_ENV === 'development') {
+      if (module.exports.ENV === 'development') {
         await page.goto(
           `http://localhost:3000/driver/${ctx.params.driver_slug}`
         )
-      } else if (process.env.NODE_ENV === 'production') {
+      } else if (module.exports.ENV === 'production') {
         await page.goto(
           `https://f1-cards.herokuapp.com/api/driver/${ctx.params.driver_slug}`
         )

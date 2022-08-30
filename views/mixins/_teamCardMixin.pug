@@ -1,11 +1,13 @@
 mixin teamCardMixin(data)
   - console.log('teamCardMixinLg', data)
+  - console.log('randomNumInRange', data.images[randomNumInRange(0, data.images.length)])
+  - console.log('randomNumInRange', Math.round(randomNumInRange(0, data.images.length-1)))
   .card.team-card
     .column.left-column
       .team-title
         h5 #{data.full_team_name}
       .main-image
-        img(src=data.main_image)
+        img(src=data.images[Math.round(randomNumInRange(0, data.images.length-1))])
     .column.right-column
       .drivers
         a.driver(href=data.drivers_scraped[0].page_url)

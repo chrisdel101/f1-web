@@ -2,7 +2,9 @@ exports.errorHandler = {
   renderDemoError: (driverNamesArr, teamsNamesArr) => {
     console.log(driverNamesArr, teamsNamesArr)
     if (!driverNamesArr?.length || !teamsNamesArr?.length) {
-      throw new ReferenceError('Error: renderDemoError is missing data')
+      throw new ReferenceError(
+        'Error: renderDemoError is missing data. Check drivers + teams have DB data'
+      )
     }
   },
   makeDriverCardError: (driverData, teamData) => {
