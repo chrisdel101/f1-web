@@ -7,7 +7,8 @@ const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
-const index = require('./routes/index')
+const indexRoutes = require('./routes/indexRoutes')
+const apiRoutes = require('./routes/apiRoutes')
 const { urls } = require('./constants')
 const errorHandlers = require('./errorHandlers')
 const { ENV, randomNumInRange } = require('./utils')
@@ -61,14 +62,8 @@ app.use(async (ctx, next) => {
   await next()
 })
 // routes
-app.use(index.routes(), index.allowedMethods())
-// set locals
-app.context.title = 'Formula 1 Cards'
-app.context.subTitle1 = `Like baseball cards for Formula 1`
-app.context.subTitle2 = `All Drivers and Teams`
-app.context.urls = urls
-app.context.driverFormText = 'Choose a Driver'
-app.context.teamFormText = 'Choose a Team'
+app.use(indexRoutes.routes(), indexRoutes.allowedMethods())
+app.use(apiRoutes.routes(), apiRoutes.allowedMethods())
 
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound)

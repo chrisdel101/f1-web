@@ -1,6 +1,9 @@
 extends layout
+block layoutVariables
+  //-   https://stackoverflow.com/a/20502117/5972531
+    to get just driver card, send this to the layout page
+  - let hideNav= noNav || false
 block content
-  - console.log('DD', driverData)
   include mixins/_driverCardMixin
   block append content
       .driver-card-page

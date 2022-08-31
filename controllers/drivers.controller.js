@@ -8,9 +8,9 @@ const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 
 module.exports = {
-  makeDriverCard,
+  buildDriverCard,
   renderDriverCard,
-  renderDriverCardPage,
+  renderDriverPage,
   renderAllDriversPage,
   makeAllDriversObjs,
 }
@@ -60,7 +60,8 @@ async function renderAllDriversPage(ctx) {
     ctx.response.body = `Error in renderAllDriversPage: ${e}`
   }
 }
-async function makeDriverCard(name_slug) {
+// collects data and builds obj used for making driver card
+async function buildDriverCard(name_slug) {
   try {
     const driverData = await fetchDriver(name_slug)
     const teamData = await fetchTeam(driverData.team_id)
@@ -70,29 +71,30 @@ async function makeDriverCard(name_slug) {
       logo_url: teamData.main_logo_url,
     }
   } catch (e) {
-    console.error('Error in makeDriverCard', e)
+    console.error('Error in buildDriverCard', e)
   }
 }
-// renders just the card html for sending
+// build card only
 async function renderDriverCard(ctx) {
   try {
-    const driverCard = await makeDriverCard(ctx.params.name_slug)
-    console.log('renderDriverCard func', driverCard)
-    return await ctx.render('driverCard', {
+    const driverCard = await buildDriverCard(ctx.params.name_slug)
+    return await ctx.render('driverPage', {
       driverData: driverCard,
+      noNav: true,
     })
   } catch (e) {
     console.error('Error in renderDriverCard', e)
   }
 }
-async function renderDriverCardPage(ctx) {
+// build card and show on page with nav header - same as renderDriverCard w/o showCardOnly
+async function renderDriverPage(ctx) {
   try {
-    const driverCard = await makeDriverCard(ctx.params.name_slug)
-    // console.log('renderDriverCard func', driverCard)
+    const driverCard = await buildDriverCard(ctx.params.name_slug)
     return await ctx.render('driverPage', {
       driverData: driverCard,
+      noNav: true ? ctx.query.noNav === 'true' : false,
     })
   } catch (e) {
-    console.error('Error in renderDriverCard', e)
+    console.error('Error in renderDriverPage', e)
   }
 }

@@ -1,4 +1,8 @@
 module.exports = {
+  screenShotTypes: {
+    DRIVERS: 'drivers',
+    TEAMS: 'teams',
+  },
   urls: {
     localCardsEndpoint: `http://localhost:3000`,
     prodCardsEndpoint: `https://f1-cards.herokuapp.com`,

@@ -5,7 +5,7 @@ const { fetchTeams, fetchTeam } = require('../clients/team.client')
 const { errorHandler } = require('../utilities/errorManager')
 const { catchErrors } = require('../errorHandlers')
 const { makeTeamCard } = require('./teams.controller')
-const { makeDriverCard } = require('./drivers.controller')
+const { buildDriverCard } = require('./drivers.controller')
 
 // render demo page and select forms
 exports.renderDemo = async (ctx) => {
@@ -15,7 +15,7 @@ exports.renderDemo = async (ctx) => {
   catchErrors(errorHandler.renderDemoError(driverNamesArr, teamsNamesArr))
 
   if (ctx.query['demo-driver']) {
-    data['driverCardData'] = await makeDriverCard(ctx.query['demo-driver'])
+    data['driverCardData'] = await buildDriverCard(ctx.query['demo-driver'])
   } else if (ctx.query['demo-team']) {
     data['teamCardData'] = await makeTeamCard(ctx.query['demo-team'])
   }

@@ -7,9 +7,9 @@ exports.errorHandler = {
       )
     }
   },
-  makeDriverCardError: (driverData, teamData) => {
+  buildDriverCardError: (driverData, teamData) => {
     if (!driverData || !teamData) {
-      throw new ReferenceError('makeDriverCardError: driver data is undefined')
+      throw new ReferenceError('buildDriverCardError: driver data is undefined')
     }
   },
   renderDriverCardError: (cxt) => {

@@ -1,18 +1,20 @@
 // HANDLES CALLS TO OTHER SERVERS
 const utils = require('../utils')
-const { urls } = require('../constants')
+const { urls, screenShotTypes } = require('../constants')
 const fs = require('fs')
 var puppeteer = require('puppeteer')
+
 // send post to endpoint
 async function sendUserData(data, url) {
   utils.verifyAPI_KEY()
   return await utils.httpPostCall(url, data)
 }
 // take screen shot of endpoints entered
-async function takeCardScreenShot(ctx, type) {
-  const types = ['driver', 'team']
-  if (!types.includes(type)) {
-    console.error('Incorrect type in takeCardScreenShot API')
+async function takeCardScreenShot(ctx, screenShotType) {
+  if (screenShotTypes.hasOwnProperty(screenShotType)) {
+    console.error(
+      'Incorrect type in takeCardScreenShot API. Need one of: drivers, teams'
+    )
     return
   }
   // console.log('ctx', ctx)
@@ -58,7 +60,7 @@ async function takeCardScreenShot(ctx, type) {
     })
     const page = await browser.newPage()
     if (process.env.NODE_ENV === 'development') {
-      if (type === 'team') {
+      if (screenShotType === screenShotTypes.TEAMS) {
         if (ctx.path.includes('api/mobile')) {
           await page.setViewport({
             width: 400,
@@ -73,14 +75,14 @@ async function takeCardScreenShot(ctx, type) {
           })
         }
         const req = await page.goto(
-          `http://localhost:3000/${type}/${ctx.params.team_slug}`
+          `http://localhost:3000/${screenShotType}/${ctx.params.team_slug}?noNav=true`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
             `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
           )
         }
-      } else if (type === 'driver') {
+      } else if (screenShotType === screenShotTypes.DRIVERS) {
         if (ctx.path.includes('api/mobile')) {
           await page.setViewport({
             width: 600,
@@ -95,7 +97,7 @@ async function takeCardScreenShot(ctx, type) {
           })
         }
         const req = await page.goto(
-          `http://localhost:3000/${type}/${ctx.params.driver_slug}`
+          `http://localhost:3000/${screenShotType}/${ctx.params.name_slug}?noNav=true`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
@@ -104,7 +106,7 @@ async function takeCardScreenShot(ctx, type) {
         }
       }
     } else if (process.env.NODE_ENV === 'production') {
-      if (type === 'team') {
+      if (screenShotType === 'team') {
         if (ctx.path.includes('api/mobile')) {
           await page.setViewport({
             width: 400,
@@ -119,14 +121,14 @@ async function takeCardScreenShot(ctx, type) {
           })
         }
         const req = await page.goto(
-          `https://f1-cards.herokuapp.com/${type}/${ctx.params.team_slug}`
+          `https://f1-cards.herokuapp.com/${screenShotType}/${ctx.params.team_slug}`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
             `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
           )
         }
-      } else if (type === 'driver') {
+      } else if (screenShotType === screenShotTypes.DRIVERS) {
         if (ctx.path.includes('api/mobile')) {
           await page.setViewport({
             width: 600,
@@ -141,7 +143,7 @@ async function takeCardScreenShot(ctx, type) {
           })
         }
         const req = await page.goto(
-          `https://f1-cards.herokuapp.com/${type}/${ctx.params.driver_slug}`
+          `https://f1-cards.herokuapp.com/${screenShotType}/${ctx.params.name_slug}`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
@@ -150,7 +152,7 @@ async function takeCardScreenShot(ctx, type) {
         }
       }
     } else if (process.env.NODE_ENV === 'testing') {
-      if (type === 'driver') {
+      if (screenShotType === screenShotTypes.DRIVERS) {
         if (ctx.path.includes('api/mobile')) {
           await page.setViewport({
             width: 600,
@@ -165,17 +167,17 @@ async function takeCardScreenShot(ctx, type) {
           })
         }
         console.log(
-          `${urls.localCardsEndpoint}/${type}/${ctx.params.driver_slug}`
+          `${urls.localCardsEndpoint}/${screenShotType}/${ctx.params.name_slug}`
         )
         const req = await page.goto(
-          `${urls.localCardsEndpoint}/${type}/${ctx.params.driver_slug}`
+          `${urls.localCardsEndpoint}/${screenShotType}/${ctx.params.name_slug}`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
             `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
           )
         }
-      } else if (type === 'team') {
+      } else if (screenShotType === screenShotType.TEAMS) {
         if (ctx.path.includes('api/mobile')) {
           await page.setViewport({
             width: 400,
@@ -189,9 +191,9 @@ async function takeCardScreenShot(ctx, type) {
             deviceScaleFactor: 1,
           })
         }
-        // console.log(`http://localhost:3000/${type}/${ctx.params.team_slug}`)
+        // console.log(`http://localhost:3000/${screenShotType}/${ctx.params.team_slug}`)
         const req = await page.goto(
-          `${urls.localCardsEndpoint}/${type}/${ctx.params.team_slug}`
+          `${urls.localCardsEndpoint}/${screenShotType}/${ctx.params.team_slug}`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(

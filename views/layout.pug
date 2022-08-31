@@ -2,7 +2,9 @@ doctype html
 include mixins/_navbar
 
 html
-  block vars
+  //- passing vars into layout from views
+    -https://gist.github.com/viktorbezdek/9665226
+  block layoutVariables
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
