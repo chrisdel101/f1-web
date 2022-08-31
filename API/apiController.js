@@ -1,4 +1,3 @@
-// HANDLES CALLS TO OTHER SERVERS
 const utils = require('../utils')
 const { urls, screenShotTypes } = require('../constants')
 const fs = require('fs')
@@ -11,6 +10,7 @@ async function sendUserData(data, url) {
 }
 // take screen shot of endpoints entered
 async function takeCardScreenShot(ctx, screenShotType) {
+  // eslint-disable-next-line no-prototype-builtins
   if (screenShotTypes.hasOwnProperty(screenShotType)) {
     console.error(
       'Incorrect type in takeCardScreenShot API. Need one of: drivers, teams'
@@ -75,7 +75,7 @@ async function takeCardScreenShot(ctx, screenShotType) {
           })
         }
         const req = await page.goto(
-          `http://localhost:3000/${screenShotType}/${ctx.params.team_slug}?noNav=true`
+          `http://localhost:3000/${screenShotType}/${ctx.params.name_slug}?noNav=true`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
@@ -121,7 +121,7 @@ async function takeCardScreenShot(ctx, screenShotType) {
           })
         }
         const req = await page.goto(
-          `https://f1-cards.herokuapp.com/${screenShotType}/${ctx.params.team_slug}`
+          `https://f1-cards.herokuapp.com/${screenShotType}/${ctx.params.name_slug}`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
@@ -191,9 +191,9 @@ async function takeCardScreenShot(ctx, screenShotType) {
             deviceScaleFactor: 1,
           })
         }
-        // console.log(`http://localhost:3000/${screenShotType}/${ctx.params.team_slug}`)
+        // console.log(`http://localhost:3000/${screenShotType}/${ctx.params.name_slug}`)
         const req = await page.goto(
-          `${urls.localCardsEndpoint}/${screenShotType}/${ctx.params.team_slug}`
+          `${urls.localCardsEndpoint}/${screenShotType}/${ctx.params.name_slug}`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(

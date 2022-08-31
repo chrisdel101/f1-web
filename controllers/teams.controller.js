@@ -7,8 +7,9 @@ const { fetchTeam, fetchTeams } = require('../clients/team.client')
 const { urls } = require('../constants')
 
 module.exports = {
-  makeTeamCard,
+  buildTeamCard,
   renderTeamCard,
+  renderTeamPage,
   getDriversData,
   renderAllTeamsPage,
 }
@@ -45,10 +46,8 @@ async function getDriversData(teamDataObj) {
       JSON.parse(await utils.fetchEndpoint(`drivers/${driver1Slug}`)),
       JSON.parse(await utils.fetchEndpoint(`drivers/${driver2Slug}`)),
     ]
-    // console.log('driversDataArr', driversDataArr)
     // loop over drivers on team
     teamDataObj.drivers_scraped.forEach((driver) => {
-      // console.log('driver', driver)
       // match to correct fetched obj
       for (let i = 0; i < driversDataArr.length; i++) {
         // add fields to correct driver
@@ -65,7 +64,7 @@ async function getDriversData(teamDataObj) {
   }
 }
 // fetch single teams dataObj
-async function makeTeamCard(name_slug) {
+async function buildTeamCard(name_slug) {
   const teamData = await fetchTeam(name_slug)
   catchErrors(errorHandler.queryTeamDataError(teamData))
   return {
@@ -73,12 +72,25 @@ async function makeTeamCard(name_slug) {
     ...(await getDriversData(teamData)),
   }
 }
-// use driver api data to rendercard only
 async function renderTeamCard(ctx) {
   try {
-    const teamCard = await makeTeamCard(ctx.params.name_slug)
+    console.log('HERE')
+    const teamCard = await buildTeamCard(ctx.params.name_slug)
     return await ctx.render('teamPage', {
       teamData: teamCard,
+      noNav: true,
+    })
+  } catch (e) {
+    console.error('Error in renderTeamCard', e)
+  }
+}
+// build card and show on page with nav header - same as renderTeamCard w/o showCardOnly
+async function renderTeamPage(ctx) {
+  try {
+    const teamCard = await buildTeamCard(ctx.params.name_slug)
+    return await ctx.render('teamPage', {
+      teamData: teamCard,
+      noNav: true ? ctx.query.noNav === 'true' : false,
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)

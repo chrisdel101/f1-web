@@ -1,8 +1,10 @@
 extends layout
+block layoutVariables
+  //-   https://stackoverflow.com/a/20502117/5972531
+    to get just team card, 
+    send this to the layout page
+  - let hideNav= noNav || false
 block content
-  - console.log ('TEAM', teamData)
-
-
   include mixins/_teamCardMixin
     //- append the card content to page
   block append content
