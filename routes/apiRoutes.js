@@ -5,15 +5,19 @@ const { screenShotTypes } = require('../constants')
 const apiController = require('../API/apiController')
 // API - take images of cards
 // moblie size - uses puppeteer viewport to get
-router.get('/api/mobile/driver/:name_slug', async (ctx) => {
-  return apiController.takeCardScreenShot(ctx, 'driver').then((res) => {
-    return (ctx.body = res)
-  })
+router.get('/api/mobile/drivers/:name_slug', async (ctx) => {
+  return apiController
+    .takeCardScreenShot(ctx, screenShotTypes.DRIVERS)
+    .then((res) => {
+      return (ctx.body = res)
+    })
 })
-router.get('/api/mobile/team/:name_slug', async (ctx) => {
-  return apiController.takeCardScreenShot(ctx, 'team').then((res) => {
-    return (ctx.body = res)
-  })
+router.get('/api/mobile/teams/:name_slug', async (ctx) => {
+  return apiController
+    .takeCardScreenShot(ctx, screenShotTypes.TEAMS)
+    .then((res) => {
+      return (ctx.body = res)
+    })
 })
 // get driver card in HTML of img
 router.get('/api/drivers/:name_slug', async (ctx) => {
