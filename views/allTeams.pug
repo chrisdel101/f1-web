@@ -5,7 +5,7 @@ include mixins/_toggleSwitch
 block content
   #all-team-toggle.toggle-switch-container 
     div.toggle-text Card Size
-    +toggleSwitch('teams',urls, locals, toggleState )
+    +toggleSwitch('teams',urls, ENV, toggleState )
   .all-teams-container
     ul.all-teams
       for team in teamsDataArr

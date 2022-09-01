@@ -1,8 +1,9 @@
-mixin toggleSwitch(pageType, urls, locals)
+//- params not passed in are still available - ctx is passed from demo and can be accessed here anyway
+
+mixin toggleSwitch(pageType, urls, ENV, toggleState)
   link(rel='stylesheet', href='/stylesheets/toggleSwitch.css')
-  script(src='/javascripts/script.js')
- 
-  - const endPoint = locals.ENV === 'development' ? urls.   localCardsEndpoint : urls.prodCardsEndpoint
+  script(src='/javascripts/toggle.js')
+  - const endPoint = ENV === 'development' ? urls.localCardsEndpoint : urls.prodCardsEndpoint
 
   if pageType == 'drivers'
     label.switch(data-src=`${endPoint}/drivers`)
@@ -10,6 +11,15 @@ mixin toggleSwitch(pageType, urls, locals)
       span.slider.round
   else if pageType == 'teams'
     label.switch(data-src=`${endPoint}/teams`)
+        input(type='checkbox' checked=toggleState)
+        span.slider.round
+  else if pageType == 'driver'
+    label.switch(data-src=`${endPoint}/drivers/${ctx.query['demo-driver']}`)
+      input(type='checkbox' checked=toggleState)
+      span.slider.round
+  else if pageType == 'team'
+  
+    label.switch(data-src=`${endPoint}/teams/${ctx.query['demo-team']}`)
         input(type='checkbox' checked=toggleState)
         span.slider.round
   else

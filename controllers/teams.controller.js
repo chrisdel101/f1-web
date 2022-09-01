@@ -27,7 +27,7 @@ async function renderAllTeamsPage(ctx) {
       teamsDataArr,
       cardSize: ctx.query.size === 'mini' ? 'mini' : 'full',
       urls,
-      locals: ctx.state,
+      ENV: utils.ENV,
       toggleState: ctx?.query?.size === 'mini' ? false : true,
     })
   } catch (e) {

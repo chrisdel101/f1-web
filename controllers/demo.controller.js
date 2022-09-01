@@ -6,6 +6,8 @@ const { errorHandler } = require('../utilities/errorManager')
 const { catchErrors } = require('../errorHandlers')
 const { buildTeamCard } = require('./teams.controller')
 const { buildDriverCard } = require('./drivers.controller')
+const { cardTypes } = require('../constants')
+const utils = require('../utils')
 
 // render demo page and select forms
 exports.renderDemo = async (ctx) => {
@@ -39,5 +41,10 @@ exports.renderDemo = async (ctx) => {
     demoFormData: data?.['demoFormData'],
     driverCardData: data?.['driverCardData'],
     teamCardData: data?.['teamCardData'],
+    pageType: data?.['driverCardData'] ? cardTypes.DRIVER : cardTypes.TEAM,
+    urls: undefined,
+    ENV: utils.ENV,
+    toggleState: ctx?.state?.hideDemo,
+    ctx: ctx,
   })
 }

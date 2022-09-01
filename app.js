@@ -59,6 +59,8 @@ app.use(async (ctx, next) => {
   ctx.state.teamFormText = 'Choose a Team'
   ctx.state.ENV = ENV
   ctx.state.randomNumInRange = randomNumInRange
+  ctx.state.hideNav = false
+  ctx.state.hideDemo = false
   await next()
 })
 // routes

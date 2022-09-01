@@ -4,7 +4,7 @@ include mixins/_toggleSwitch
 block content
   #all-drivers-toggle.toggle-switch-container 
     div.toggle-text Card Size
-    +toggleSwitch('drivers',urls, locals, toggleState)
+    +toggleSwitch('drivers',urls, ENV, toggleState)
   .all-drivers-container
     ul.all-drivers
       for driver in driversDataArr

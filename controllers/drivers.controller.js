@@ -6,6 +6,7 @@ const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeam } = require('../clients/team.client')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
+const { exit } = require('browser-sync')
 
 module.exports = {
   buildDriverCard,
@@ -49,9 +50,9 @@ async function renderAllDriversPage(ctx) {
     )
     return await ctx.render('allDrivers', {
       driversDataArr,
+      ENV: utils.ENV,
       cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
       urls,
-      locals: ctx.state,
       toggleState: ctx?.query?.size === 'mini' ? false : true,
     })
   } catch (e) {

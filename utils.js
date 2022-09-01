@@ -6,6 +6,10 @@ let globalCache = require('./cache')
 const moment = require('moment')
 
 module.exports = {
+  // toggle the local var
+  toggleHideNav: (ctx) => {
+    ctx.state.hideNav = !ctx.state.hideNav
+  },
   ENV: process.env?.NODE_ENV === 'development' ? 'development' : ' production',
   verifyAPI_KEY: (apiKey) => {
     return apiKey === process.env.API_KEY ? true : false

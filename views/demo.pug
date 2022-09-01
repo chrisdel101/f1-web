@@ -3,6 +3,8 @@ include mixins/_driverCardMixin
 include mixins/_teamCardMixin
 
 include mixins/_select
+include mixins/_toggleSwitch
+
 block content
   .demo-container.container
     //- - console.log('data', teamCardData)
@@ -17,7 +19,10 @@ block content
           buttonType: 'submit',
           buttonValue: 'submit',
           buttonField: 'Submit',
-        }) 
+        })
+  div(id=`${pageType}-toggle-nav` class=`toggle-switch-container`) 
+    div.toggle-text Hide Demo
+    +toggleSwitch(pageType, urls, ENV, toggleState) 
   if driverCardData
     .driver-card-demo
         +driverCardMixin(driverCardData)

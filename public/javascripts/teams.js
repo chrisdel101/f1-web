@@ -5,7 +5,7 @@ const fakeContext = {
   psid: '1234567891012131',
   signed_request:
     '"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"',
-  metadata: null
+  metadata: null,
 }
 teamCardLinks = Array.from(teamCardLinks)
 // array of objs on the page currently selected
@@ -15,7 +15,7 @@ let context
 teamCardLinks.forEach((teamCardElem, i) => {
   const teamObj = new createTeamObj(teamCardElem, i)
   teamObjs.push(teamObj)
-  teamCardElem.addEventListener('click', function(e) {
+  teamCardElem.addEventListener('click', function (e) {
     e.preventDefault()
     if (!is_touch_device()) {
       console.log('not touch', is_touch_device())
@@ -47,7 +47,7 @@ if (teamSubmitButton) {
 function dataBundler(context, teams_arr) {
   return {
     user_id: context.psid,
-    teams_arr
+    teams_arr,
   }
 }
 
@@ -67,11 +67,11 @@ async function postData(url, data) {
       cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
     })
     return await response // parses JSON response into native JavaScript objects
   } catch (e) {
@@ -81,7 +81,7 @@ async function postData(url, data) {
 // return arr of team slugs
 async function returnClickedCardsSlugs(teamObjs) {
   try {
-    return teamObjs.filter(team => team.clicked).map(team => team.name_slug)
+    return teamObjs.filter((team) => team.clicked).map((team) => team.name_slug)
   } catch (e) {
     console.error('An error occured while gathering all selected cards', e)
   }
@@ -89,7 +89,7 @@ async function returnClickedCardsSlugs(teamObjs) {
 // toggles current card on/off - touch only
 function touchCardSelect(teamCardElem) {
   const nodeNameSlug = teamCardElem.parentNode.parentNode.dataset.slug
-  const currentTeamObj = teamObjs.filter(team => {
+  const currentTeamObj = teamObjs.filter((team) => {
     if (team.name_slug === nodeNameSlug) {
       return team
     }
@@ -107,7 +107,7 @@ function touchCardSelect(teamCardElem) {
 function keyboardCardSelect(teamCardElem, e) {
   const nodeNameSlug = teamCardElem.parentNode.parentNode.dataset.slug
   // console.log(nodeNameSlug)
-  const currentTeamObj = teamObjs.filter(team => {
+  const currentTeamObj = teamObjs.filter((team) => {
     if (team.name_slug === nodeNameSlug) {
       return team
     }
@@ -196,7 +196,7 @@ function createTeamObj(elem, pageIndex) {
 // https://stackoverflow.com/a/4819886/5972531
 function is_touch_device() {
   var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ')
-  var mq = function(query) {
+  var mq = function (query) {
     return window.matchMedia(query).matches
   }
 
@@ -242,11 +242,11 @@ function isDevelopment() {
     }
   })
 }
-window.extAsyncInit = async function() {
+window.extAsyncInit = async function () {
   if (!(await isDevelopment())) {
     // eslint-disable-next-line no-undef
     // get real contxt from FB
-    getProdContext().then(res => {
+    getProdContext().then((res) => {
       // set context to global scope
       context = res
       console.log('contex ready', context)
