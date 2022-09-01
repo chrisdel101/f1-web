@@ -7,7 +7,7 @@ include mixins/_toggleSwitch
 
 block content
   .demo-container.container
-    //- - console.log('data', teamCardData)
+    - console.log('data', locals)
     each item in demoFormData
       div(class=`${item.selectName}-select`)
         h6.select-text= item.formNameText
@@ -20,9 +20,9 @@ block content
           buttonValue: 'submit',
           buttonField: 'Submit',
         })
-  div(id=`${pageType}-toggle-nav` class=`toggle-switch-container`) 
+  div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
     div.toggle-text Hide Demo
-    +toggleSwitch(pageType, urls, ENV, toggleState) 
+    +toggleSwitch({pageType, ENV, toggleState, toggleNextEndpoint, toggleHideNav}) 
   if driverCardData
     .driver-card-demo
         +driverCardMixin(driverCardData)

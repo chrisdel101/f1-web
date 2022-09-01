@@ -4,7 +4,7 @@ const utils = require('../utils')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 const { fetchTeam, fetchTeams } = require('../clients/team.client')
-const { urls } = require('../constants')
+const { urls, cardTypes } = require('../constants')
 
 module.exports = {
   buildTeamCard,
@@ -91,6 +91,13 @@ async function renderTeamPage(ctx) {
     return await ctx.render('teamPage', {
       teamData: teamCard,
       noNav: true ? ctx.query.noNav === 'true' : false,
+      pageType: cardTypes.DRIVER,
+      urls: urls,
+      ENV: utils.ENV,
+      toggleState: ctx?.state?.hideDemo,
+      toggleNextEndpoint: utils.toggleNextEndpointTeam,
+      toggleHideNav: utils.toggleHideNav,
+      ctx: ctx,
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)

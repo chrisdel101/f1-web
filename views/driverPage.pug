@@ -1,10 +1,16 @@
 extends layout
 block layoutVariables
+
   //-   https://stackoverflow.com/a/20502117/5972531
     to get just driver card, send this to the layout page
   - let hideNav= noNav || false
 block content
+
+  include mixins/_toggleSwitch
   include mixins/_driverCardMixin
   block append content
       .driver-card-page
+          div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
+            div.toggle-text Hide Demo
+            +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav}) 
           +driverCardMixin(driverData)  

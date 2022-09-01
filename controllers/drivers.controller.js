@@ -1,12 +1,11 @@
 const utils = require('../utils')
 const cache = require('../cache')
-const { urls } = require('../constants')
+const { urls, cardTypes } = require('../constants')
 const cacheController = require('./cache.controller')
 const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeam } = require('../clients/team.client')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
-const { exit } = require('browser-sync')
 
 module.exports = {
   buildDriverCard,
@@ -94,6 +93,13 @@ async function renderDriverPage(ctx) {
     return await ctx.render('driverPage', {
       driverData: driverCard,
       noNav: true ? ctx.query.noNav === 'true' : false,
+      pageType: cardTypes.DRIVER,
+      urls: urls,
+      ENV: utils.ENV,
+      toggleState: ctx?.state?.hideDemo,
+      toggleNextEndpoint: utils.toggleNextEndpointDriver,
+      toggleHideNav: utils.toggleHideNav,
+      ctx: ctx,
     })
   } catch (e) {
     console.error('Error in renderDriverPage', e)

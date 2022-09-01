@@ -1,25 +1,34 @@
 //- params not passed in are still available - ctx is passed from demo and can be accessed here anyway
 
-mixin toggleSwitch(pageType, urls, ENV, toggleState)
+mixin toggleSwitch({pageType, urls, ENV, toggleState, toggleNextEndpoint, toggleHideNav})
   link(rel='stylesheet', href='/stylesheets/toggleSwitch.css')
   script(src='/javascripts/toggle.js')
-  - const endPoint = ENV === 'development' ? urls.localCardsEndpoint : urls.prodCardsEndpoint
+  - console.log('HERE', toggleNextEndpoint)
 
   if pageType == 'drivers'
+    - const endPoint = ENV === 'development' ? urls.localCardsEndpoint : urls.prodCardsEndpoint
     label.switch(data-src=`${endPoint}/drivers`)
       input(type='checkbox' checked=toggleState)
       span.slider.round
   else if pageType == 'teams'
+    - const endPoint = ENV === 'development' ? urls.localCardsEndpoint : urls.prodCardsEndpoint
     label.switch(data-src=`${endPoint}/teams`)
         input(type='checkbox' checked=toggleState)
         span.slider.round
   else if pageType == 'driver'
-    label.switch(data-src=`${endPoint}/drivers/${ctx.query['demo-driver']}`)
+    - const nextEndPoint = toggleNextEndpoint(ctx) 
+    //- use if no query str
+    - const driverName = ctx.path.split('/').pop()
+    - toggleHideNav(ctx)
+    label.switch(data-src=`${nextEndPoint}${ctx.query['demo-driver'] || driverName}`)
       input(type='checkbox' checked=toggleState)
       span.slider.round
   else if pageType == 'team'
-  
-    label.switch(data-src=`${endPoint}/teams/${ctx.query['demo-team']}`)
+    - const nextEndPoint = toggleNextEndpoint(ctx) 
+    - toggleHideNav(ctx)
+    //- use if no query str
+    - const teamName = ctx.path.split('/').pop()
+    label.switch(data-src=`${nextEndPoint}${ctx.query['demo-team'] || teamName}`)
         input(type='checkbox' checked=toggleState)
         span.slider.round
   else

@@ -1,11 +1,26 @@
 const https = require('https')
 const http = require('http')
-const { urls } = require('./constants')
+const { urls, cardTypes } = require('./constants')
 const puppeteer = require('puppeteer')
 let globalCache = require('./cache')
 const moment = require('moment')
+var url = require('url')
 
 module.exports = {
+  toggleNextEndpointDriver: (ctx) => {
+    if (ctx.path.includes(cardTypes.DRIVERS)) {
+      return '/demo?demo-driver='
+    } else if (ctx.path.includes('demo')) {
+      return '/drivers/'
+    }
+  },
+  toggleNextEndpointTeam: (ctx) => {
+    if (ctx.path.includes(cardTypes.TEAMS)) {
+      return '/demo?demo-team='
+    } else if (ctx.path.includes('demo')) {
+      return '/teams/'
+    }
+  },
   // toggle the local var
   toggleHideNav: (ctx) => {
     ctx.state.hideNav = !ctx.state.hideNav

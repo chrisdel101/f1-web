@@ -41,10 +41,14 @@ exports.renderDemo = async (ctx) => {
     demoFormData: data?.['demoFormData'],
     driverCardData: data?.['driverCardData'],
     teamCardData: data?.['teamCardData'],
+    // toggle params
     pageType: data?.['driverCardData'] ? cardTypes.DRIVER : cardTypes.TEAM,
-    urls: undefined,
     ENV: utils.ENV,
     toggleState: ctx?.state?.hideDemo,
+    toggleNextEndpoint: data?.['driverCardData']
+      ? utils.toggleNextEndpointDriver
+      : utils.toggleNextEndpointTeam,
+    toggleHideNav: utils.toggleHideNav,
     ctx: ctx,
   })
 }
