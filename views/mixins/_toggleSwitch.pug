@@ -3,8 +3,6 @@
 mixin toggleSwitch({pageType, urls, ENV, toggleState, toggleNextEndpoint, toggleHideNav})
   link(rel='stylesheet', href='/stylesheets/toggleSwitch.css')
   script(src='/javascripts/toggle.js')
-  - console.log('HERE', toggleNextEndpoint)
-
   if pageType == 'drivers'
     - const endPoint = ENV === 'development' ? urls.localCardsEndpoint : urls.prodCardsEndpoint
     label.switch(data-src=`${endPoint}/drivers`)

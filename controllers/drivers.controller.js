@@ -6,6 +6,9 @@ const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeam } = require('../clients/team.client')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
+const debug = require('debug')
+const log = debug('app:log')
+const error = debug('app:error')
 
 module.exports = {
   buildDriverCard,
@@ -35,7 +38,7 @@ async function makeAllDriversObjs(ctx, driverSlug, size = 'full') {
     }
     return options
   } catch (e) {
-    console.error('Error in makeAllDriversObjs', e)
+    error('Error in makeAllDriversObjs', e)
   }
 }
 async function renderAllDriversPage(ctx) {
@@ -55,7 +58,7 @@ async function renderAllDriversPage(ctx) {
       toggleState: ctx?.query?.size === 'mini' ? false : true,
     })
   } catch (e) {
-    console.error('Error in renderAllDriversPage', e)
+    error('Error in renderAllDriversPage', e)
     // TODO add prod errors on page DEV only
     ctx.response.body = `Error in renderAllDriversPage: ${e}`
   }
@@ -71,7 +74,7 @@ async function buildDriverCard(name_slug) {
       logo_url: teamData.main_logo_url,
     }
   } catch (e) {
-    console.error('Error in buildDriverCard', e)
+    error('Error in buildDriverCard', e)
   }
 }
 // build card only
@@ -83,7 +86,7 @@ async function renderDriverCard(ctx) {
       noNav: true,
     })
   } catch (e) {
-    console.error('Error in renderDriverCard', e)
+    error('Error in renderDriverCard', e)
   }
 }
 // build card and show on page with nav header - same as renderDriverCard w/o showCardOnly
@@ -102,6 +105,6 @@ async function renderDriverPage(ctx) {
       ctx: ctx,
     })
   } catch (e) {
-    console.error('Error in renderDriverPage', e)
+    error('Error in renderDriverPage', e)
   }
 }

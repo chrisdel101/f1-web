@@ -7,7 +7,6 @@ include mixins/_toggleSwitch
 
 block content
   .demo-container.container
-    - console.log('data', locals)
     each item in demoFormData
       div(class=`${item.selectName}-select`)
         h6.select-text= item.formNameText

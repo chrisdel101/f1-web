@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=development DEBUG=f1:* nodemon bin/www",
+    "start": "DEBUG=app:* NODE_ENV=development nodemon bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
-     "local:prod": "NODE_ENV=production DEBUG=f1:* nodemon bin/www",
+    "local:prod": "NODE_ENV=production DEBUG=f1:* nodemon bin/www",
     "prod": "NODE_ENV=production node bin/www",
     "test": "NODE_ENV=testing mocha --exclude tests/client-side/*.test.js tests/**/*.test.js --exclude tests/live.test.js",
     "test_local:prod": "NODE_ENV=prod_testing mocha --exclude tests/client-side/*.test.js tests/**/*.test.js --exclude tests/live.test.js",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.3",
-    "debug": "^4.3.2",
+    "debug": "^4.3.4",
     "dotenv": "^8.6.0",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",

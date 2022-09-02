@@ -12,6 +12,9 @@ const apiRoutes = require('./routes/apiRoutes')
 const { urls } = require('./constants')
 const errorHandlers = require('./errorHandlers')
 const { ENV, randomNumInRange } = require('./utils')
+const debug = require('debug')
+const log = debug('app:log')
+
 // error handler
 onerror(app)
 app.use(cors())
@@ -36,7 +39,7 @@ app.use(async (ctx, next) => {
   const start = new Date()
   await next()
   const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
 // uses async arrow functions

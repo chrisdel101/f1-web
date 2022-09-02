@@ -5,6 +5,9 @@ const puppeteer = require('puppeteer')
 let globalCache = require('./cache')
 const moment = require('moment')
 var url = require('url')
+const debug = require('debug')
+const log = debug('app:log')
+const error = debug('app:error')
 
 module.exports = {
   toggleNextEndpointDriver: (ctx) => {
@@ -65,16 +68,15 @@ module.exports = {
       }
       const req = http
         .get(options, (res) => {
-          console.log(res.headers)
           res.setEncoding('utf8')
           res.on('data', (d) => {
             resolve(d)
           })
         })
         .on('error', (e) => {
-          console.error(`HTTP error: ${e.message}`)
+          error(`HTTP error: ${e.message}`)
           if (e.code === 'ECONNREFUSED') {
-            console.log('Local DB is not running')
+            log('Local DB is not running')
             req.shouldKeepAlive = false
             req.destroy()
           }
@@ -101,9 +103,9 @@ module.exports = {
           })
         })
         .on('error', (e) => {
-          console.error(`HTTPS error: ${e.message}`)
+          error(`HTTPS error: ${e.message}`)
           if (e.code === 'ECONNREFUSED') {
-            console.log('Local DB is not running')
+            log('Local DB is not running')
             req.shouldKeepAlive = false
             req.destroy()
           }
@@ -115,7 +117,7 @@ module.exports = {
     if (typeof data !== 'string') {
       if (process.env.LOGS != 'off') {
         data = JSON.stringify(data)
-        console.log('LOGS: stringify in httpPostCall', data)
+        log('LOGS: stringify in httpPostCall', data)
       }
     }
     try {
@@ -133,27 +135,27 @@ module.exports = {
 
       const req = http.request(options, (res) => {
         if (process.env.LOGS != 'off') {
-          console.log(`LOGS:  STATUS: ${res.statusCode}`)
-          console.log(`LOGS: HEADERS: ${JSON.stringify(res.headers)}`)
+          log(`LOGS:  STATUS: ${res.statusCode}`)
+          log(`LOGS: HEADERS: ${JSON.stringify(res.headers)}`)
         }
         res.setEncoding('utf8')
       })
 
       req.on('error', (e) => {
-        console.error(`problem with request: ${e.message}`)
+        error(`problem with request: ${e.message}`)
         throw Error(`problem with request: ${e.message}`)
       })
 
       // Write data to request body
       if (process.env.LOGS !== 'OFF') {
-        console.log('LOGS: data', data)
+        log('LOGS: data', data)
       }
 
       req.write(data)
       req.end()
       return 'Post Complete'
     } catch (e) {
-      console.error('Error in httpPostCall', e)
+      error('Error in httpPostCall', e)
     }
   },
   fetchEndpoint: async (params) => {
@@ -167,7 +169,7 @@ module.exports = {
           // console.log('REM', remoteJson)
           return localEndPoint
         default: //'prod_testing':,'production':
-          console.log('xx', urls.prodF1(params))
+          // console.log('xx', urls.prodF1(params))
           const prodEndPoint = await module.exports.httpsCall(
             urls.prodF1(params)
           )
@@ -175,7 +177,7 @@ module.exports = {
           return prodEndPoint
       }
     } catch (e) {
-      console.error('An error in util.fetchEndpoint', e)
+      error('An error in util.fetchEndpoint', e)
     }
   },
   // cap beginning of each seperate word
@@ -199,11 +201,11 @@ module.exports = {
         }
         return globalCache.drivers
       } else {
-        console.log('view-cache:', globalCache)
+        // console.log('view-cache:', globalCache)
         return globalCache
       }
     } catch (e) {
-      console.error('An error in viewCache', e)
+      error('An error in viewCache', e)
     }
   },
   resetCache: (type, passInCache = {}) => {
@@ -228,11 +230,11 @@ module.exports = {
         return cache
       } else {
         cache = {}
-        console.log('Cache cleared: ', cache)
+        log('Cache cleared: ', cache)
         return cache
       }
     } catch (e) {
-      console.error('An error in viewCache', e)
+      error('An error in viewCache', e)
     }
   },
   takeImage: async (ctx) => {
@@ -254,7 +256,7 @@ module.exports = {
       await page.screenshot({ path: 'example.png' })
       await browser.close()
     } catch (e) {
-      console.error('An error occured in takeImage:', e)
+      error('An error occured in takeImage:', e)
       return 'An error occured in takeImage:', e
     }
   },

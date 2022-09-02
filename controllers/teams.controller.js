@@ -16,7 +16,7 @@ module.exports = {
 async function renderAllTeamsPage(ctx) {
   try {
     const teamNamesArr = await fetchTeams()
-    console.log('Teams Obj', teamNamesArr)
+    // console.log('Teams Obj', teamNamesArr)
     // loop over names and get each team
     const teamsDataArr = await Promise.all(
       teamNamesArr.map(async (team) => {
@@ -74,7 +74,6 @@ async function buildTeamCard(name_slug) {
 }
 async function renderTeamCard(ctx) {
   try {
-    console.log('HERE')
     const teamCard = await buildTeamCard(ctx.params.name_slug)
     return await ctx.render('teamPage', {
       teamData: teamCard,

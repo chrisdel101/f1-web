@@ -6,7 +6,7 @@ const fakeContext = {
   psid: '1234567891012131',
   signed_request:
     '"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"',
-  metadata: null
+  metadata: null,
 }
 // convert to array
 driverCardsLinks = Array.from(driverCardsLinks)
@@ -17,7 +17,7 @@ let context
 driverCardsLinks.forEach((driverCardLinkElem, i) => {
   const driverObj = new createDriverObj(driverCardLinkElem, i)
   driverObjs.push(driverObj)
-  driverCardLinkElem.addEventListener('click', function(e) {
+  driverCardLinkElem.addEventListener('click', function (e) {
     e.preventDefault()
     if (!is_touch_device()) {
       console.log('not touch', is_touch_device())
@@ -51,7 +51,7 @@ if (driverSubmitButton) {
 function dataBundler(context, drivers_arr) {
   return {
     user_id: context.psid,
-    drivers_arr
+    drivers_arr,
   }
 }
 // takes an obj with driversArr prop - calls backend
@@ -73,11 +73,11 @@ async function postData(url, data) {
       credentials: 'same-origin', // include, *same-origin, omit
       headers: {
         'Content-Type': 'application/json',
-        'X-Api-Key': '12345'
+        'X-Api-Key': '12345',
       },
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
     })
     return await response // parses JSON response into native JavaScript objects
   } catch (e) {
@@ -88,8 +88,8 @@ async function postData(url, data) {
 function returnClickedCardsSlugs(driverObjs) {
   try {
     return driverObjs
-      .filter(driver => driver.clicked)
-      .map(driver => driver.name_slug)
+      .filter((driver) => driver.clicked)
+      .map((driver) => driver.name_slug)
   } catch (e) {
     console.error('An error occured while gathering all selected cards', e)
   }
@@ -100,7 +100,7 @@ function touchCardSelect(driverCardLinkElem) {
   // target name inside container from a tag
   const nodeNameSlug = driverCardLinkElem.parentNode.parentNode.dataset.slug
   // match name to proper driver obj
-  const currentDriverObj = driverObjs.filter(driver => {
+  const currentDriverObj = driverObjs.filter((driver) => {
     if (driver.name_slug === nodeNameSlug) {
       return driver
     }
@@ -117,7 +117,7 @@ function touchCardSelect(driverCardLinkElem) {
 // toggles current card with shift bar action
 function keyboardCardSelect(driverCardLinkElem, e) {
   const nodeNameSlug = driverCardLinkElem.parentNode.parentNode.dataset.slug
-  const currentDriverObj = driverObjs.filter(driver => {
+  const currentDriverObj = driverObjs.filter((driver) => {
     if (driver.name_slug === nodeNameSlug) {
       return driver
     }
@@ -212,7 +212,7 @@ function createDriverObj(elem, pageIndex) {
 // https://stackoverflow.com/a/4819886/5972531
 function is_touch_device() {
   var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ')
-  var mq = function(query) {
+  var mq = function (query) {
     return window.matchMedia(query).matches
   }
 
@@ -258,11 +258,11 @@ function isDevelopment() {
     }
   })
 }
-window.extAsyncInit = async function() {
+window.extAsyncInit = async function () {
   if (!(await isDevelopment())) {
     // eslint-disable-next-line no-undef
     // get real contxt from FB
-    getProdContext().then(res => {
+    getProdContext().then((res) => {
       // set context to global scope
       context = res
       console.log('contex ready', context)
