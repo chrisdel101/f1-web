@@ -90,6 +90,7 @@ async function renderTeamPage(ctx) {
     return await ctx.render('teamPage', {
       teamData: teamCard,
       noNav: true ? ctx.query.noNav === 'true' : false,
+      noToggle: true ? ctx.query.noNav === 'true' : false,
       pageType: cardTypes.DRIVER,
       urls: urls,
       ENV: utils.ENV,

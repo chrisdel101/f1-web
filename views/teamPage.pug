@@ -11,7 +11,9 @@ block content
     //- append the card content to page
   block append content
       .team-card-page
-          div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
-                div.toggle-text Hide Demo
-                +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav }) 
+          //- used with /api
+          if !noToggle 
+            div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
+                  div.toggle-text Hide Demo
+                  +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav }) 
           +teamCardMixin(teamData)

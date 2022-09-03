@@ -77,13 +77,14 @@ async function buildDriverCard(name_slug) {
     error('Error in buildDriverCard', e)
   }
 }
-// build card only
+// build card only - no nav, no toggle switch
 async function renderDriverCard(ctx) {
   try {
     const driverCard = await buildDriverCard(ctx.params.name_slug)
     return await ctx.render('driverPage', {
       driverData: driverCard,
       noNav: true,
+      noToggle: true,
     })
   } catch (e) {
     error('Error in renderDriverCard', e)
@@ -96,6 +97,7 @@ async function renderDriverPage(ctx) {
     return await ctx.render('driverPage', {
       driverData: driverCard,
       noNav: true ? ctx.query.noNav === 'true' : false,
+      noToggle: true ? ctx.query.noToggle === 'true' : false,
       pageType: cardTypes.DRIVER,
       urls: urls,
       ENV: utils.ENV,
