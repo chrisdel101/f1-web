@@ -1,5 +1,5 @@
 extends layout
-include mixins/_allDriversMixin
+include mixins/_allDriversCardMixin
 include mixins/_toggleSwitch
 block content
   #all-drivers-toggle.toggle-switch-container 
@@ -13,8 +13,5 @@ block content
   )
   .all-drivers-container
     ul.all-drivers
-      for driver in driversDataArr
-        +allDriverMixin(driver, cardSize)
-    if cardSize === " mini"
-      form(method='POST',action='/drivers')
-        button(type="button" class="btn btn-primary btn-lg submit-all-drivers") Submit
+      for driverData in driversDataArr
+        +allDriversCardMixin(driverData, cardSize)

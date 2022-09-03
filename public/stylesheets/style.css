@@ -169,8 +169,8 @@ picture {
 .all-drivers .driver-card.mini li.selected {
   border: 2px solid blue;
 }
-.all-drivers .driver-card.mini,
-.all-teams .team-card.mini {
+.driver-card.mini,
+.team-card.mini {
   width: 200px;
   margin: 5px;
 }
@@ -247,6 +247,7 @@ h6.select-text {
   display: flex;
   background-color: whitesmoke;
   flex-direction: column;
+  padding-left: 20px;
 }
 .team-card .drivers {
   display: flex;
@@ -270,6 +271,9 @@ h6.select-text {
 }
 .team-card .main-image {
   height: 100%;
+}
+.team-card.mini {
+  height: 80%;
 }
 .team-card .main-image img {
   object-fit: contain;
@@ -402,6 +406,11 @@ h6.select-text {
   }
   .right-column {
     width: 150%;
+  }
+  .card.driver-card.mini,
+  .card.team-card.mini {
+    flex-direction: column;
+    overflow: hidden;
   }
   .card.driver-card,
   .card.team-card {

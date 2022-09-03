@@ -18,13 +18,13 @@ async function renderAllTeamsPage(ctx) {
     const teamNamesArr = await fetchTeams()
     // console.log('Teams Obj', teamNamesArr)
     // loop over names and get each team
-    const teamsDataArr = await Promise.all(
+    const teamDataArr = await Promise.all(
       teamNamesArr.map(async (team) => {
         return await fetchTeam(team.name_slug)
       })
     )
     return await ctx.render('allTeams', {
-      teamsDataArr,
+      teamDataArr,
       cardSize: ctx.query.size === 'mini' ? 'mini' : 'full',
       urls,
       ENV: utils.ENV,
@@ -72,12 +72,16 @@ async function buildTeamCard(name_slug) {
     ...(await getDriversData(teamData)),
   }
 }
+// build card only - no nav, no toggle switch
+// called dir with /api
 async function renderTeamCard(ctx) {
   try {
     const teamCard = await buildTeamCard(ctx.params.name_slug)
     return await ctx.render('teamPage', {
       teamData: teamCard,
+      noToggle: true,
       noNav: true,
+      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)
@@ -98,6 +102,7 @@ async function renderTeamPage(ctx) {
       toggleNextEndpoint: utils.toggleNextEndpointTeam,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,
+      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)

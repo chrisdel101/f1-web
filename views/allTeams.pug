@@ -1,5 +1,5 @@
 extends layout
-include mixins/_allTeamsMixin
+include mixins/_allTeamsCardMixin
 include mixins/_toggleSwitch
 
 block content
@@ -14,7 +14,5 @@ block content
   )
   .all-teams-container
     ul.all-teams
-      for team in teamsDataArr
-        +allTeamsMixin(team, cardSize)
-    if size
-      button(type="button" class="btn btn-primary btn-lg submit-all-teams") Submit
+      for teamData in teamsDataArr
+        +allTeamsCardMixin(team, cardSize)

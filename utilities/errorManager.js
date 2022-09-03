@@ -1,3 +1,6 @@
+const debug = require('debug')
+const log = debug('app:log')
+const error = debug('app:error')
 exports.errorHandler = {
   renderDemoError: (driverNamesArr, teamsNamesArr) => {
     if (!driverNamesArr?.length || !teamsNamesArr?.length) {
@@ -12,7 +15,7 @@ exports.errorHandler = {
     }
   },
   renderDriverCardError: (cxt) => {
-    console.log('CTX', ctx)
+    log('CTX', ctx)
     // if (!ctx.params) {
     //   console.error('renderDriverCardError: Invalid or missing query params')
     //   ctx.res.end = 'Missing'

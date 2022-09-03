@@ -78,6 +78,7 @@ async function buildDriverCard(name_slug) {
   }
 }
 // build card only - no nav, no toggle switch
+// called dir with /api
 async function renderDriverCard(ctx) {
   try {
     const driverCard = await buildDriverCard(ctx.params.name_slug)
@@ -85,6 +86,7 @@ async function renderDriverCard(ctx) {
       driverData: driverCard,
       noNav: true,
       noToggle: true,
+      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
     })
   } catch (e) {
     error('Error in renderDriverCard', e)
@@ -105,6 +107,7 @@ async function renderDriverPage(ctx) {
       toggleNextEndpoint: utils.toggleNextEndpointDriver,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,
+      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
     })
   } catch (e) {
     error('Error in renderDriverPage', e)

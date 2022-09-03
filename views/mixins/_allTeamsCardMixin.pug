@@ -1,8 +1,8 @@
-mixin allTeamsMixin(data, cardSize)
+mixin allTeamsCardMixin(data, cardSize)
   //- - console.log('card', cardSize)
   if cardSize === "full"
     .card.team-card(class=cardSize data-slug=data.team_name_slug)
-      li
+      li 
         a(href=`/demo?demo-team=${data.team_name_slug}`)
           .team-title
             h5 #{data.full_team_name}

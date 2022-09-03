@@ -22,7 +22,7 @@ router.get('/api/mobile/teams/:name_slug', async (ctx) => {
 // get driver card in HTML of img
 router.get('/api/drivers/:name_slug', async (ctx) => {
   // send html version
-  if (ctx.query.noNav === 'true') {
+  if (ctx.query.html === 'true') {
     return driversController.renderDriverCard(ctx)
   } else {
     // send image version
@@ -34,7 +34,7 @@ router.get('/api/drivers/:name_slug', async (ctx) => {
   }
 })
 router.get('/api/teams/:name_slug', async (ctx) => {
-  if (ctx.query.noNav === 'true') {
+  if (ctx.query.html === 'true') {
     return teamsController.renderTeamCard(ctx)
   } else {
     return apiController
