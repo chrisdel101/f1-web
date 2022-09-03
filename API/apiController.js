@@ -9,7 +9,10 @@ async function sendUserData(data, url) {
   return await utils.httpPostCall(url, data)
 }
 // take screen shot of endpoints entered
+// tags [ noToggle, noNav, size]
 async function takeCardScreenShot(ctx, screenShotType) {
+  // add prod dev options later
+  const apiHost = 'http://localhost:3000'
   // eslint-disable-next-line no-prototype-builtins
   if (screenShotTypes.hasOwnProperty(screenShotType)) {
     console.error(
@@ -17,46 +20,45 @@ async function takeCardScreenShot(ctx, screenShotType) {
     )
     return
   }
-  // console.log('ctx', ctx)
   // set content type to image
   ctx.type = `image/png`
   try {
-    // access checks if file exists - takes path
-    if (process.env.NODE_ENV === 'testing') {
-      // err - if file does not exist
-      fs.access('./tests/api/test.png', (err) => {
-        if (!err) {
-          console.log('myfile exists')
-          fs.unlink('./tests/api/test.png', (err) => {
-            // unlink err
-            if (err) throw Error('An error occured in unlinking', err)
-          })
-        } else {
-          console.log('myfile does not exist')
-        }
-      })
-    } else {
-      //   fs.access('./example.png', (err) => {
-      //     if (!err) {
-      //       console.log('myfile exists HERE')
-      //       fs.unlink('./example.png', (err) => {
-      //         if (err) {
-      //           console.error('An error occured in unlinking', err)
-      //           throw Error('An error occured in unlinking')
-      //         }
-      //       })
-      //     } else {
-      //       console.log('myfile does not exist')
-      //     }
-      //   })
-    }
-  } catch (err) {
-    console.error('Unlinking file error', err)
-  }
-
-  try {
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      headless: true,
+      // https://cri.dev/posts/2020-04-04-Full-list-of-Chromium-Puppeteer-flags/
+      args: [
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--disable-setuid-sandbox',
+        '--no-first-run',
+        '--no-sandbox',
+        '--no-zygote',
+        '--deterministic-fetch',
+        '--disable-features=IsolateOrigins',
+        '--disable-site-isolation-trials',
+        '--disable-features=site-per-process',
+        '--disable-web-security',
+        '--disable-site-isolation-trials',
+        '--disable-infobars',
+        '--no-first-run',
+        '--window-position=0,0',
+        '--ignore-certificate-errors',
+        '--ignore-certificate-errors-skip-list',
+        '--disable-accelerated-2d-canvas',
+        '--hide-scrollbars',
+        '--disable-notifications',
+        '--disable-extensions',
+        '--force-color-profile=srgb',
+        '--mute-audio',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-breakpad',
+        '--disable-component-extensions-with-background-pages',
+        '--disable-features=TranslateUI,BlinkGenPropertyTrees,IsolateOrigins,site-per-process',
+        '--disable-ipc-flooding-protection',
+        '--disable-renderer-backgrounding',
+        '--enable-features=NetworkService,NetworkServiceInProcess',
+      ],
     })
     const page = await browser.newPage()
     if (process.env.NODE_ENV === 'development') {
@@ -74,8 +76,9 @@ async function takeCardScreenShot(ctx, screenShotType) {
             deviceScaleFactor: 1,
           })
         }
+        // url is for internal api to take shot with - not user entered endpoint
         const req = await page.goto(
-          `http://localhost:3000/${screenShotType}/${ctx.params.name_slug}?noNav=true`
+          `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
@@ -96,8 +99,9 @@ async function takeCardScreenShot(ctx, screenShotType) {
             deviceScaleFactor: 1,
           })
         }
+
         const req = await page.goto(
-          `http://localhost:3000/${screenShotType}/${ctx.params.name_slug}?noNav=true`
+          `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
         )
         if (!utils.statusCodeChecker(req._status)) {
           throw Error(
@@ -105,115 +109,126 @@ async function takeCardScreenShot(ctx, screenShotType) {
           )
         }
       }
-    } else if (process.env.NODE_ENV === 'production') {
-      if (screenShotType === 'team') {
-        if (ctx.path.includes('api/mobile')) {
-          await page.setViewport({
-            width: 400,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        } else {
-          await page.setViewport({
-            width: 1000,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        }
-        const req = await page.goto(
-          `https://f1-cards.herokuapp.com/${screenShotType}/${ctx.params.name_slug}`
-        )
-        if (!utils.statusCodeChecker(req._status)) {
-          throw Error(
-            `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
-          )
-        }
-      } else if (screenShotType === screenShotTypes.DRIVERS) {
-        if (ctx.path.includes('api/mobile')) {
-          await page.setViewport({
-            width: 600,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        } else {
-          await page.setViewport({
-            width: 900,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        }
-        const req = await page.goto(
-          `https://f1-cards.herokuapp.com/${screenShotType}/${ctx.params.name_slug}`
-        )
-        if (!utils.statusCodeChecker(req._status)) {
-          throw Error(
-            `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
-          )
-        }
-      }
-    } else if (process.env.NODE_ENV === 'testing') {
-      if (screenShotType === screenShotTypes.DRIVERS) {
-        if (ctx.path.includes('api/mobile')) {
-          await page.setViewport({
-            width: 600,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        } else {
-          await page.setViewport({
-            width: 900,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        }
-        console.log(
-          `${urls.localCardsEndpoint}/${screenShotType}/${ctx.params.name_slug}`
-        )
-        const req = await page.goto(
-          `${urls.localCardsEndpoint}/${screenShotType}/${ctx.params.name_slug}`
-        )
-        if (!utils.statusCodeChecker(req._status)) {
-          throw Error(
-            `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
-          )
-        }
-      } else if (screenShotType === screenShotType.TEAMS) {
-        if (ctx.path.includes('api/mobile')) {
-          await page.setViewport({
-            width: 400,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        } else {
-          await page.setViewport({
-            width: 1000,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        }
-        // console.log(`http://localhost:3000/${screenShotType}/${ctx.params.name_slug}`)
-        const req = await page.goto(
-          `${urls.localCardsEndpoint}/${screenShotType}/${ctx.params.name_slug}`
-        )
-        if (!utils.statusCodeChecker(req._status)) {
-          throw Error(
-            `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
-          )
-        }
-      }
-      await page.screenshot({
-        path: './tests/api/test.png',
-        fullPage: true,
-      })
-      await browser.close()
-      return fs.createReadStream('./tests/api/test.png')
-      // return fs.createReadStream('./tests/api/test.png')
     }
-    if (process.env.NODE_ENV !== 'testing') {
-      await page.screenshot({ path: 'example.png', fullPage: true })
-      await browser.close()
-      return fs.createReadStream('./example.png')
+    // determine where to store screenshot
+    let imgPath = ''
+    if (ctx.request.url.includes('mobile')) {
+      if (ctx.request.url.includes('mini')) {
+        imgPath = `./API/screenShotsStore/mobile/mini/${ctx.params.name_slug}.png`
+      } else {
+        imgPath = `./API/screenShotsStore/mobile/${ctx.params.name_slug}.png`
+      }
+    } else {
+      imgPath = `./API/screenShotsStore/web/${ctx.params.name_slug}.png`
     }
+    // store screenshots for return
+    await page.screenshot({ path: imgPath, fullPage: true })
+    await browser.close()
+    return await fs.createReadStream(imgPath)
+  } catch (e) {
+    console.error('An error occured in takeImage:', e)
+    return 'An error occured in takeImage:', e
+  }
+  //   send image to body
+}
+// takes array of endpoints and get multiuple shots
+async function takeCardScreenShots(ctx, urlsToSceenShot) {
+  // eslint-disable-next-line no-prototype-builtins
+  if (!urlsToSceenShot || !ctx) {
+    console.error(
+      'takeCardScreenShots error: missing input param. Check inputs are not void.'
+    )
+    return
+  }
+  // set content type to image
+  ctx.type = `image/png`
+  try {
+    const browser = await puppeteer.launch({
+      headless: true,
+      // only use with trusted source
+      args: [
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--disable-setuid-sandbox',
+        '--no-first-run',
+        '--no-sandbox',
+        '--no-zygote',
+        '--deterministic-fetch',
+        '--disable-features=IsolateOrigins',
+        '--disable-site-isolation-trials',
+        '--disable-features=site-per-process',
+        '--disable-web-security',
+        '--disable-site-isolation-trials',
+        '--disable-infobars',
+        '--no-first-run',
+        '--window-position=0,0',
+        '--ignore-certificate-errors',
+        '--ignore-certificate-errors-skip-list',
+        '--disable-accelerated-2d-canvas',
+        '--hide-scrollbars',
+        '--disable-notifications',
+        '--disable-extensions',
+        '--force-color-profile=srgb',
+        '--mute-audio',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-breakpad',
+        '--disable-component-extensions-with-background-pages',
+        '--disable-features=TranslateUI,BlinkGenPropertyTrees,IsolateOrigins,site-per-process',
+        '--disable-ipc-flooding-protection',
+        '--disable-renderer-backgrounding',
+        '--enable-features=NetworkService,NetworkServiceInProcess',
+      ],
+    })
+    const page = await browser.newPage()
+    if (screenShotType === screenShotTypes.TEAMS) {
+      if (ctx.path.includes('api/mobile')) {
+        await page.setViewport({
+          width: 400,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
+      } else {
+        await page.setViewport({
+          width: 1000,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
+      }
+      const req = await page.goto(
+        `http://localhost:3000/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
+      )
+      if (!utils.statusCodeChecker(req._status)) {
+        throw Error(
+          `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShots`
+        )
+      }
+    } else if (screenShotType === screenShotTypes.DRIVERS) {
+      if (ctx.path.includes('api/mobile')) {
+        await page.setViewport({
+          width: 600,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
+      } else {
+        await page.setViewport({
+          width: 900,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
+      }
+      const req = await page.goto(
+        `http://localhost:3000/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
+      )
+      if (!utils.statusCodeChecker(req._status)) {
+        throw Error(
+          `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShots`
+        )
+      }
+    }
+    await page.screenshot({ path: 'example.png', fullPage: true })
+    await browser.close()
+    return fs.createReadStream('./example.png')
   } catch (e) {
     console.error('An error occured in takeImage:', e)
     return 'An error occured in takeImage:', e
@@ -221,6 +236,7 @@ async function takeCardScreenShot(ctx, screenShotType) {
   //   send image to body
 }
 module.exports = {
+  takeCardScreenShots,
   takeCardScreenShot,
   sendUserData,
 }
