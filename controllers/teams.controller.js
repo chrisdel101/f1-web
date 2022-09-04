@@ -18,13 +18,13 @@ async function renderAllTeamsPage(ctx) {
     const teamNamesArr = await fetchTeams()
     // console.log('Teams Obj', teamNamesArr)
     // loop over names and get each team
-    const teamDataArr = await Promise.all(
+    const teamsDataArr = await Promise.all(
       teamNamesArr.map(async (team) => {
         return await fetchTeam(team.name_slug)
       })
     )
     return await ctx.render('allTeams', {
-      teamDataArr,
+      teamsDataArr,
       cardSize: ctx.query.size === 'mini' ? 'mini' : 'full',
       urls,
       ENV: utils.ENV,

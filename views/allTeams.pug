@@ -12,7 +12,9 @@ block content
       toggleState
       }
   )
+  - console.log('XXX', teamsDataArr)
   .all-teams-container
     ul.all-teams
       for teamData in teamsDataArr
-        +allTeamsCardMixin(team, cardSize)
+        - console.log('XXX', teamData)
+        +allTeamsCardMixin(teamData, cardSize)

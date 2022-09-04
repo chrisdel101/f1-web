@@ -2,6 +2,8 @@ const utils = require('../utils')
 const { urls, screenShotTypes } = require('../constants')
 const fs = require('fs')
 var puppeteer = require('puppeteer')
+const { fetchDrivers } = require('../clients/driver.client')
+const { fetchTeams } = require('../clients/team.client')
 
 // send post to endpoint
 async function sendUserData(data, url) {
@@ -131,21 +133,19 @@ async function takeCardScreenShot(ctx, screenShotType) {
   }
   //   send image to body
 }
-// takes array of endpoints and get multiuple shots
-async function takeCardScreenShots(ctx, urlsToSceenShot) {
+// takes obj with viewport dims and arr of urls
+async function takeCardScreenShots(screenShotSetData) {
+  // console.log('here', screenShotSetData)
   // eslint-disable-next-line no-prototype-builtins
-  if (!urlsToSceenShot || !ctx) {
+  if (!screenShotSetData) {
     console.error(
       'takeCardScreenShots error: missing input param. Check inputs are not void.'
     )
     return
   }
-  // set content type to image
-  ctx.type = `image/png`
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      // only use with trusted source
       args: [
         '--disable-gpu',
         '--disable-dev-shm-usage',
@@ -180,63 +180,143 @@ async function takeCardScreenShots(ctx, urlsToSceenShot) {
         '--enable-features=NetworkService,NetworkServiceInProcess',
       ],
     })
+
     const page = await browser.newPage()
-    if (screenShotType === screenShotTypes.TEAMS) {
-      if (ctx.path.includes('api/mobile')) {
-        await page.setViewport({
-          width: 400,
-          height: 600,
-          deviceScaleFactor: 1,
-        })
-      } else {
-        await page.setViewport({
-          width: 1000,
-          height: 600,
-          deviceScaleFactor: 1,
-        })
-      }
-      const req = await page.goto(
-        `http://localhost:3000/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
-      )
+    await page.setViewport({
+      width: screenShotSetData.viewPortDims.width,
+      height: screenShotSetData.viewPortDims.height,
+      deviceScaleFactor: screenShotSetData.viewPortDims.deviceScaleFactor,
+    })
+    for (let urlDataObj of screenShotSetData.urlsDataArr) {
+      console.log('URLS', urlDataObj)
+      const req = await page.goto(urlDataObj.url)
       if (!utils.statusCodeChecker(req._status)) {
         throw Error(
           `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShots`
         )
-      }
-    } else if (screenShotType === screenShotTypes.DRIVERS) {
-      if (ctx.path.includes('api/mobile')) {
-        await page.setViewport({
-          width: 600,
-          height: 600,
-          deviceScaleFactor: 1,
-        })
       } else {
-        await page.setViewport({
-          width: 900,
-          height: 600,
-          deviceScaleFactor: 1,
-        })
-      }
-      const req = await page.goto(
-        `http://localhost:3000/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
-      )
-      if (!utils.statusCodeChecker(req._status)) {
-        throw Error(
-          `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShots`
+        console.log(
+          'XX',
+          `${process.cwd()}/${screenShotSetData.folderToSave}/${
+            urlDataObj.name_slug
+          }`
         )
+        await page.screenshot({
+          path: `${process.cwd()}/${screenShotSetData.folderToSave}/${
+            urlDataObj.name_slug
+          }.png`,
+          fullPage: true,
+        })
       }
     }
-    await page.screenshot({ path: 'example.png', fullPage: true })
     await browser.close()
-    return fs.createReadStream('./example.png')
   } catch (e) {
     console.error('An error occured in takeImage:', e)
     return 'An error occured in takeImage:', e
   }
-  //   send image to body
 }
+async function buildDriverScreenShots() {
+  const drivers = await fetchDrivers()
+  const driverFullImgs = {
+    viewPortDims: {
+      width: 900,
+      height: 600,
+      deviceScaleFactor: 1,
+    },
+    urlsDataArr: drivers.map((driver) => {
+      return {
+        url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true`,
+        name_slug: driver.name_slug,
+      }
+    }),
+  }
+  const driverMobileImgs = {
+    viewPortDims: {
+      width: 600,
+      height: 600,
+      deviceScaleFactor: 1,
+    },
+    urlsDataArr: drivers.map((driver) => {
+      return {
+        url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true`,
+        name_slug: driver.name_slug,
+      }
+    }),
+  }
+  const driverMiniImgs = {
+    viewPortDims: {
+      width: 300,
+      height: 300,
+      deviceScaleFactor: 1,
+    },
+    urlsDataArr: drivers.map((driver) => {
+      return {
+        url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true&size=mini`,
+        name_slug: driver.name_slug,
+      }
+    }),
+  }
+  return {
+    driverFullImgs,
+    driverMobileImgs,
+    driverMiniImgs,
+  }
+}
+async function buildTeamScreenShots() {
+  const teams = await fetchTeams()
+  const teamFullImgs = {
+    folderToSave: 'API/screenShotsStore/web',
+    viewPortDims: {
+      width: 900,
+      height: 600,
+      deviceScaleFactor: 1,
+    },
+    urlsDataArr: teams.map((team) => {
+      return {
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true`,
+        name_slug: team.name_slug,
+      }
+    }),
+  }
+  const teamMobileImgs = {
+    folderToSave: 'API/screenShotsStore/mobile',
+    viewPortDims: {
+      width: 600,
+      height: 600,
+      deviceScaleFactor: 1,
+    },
+    urlsDataArr: teams.map((team) => {
+      return {
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true`,
+        name_slug: team.name_slug,
+      }
+    }),
+  }
+  const teamMiniImgs = {
+    folderToSave: 'API/screenShotsStore/mini',
+    viewPortDims: {
+      width: 300,
+      height: 300,
+      deviceScaleFactor: 1,
+    },
+    urlsDataArr: teams.map((team) => {
+      return {
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&size=mini`,
+        name_slug: team.name_slug,
+      }
+    }),
+  }
+  return {
+    teamFullImgs,
+    teamMobileImgs,
+    teamMiniImgs,
+  }
+}
+
 module.exports = {
   takeCardScreenShots,
   takeCardScreenShot,
   sendUserData,
+  buildDriverScreenShots,
+  buildTeamScreenShots,
 }

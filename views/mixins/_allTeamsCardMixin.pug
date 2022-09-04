@@ -1,18 +1,16 @@
-mixin allTeamsCardMixin(data, cardSize)
-  //- - console.log('card', cardSize)
+mixin allTeamsCardMixin(teamData, cardSize)
+  - console.log('XXX', teamData)
   if cardSize === "full"
-    .card.team-card(class=cardSize data-slug=data.team_name_slug)
-      li 
-        a(href=`/demo?demo-team=${data.team_name_slug}`)
-          .team-title
-            h5 #{data.full_team_name}
-          .main-image
-            img(src=data.images[Math.round(randomNumInRange(0, data.images.length-1))])
+    .card.team-card(class=cardSize data-slug=teamData.team_name_slug)
+      a(href=`/demo?demo-team=${teamData.team_name_slug}`)
+        .team-title
+          h5 #{teamData.full_team_name}
+        .main-image
+          img(src=teamData.images[Math.round(randomNumInRange(0, teamData.images.length-1))])
   else if cardSize === "mini"
-    .card.team-card(class=cardSize data-slug=data.team_name_slug)
-      li
-        a(href=`/teams/${data.team_name_slug}`)
-          .team-title
-            h6 #{data.full_team_name}
-          .main-image
-            img(src=data.images[Math.round(randomNumInRange(0, data.images.length-1))])
+    .card.team-card(class=cardSize data-slug=teamData.team_name_slug)
+      a(href=`/teams/${teamData.team_name_slug}`)
+        .team-title
+          h6 #{teamData.full_team_name}
+        .main-image
+          img(src=teamData.images[Math.round(randomNumInRange(0, teamData.images.length-1))])

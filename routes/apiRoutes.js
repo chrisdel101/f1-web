@@ -2,7 +2,7 @@ const router = require('koa-router')()
 const driversController = require('../controllers/drivers.controller')
 const teamsController = require('../controllers/teams.controller')
 const { screenShotTypes } = require('../constants')
-const apiController = require('../API/apiController')
+const apiController = require('../API/api.controller')
 // API - take images of cards
 // moblie size - uses puppeteer viewport to get
 router.get('/api/mobile/drivers/:name_slug', async (ctx) => {
