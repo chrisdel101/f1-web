@@ -215,54 +215,58 @@ async function takeCardScreenShots(screenShotSetData) {
     return 'An error occured in takeImage:', e
   }
 }
-async function buildDriverScreenShots() {
-  const drivers = await fetchDrivers()
-  const driverFullImgs = {
-    viewPortDims: {
-      width: 900,
-      height: 600,
-      deviceScaleFactor: 1,
-    },
-    urlsDataArr: drivers.map((driver) => {
-      return {
-        url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true`,
-        name_slug: driver.name_slug,
-      }
-    }),
-  }
-  const driverMobileImgs = {
-    viewPortDims: {
-      width: 600,
-      height: 600,
-      deviceScaleFactor: 1,
-    },
-    urlsDataArr: drivers.map((driver) => {
-      return {
-        url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true`,
-        name_slug: driver.name_slug,
-      }
-    }),
-  }
-  const driverMiniImgs = {
-    viewPortDims: {
-      width: 300,
-      height: 300,
-      deviceScaleFactor: 1,
-    },
-    urlsDataArr: drivers.map((driver) => {
-      return {
-        url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true&size=mini`,
-        name_slug: driver.name_slug,
-      }
-    }),
-  }
-  return {
-    driverFullImgs,
-    driverMobileImgs,
-    driverMiniImgs,
+async function buildDriverScreenShotData() {
+  try {
+    const drivers = await fetchDrivers()
+    const driverFullImgs = {
+      viewPortDims: {
+        width: 900,
+        height: 600,
+        deviceScaleFactor: 1,
+      },
+      urlsDataArr: drivers.map((driver) => {
+        return {
+          url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true`,
+          name_slug: driver.name_slug,
+        }
+      }),
+    }
+    const driverMobileImgs = {
+      viewPortDims: {
+        width: 600,
+        height: 600,
+        deviceScaleFactor: 1,
+      },
+      urlsDataArr: drivers.map((driver) => {
+        return {
+          url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true`,
+          name_slug: driver.name_slug,
+        }
+      }),
+    }
+    const driverMiniImgs = {
+      viewPortDims: {
+        width: 300,
+        height: 300,
+        deviceScaleFactor: 1,
+      },
+      urlsDataArr: drivers.map((driver) => {
+        return {
+          url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true&size=mini`,
+          name_slug: driver.name_slug,
+        }
+      }),
+    }
+    return {
+      driverFullImgs,
+      driverMobileImgs,
+      driverMiniImgs,
+    }
+  } catch (e) {
+    console.error('buildDriverScreenShotData error', e)
   }
 }
-async function buildTeamScreenShots() {
+async function buildTeamScreenShotData() {
   const teams = await fetchTeams()
   const teamFullImgs = {
     folderToSave: 'API/screenShotsStore/web',
@@ -312,11 +316,32 @@ async function buildTeamScreenShots() {
     teamMiniImgs,
   }
 }
+async function takeAllPreRunScreenShots() {
+  try {
+    const { teamFullImgs, teamMobileImgs, teamMiniImgs } =
+      await buildTeamScreenShotData()
+    console.log('teamFullImgs', teamFullImgs)
+    const { driverFullImgs, driverMobileImgs, driverMiniImgs } =
+      await buildDriverScreenShotData()
+
+    await takeCardScreenShots(teamFullImgs)
+    console.log('here')
+
+    await takeCardScreenShots(teamMobileImgs)
+    await takeCardScreenShots(teamMiniImgs)
+    await takeCardScreenShots(driverFullImgs)
+    await takeCardScreenShots(driverMobileImgs)
+    await takeCardScreenShots(driverMiniImgs)
+  } catch (e) {
+    console.error('takeAllPreRunScreenShots error', e)
+  }
+}
 
 module.exports = {
   takeCardScreenShots,
   takeCardScreenShot,
   sendUserData,
-  buildDriverScreenShots,
-  buildTeamScreenShots,
+  buildDriverScreenShotData,
+  buildTeamScreenShotData,
+  takeAllPreRunScreenShots,
 }

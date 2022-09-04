@@ -44,5 +44,6 @@ router.get('/api/teams/:name_slug', async (ctx) => {
       })
   }
 })
+router.get('/api/screenshots', apiController.takeAllPreRunScreenShots)
 
 module.exports = router

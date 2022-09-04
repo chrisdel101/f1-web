@@ -68,6 +68,17 @@ module.exports = {
       }
       const req = http
         .get(options, (res) => {
+          if (res?.statusCode != 200) {
+            if (!module.exports.statusCodeChecker(req._status)) {
+              throw Error(
+                `${req._status} error in httpCall. Check backend and DB`
+              )
+            } else {
+              console.error(
+                'Status code error in httpCall. Check server and DB.'
+              )
+            }
+          }
           res.setEncoding('utf8')
           res.on('data', (d) => {
             resolve(d)
@@ -97,6 +108,17 @@ module.exports = {
       }
       https
         .get(options, (res) => {
+          if (res?.statusCode != 200) {
+            if (!module.exports.statusCodeChecker(req._status)) {
+              throw Error(
+                `${req._status} error in httpsCall. Check backend and DB`
+              )
+            } else {
+              console.error(
+                'Status code error in httpsCall. Check server and DB.'
+              )
+            }
+          }
           res.setEncoding('utf8')
           res.on('data', (d) => {
             resolve(d)

@@ -35,14 +35,14 @@ describe('API Controller Tests', () => {
     })
   })
   describe('Build screen shot objs', () => {
-    describe('buildDriverScreenShots', () => {
+    describe('buildDriverScreenShotData', () => {
       it('builds driver screen shot data object', async function () {
-        return await api.buildDriverScreenShots()
+        return await api.buildDriverScreenShotData()
       })
     })
-    describe('buildTeamScreenShots', () => {
+    describe('buildTeamScreenShotData', () => {
       it('builds team screen shot data object', async function () {
-        return await api.buildTeamScreenShots()
+        return await api.buildTeamScreenShotData()
       })
     })
   })
@@ -50,7 +50,7 @@ describe('API Controller Tests', () => {
     describe('takeCardScreenShots', () => {
       it('takes all screenshots of urls obj', async function () {
         const { teamFullImgs, teamMobileImgs, teamMiniImgs } =
-          await api.buildTeamScreenShots()
+          await api.buildTeamScreenShotData()
         return await api.takeCardScreenShots(teamMiniImgs)
       })
     })

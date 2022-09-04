@@ -16,7 +16,12 @@ module.exports = {
 async function renderAllTeamsPage(ctx) {
   try {
     const teamNamesArr = await fetchTeams()
-    // console.log('Teams Obj', teamNamesArr)
+    // TODO send proper error
+    if (!teamNamesArr || teamNamesArr.length >= 0) {
+      // check backend and DB is running
+      return (ctx.body = 'No teams data found')
+    }
+    console.log('Teams Obj', teamNamesArr)
     // loop over names and get each team
     const teamsDataArr = await Promise.all(
       teamNamesArr.map(async (team) => {
