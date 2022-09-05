@@ -8,6 +8,9 @@ module.exports = {
     MOBILE: 'mobile',
     MINI: 'mini',
   },
+  cardSizes: {
+    ...module.exports.screenShotSizes,
+  },
   cardTypes: {
     DRIVERS: 'drivers',
     TEAMS: 'teams',

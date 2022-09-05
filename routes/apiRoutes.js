@@ -3,24 +3,8 @@ const driversController = require('../controllers/drivers.controller')
 const teamsController = require('../controllers/teams.controller')
 const { screenShotTypes } = require('../constants')
 const apiController = require('../API/api.controller')
-// API - take images of cards
-// moblie size - uses puppeteer viewport to get
-router.get('/api/mobile/drivers/:name_slug', async (ctx) => {
-  return apiController
-    .takeCardScreenShot(ctx, screenShotTypes.DRIVERS)
-    .then((res) => {
-      return (ctx.body = res)
-    })
-})
-router.get('/api/mobile/teams/:name_slug', async (ctx) => {
-  return apiController
-    .takeCardScreenShot(ctx, screenShotTypes.TEAMS)
-    .then((res) => {
-      return (ctx.body = res)
-    })
-})
-// get driver card in HTML of img
-router.get('/api/drivers/:name_slug', async (ctx) => {
+// take driver sceenshot with slug
+router.get('/api/take-screenshot/drivers/:name_slug', async (ctx) => {
   // send html version
   if (ctx.query.html === 'true') {
     return driversController.renderDriverCard(ctx)
@@ -33,7 +17,8 @@ router.get('/api/drivers/:name_slug', async (ctx) => {
       })
   }
 })
-router.get('/api/teams/:name_slug', async (ctx) => {
+// take driver sceenshot with slug
+router.get('/api/take-screenshot/teams/:name_slug', async (ctx) => {
   if (ctx.query.html === 'true') {
     return teamsController.renderTeamCard(ctx)
   } else {
@@ -44,6 +29,28 @@ router.get('/api/teams/:name_slug', async (ctx) => {
       })
   }
 })
-router.get('/api/screenshots', apiController.takeAllPreRunScreenShots)
-
+// return driver SS or html card
+router.get('/api/take-screenshots', apiController.takeAllPreRunScreenShots)
+// take driver sceenshot with slug
+router.get('/api/drivers/:name_slug', async (ctx) => {
+  // send html version
+  if (ctx.query.html === 'true') {
+    return driversController.renderDriverCard(ctx)
+  } else {
+    // set img type to avoid downloading img
+    ctx.type = `image/png`
+    return (ctx.body = apiController.returnImage(ctx, screenShotTypes.DRIVERS))
+  }
+})
+// take team SS or html card
+router.get('/api/teams/:name_slug', async (ctx) => {
+  // send html version
+  if (ctx.query.html === 'true') {
+    return teamsController.renderTeamCard(ctx)
+  } else {
+    // set img type to avoid downloading img
+    ctx.type = `image/png`
+    return (ctx.body = apiController.returnImage(ctx, screenShotTypes.TEAMS))
+  }
+})
 module.exports = router

@@ -4,7 +4,7 @@ const utils = require('../utils')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 const { fetchTeam, fetchTeams } = require('../clients/team.client')
-const { urls, cardTypes } = require('../constants')
+const { urls, cardTypes, cardSizes } = require('../constants')
 
 module.exports = {
   buildTeamCard,
@@ -30,7 +30,9 @@ async function renderAllTeamsPage(ctx) {
     )
     return await ctx.render('allTeams', {
       teamsDataArr,
-      cardSize: ctx.query.size === 'mini' ? 'mini' : 'full',
+      cardSize: utils.objValueExists(cardSizes, ctx.query.size)
+        ? ctx.query.size
+        : 'mobile',
       urls,
       ENV: utils.ENV,
       toggleState: ctx?.query?.size === 'mini' ? false : true,
@@ -86,7 +88,9 @@ async function renderTeamCard(ctx) {
       teamData: teamCard,
       noToggle: true,
       noNav: true,
-      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
+      cardSize: utils.objValueExists(cardSizes, ctx.query.size)
+        ? ctx.query.size
+        : 'mobile',
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)
@@ -107,7 +111,9 @@ async function renderTeamPage(ctx) {
       toggleNextEndpoint: utils.toggleNextEndpointTeam,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,
-      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
+      cardSize: utils.objValueExists(cardSizes, ctx.query.size)
+        ? ctx.query.size
+        : 'mobile',
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)

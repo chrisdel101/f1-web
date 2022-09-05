@@ -432,6 +432,33 @@ async function takeAllPreRunScreenShots(ctx) {
     return false
   }
 }
+function returnImage(ctx, screenShotType) {
+  try {
+    const params = ctx.params?.['name_slug']
+    console.log('XX', screenShotType)
+    const size = ctx.query?.['size']
+    if (!utils.objValueExists(screenShotTypes, screenShotType)) {
+      console.error(
+        `Invalid screenshot type ${screenShotType} requested in apiController returnImage`
+      )
+      return
+    }
+    if (!utils.objValueExists(screenShotSizes, size)) {
+      console.error(
+        `Invalid screenshot size ${size} requested in apiController returnImage`
+      )
+      return
+    }
+    // /Users/chrisdielschnieder/code_work/formula1/f1Web/API/screenShotsStore/mini/drivers/lewis-hamilton.png
+    const path = `API/screenShotsStore/${size}/${screenShotType}/${params}.png`
+    return fs.createReadStream(path)
+    // return fs.createReadStream(
+    //   '/Users/chrisdielschnieder/code_work/formula1/f1Web/API/screenShotsStore/mini/drivers/lewis-hamilton.png'
+    // )
+  } catch (e) {
+    console.error('An error occured in returnImage', e)
+  }
+}
 
 module.exports = {
   takeCardScreenShots,
@@ -440,4 +467,5 @@ module.exports = {
   buildDriverScreenShotData,
   buildTeamScreenShotData,
   takeAllPreRunScreenShots,
+  returnImage,
 }
