@@ -54,6 +54,16 @@ module.exports = {
     }
     return false
   },
+  objValueExists: (obj, value) => {
+    return Object.values(obj).some((objItem) => objItem === value)
+  },
+  // check if each obj props are in exceptionArr, else delete
+  delAllObjExcept: (obj, validKeys) => {
+    Object.keys(obj).forEach(
+      (key) => validKeys.includes(key) || delete obj[key]
+    )
+    return obj
+  },
   httpCall: async (_url) => {
     return new Promise((resolve) => {
       const url = new URL(_url)
@@ -69,13 +79,13 @@ module.exports = {
       const req = http
         .get(options, (res) => {
           if (res?.statusCode != 200) {
-            if (!module.exports.statusCodeChecker(req._status)) {
+            if (!module.exports.statusCodeChecker(res?.statusCode)) {
               throw Error(
                 `${req._status} error in httpCall. Check backend and DB`
               )
             } else {
               console.error(
-                'Status code error in httpCall. Check server and DB.'
+                `Status code ${res.statusCode} in httpCall. Check server and DB.`
               )
             }
           }
@@ -109,13 +119,13 @@ module.exports = {
       https
         .get(options, (res) => {
           if (res?.statusCode != 200) {
-            if (!module.exports.statusCodeChecker(req._status)) {
+            if (!module.exports.statusCodeChecker(res?.statusCode)) {
               throw Error(
                 `${req._status} error in httpsCall. Check backend and DB`
               )
             } else {
               console.error(
-                'Status code error in httpsCall. Check server and DB.'
+                `Status code ${res.statusCode} in httpsCall. Check server and DB.`
               )
             }
           }
@@ -203,7 +213,7 @@ module.exports = {
     }
   },
   // cap beginning of each seperate word
-  capitalize: (word) => {
+  capitalizeFirstLetter: (word) => {
     return word && word[0].toUpperCase() + word.slice(1)
   },
   viewCache: (ctx, type) => {

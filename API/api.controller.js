@@ -1,5 +1,5 @@
 const utils = require('../utils')
-const { urls, screenShotTypes } = require('../constants')
+const { urls, screenShotTypes, screenShotSizes } = require('../constants')
 const fs = require('fs')
 var puppeteer = require('puppeteer')
 const { fetchDrivers } = require('../clients/driver.client')
@@ -135,15 +135,16 @@ async function takeCardScreenShot(ctx, screenShotType) {
 }
 // takes obj with viewport dims and arr of urls
 async function takeCardScreenShots(screenShotSetData) {
-  // console.log('here', screenShotSetData)
-  // eslint-disable-next-line no-prototype-builtins
-  if (!screenShotSetData) {
-    console.error(
-      'takeCardScreenShots error: missing input param. Check inputs are not void.'
-    )
-    return
-  }
+  console.log('TOP', screenShotSetData)
   try {
+    // eslint-disable-next-line no-prototype-builtins
+    if (!screenShotSetData) {
+      console.error(
+        'takeCardScreenShots error: missing input param. Check inputs are not void.'
+      )
+      return
+    }
+    // https://cri.dev/posts/2020-04-04-Full-list-of-Chromium-Puppeteer-flags/
     const browser = await puppeteer.launch({
       headless: true,
       args: [
@@ -180,7 +181,6 @@ async function takeCardScreenShots(screenShotSetData) {
         '--enable-features=NetworkService,NetworkServiceInProcess',
       ],
     })
-
     const page = await browser.newPage()
     await page.setViewport({
       width: screenShotSetData.viewPortDims.width,
@@ -188,19 +188,12 @@ async function takeCardScreenShots(screenShotSetData) {
       deviceScaleFactor: screenShotSetData.viewPortDims.deviceScaleFactor,
     })
     for (let urlDataObj of screenShotSetData.urlsDataArr) {
-      console.log('URLS', urlDataObj)
       const req = await page.goto(urlDataObj.url)
       if (!utils.statusCodeChecker(req._status)) {
         throw Error(
           `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShots`
         )
       } else {
-        console.log(
-          'XX',
-          `${process.cwd()}/${screenShotSetData.folderToSave}/${
-            urlDataObj.name_slug
-          }`
-        )
         await page.screenshot({
           path: `${process.cwd()}/${screenShotSetData.folderToSave}/${
             urlDataObj.name_slug
@@ -212,13 +205,14 @@ async function takeCardScreenShots(screenShotSetData) {
     await browser.close()
   } catch (e) {
     console.error('An error occured in takeImage:', e)
-    return 'An error occured in takeImage:', e
+    throw Error(`'An error occured in takeImage: ${e}`)
   }
 }
 async function buildDriverScreenShotData() {
   try {
     const drivers = await fetchDrivers()
     const driverFullImgs = {
+      folderToSave: 'API/screenShotsStore/web/drivers',
       viewPortDims: {
         width: 900,
         height: 600,
@@ -232,6 +226,7 @@ async function buildDriverScreenShotData() {
       }),
     }
     const driverMobileImgs = {
+      folderToSave: 'API/screenShotsStore/mobile/drivers',
       viewPortDims: {
         width: 600,
         height: 600,
@@ -245,6 +240,7 @@ async function buildDriverScreenShotData() {
       }),
     }
     const driverMiniImgs = {
+      folderToSave: 'API/screenShotsStore/mini/drivers',
       viewPortDims: {
         width: 300,
         height: 300,
@@ -269,7 +265,7 @@ async function buildDriverScreenShotData() {
 async function buildTeamScreenShotData() {
   const teams = await fetchTeams()
   const teamFullImgs = {
-    folderToSave: 'API/screenShotsStore/web',
+    folderToSave: 'API/screenShotsStore/web/teams',
     viewPortDims: {
       width: 900,
       height: 600,
@@ -283,7 +279,7 @@ async function buildTeamScreenShotData() {
     }),
   }
   const teamMobileImgs = {
-    folderToSave: 'API/screenShotsStore/mobile',
+    folderToSave: 'API/screenShotsStore/mobile/teams',
     viewPortDims: {
       width: 600,
       height: 600,
@@ -297,7 +293,7 @@ async function buildTeamScreenShotData() {
     }),
   }
   const teamMiniImgs = {
-    folderToSave: 'API/screenShotsStore/mini',
+    folderToSave: 'API/screenShotsStore/mini/teams',
     viewPortDims: {
       width: 300,
       height: 300,
@@ -316,24 +312,124 @@ async function buildTeamScreenShotData() {
     teamMiniImgs,
   }
 }
-async function takeAllPreRunScreenShots() {
+async function takeAllPreRunScreenShots(ctx) {
   try {
+    const type = ctx.query['type']
+    console.log('HERE', type)
     const { teamFullImgs, teamMobileImgs, teamMiniImgs } =
       await buildTeamScreenShotData()
-    console.log('teamFullImgs', teamFullImgs)
     const { driverFullImgs, driverMobileImgs, driverMiniImgs } =
       await buildDriverScreenShotData()
+    // run conditionals and store funcs to call
+    let screenShotDataSets = {}
+    if (ctx.query['type']) {
+      // if invalid type param default to both
+      if (!utils.objValueExists(screenShotTypes, ctx.query['type'])) {
+        screenShotDataSets = {
+          teamFullImgs,
+          teamMobileImgs,
+          teamMiniImgs,
+        }
+        // spread above in first to avoid overwriting
+        screenShotDataSets = {
+          ...screenShotDataSets,
+          driverFullImgs,
+          driverMobileImgs,
+          driverMiniImgs,
+        }
+        // both
+      } else if (ctx.query['type'] === screenShotTypes.DRIVERS) {
+        // drivers
+        screenShotDataSets = {
+          driverFullImgs,
+          driverMobileImgs,
+          driverMiniImgs,
+        }
+      } else if (ctx.query['type'] === screenShotTypes.TEAMS) {
+        // teams
+        screenShotDataSets = {
+          teamFullImgs,
+          teamMobileImgs,
+          teamMiniImgs,
+        }
+      }
+    } else {
+      // if no type add all build sets
+      screenShotDataSets = {
+        teamFullImgs,
+        teamMobileImgs,
+        teamMiniImgs,
+      }
+      // spread above in first to avoid overwriting
+      screenShotDataSets = {
+        ...screenShotDataSets,
+        driverFullImgs,
+        driverMobileImgs,
+        driverMiniImgs,
+      }
+    }
+    // screenShotDataSets hold all the type sets at this point
+    if (ctx.query['size']) {
+      console.log('HERE', ctx.query['size'])
+      // if invalid size param default to full
+      if (
+        !utils.objValueExists(screenShotSizes, ctx.query['size']) ||
+        ctx.query['size'] === screenShotSizes.FULL
+      ) {
+        // remove all expect full sizes
+        const validKeys = ['fullDriverImgs', 'fullTeamImgs']
+        screenShotDataSets = utils.delAllObjExcept(
+          screenShotDataSets,
+          validKeys
+        )
+      } else if (ctx.query['size'] === screenShotSizes.MOBILE) {
+        // remove all expect mobile sizes
+        const validKeys = ['teamMobileImgs', 'driverMobileImgs']
+        screenShotDataSets = utils.delAllObjExcept(
+          screenShotDataSets,
+          validKeys
+        )
+      } else if (ctx.query['size'] === screenShotSizes.MINI) {
+        // remove all expect mini sizes
+        const validKeys = ['teamMiniImgs', 'driverMiniImgs']
+        screenShotDataSets = utils.delAllObjExcept(
+          screenShotDataSets,
+          validKeys
+        )
+      }
+      // loop over screenShotDataSets remainaing and pass to takeCardScreenShots
+      return Object.keys(screenShotDataSets).forEach(async (dataSetKey) => {
+        await takeCardScreenShots(screenShotDataSets[dataSetKey])
+      })
+    } else {
+      // run with any type params or all
+      Object.keys(screenShotDataSets).forEach(async (dataSetKey) => {
+        console.log(
+          'screenShotDataSets[dataSetKey]',
+          screenShotDataSets[dataSetKey]
+        )
+        await takeCardScreenShots(screenShotDataSets[dataSetKey])
+      })
+      // // if not size return all sizes
+      // await takeCardScreenShots(screenShotDataSets['fullTeamImgs'])
+      // await takeCardScreenShots(screenShotDataSets['fullDriverImgs'])
+      // await takeCardScreenShots(screenShotDataSets['teamMobileImgs'])
+      // await takeCardScreenShots(screenShotDataSets['driverMobileImgs'])
+      // await takeCardScreenShots(screenShotDataSets['teamMiniImgs'])
+      // await takeCardScreenShots(screenShotDataSets['driverMiniImgs'])
+    }
 
-    await takeCardScreenShots(teamFullImgs)
-    console.log('here')
-
-    await takeCardScreenShots(teamMobileImgs)
-    await takeCardScreenShots(teamMiniImgs)
-    await takeCardScreenShots(driverFullImgs)
-    await takeCardScreenShots(driverMobileImgs)
-    await takeCardScreenShots(driverMiniImgs)
+    // await takeCardScreenShots(teamFullImgs)
+    // await takeCardScreenShots(teamMobileImgs)
+    // await takeCardScreenShots(teamMiniImgs)
+    // await takeCardScreenShots(driverFullImgs)
+    // await takeCardScreenShots(driverMobileImgs)
+    // await takeCardScreenShots(driverMiniImgs)
+    // if no errors in screenshots then okay
   } catch (e) {
     console.error('takeAllPreRunScreenShots error', e)
+    // if any errors in screenshots then false
+    return false
   }
 }
 

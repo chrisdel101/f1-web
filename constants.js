@@ -3,6 +3,11 @@ module.exports = {
     DRIVERS: 'drivers',
     TEAMS: 'teams',
   },
+  screenShotSizes: {
+    FULL: 'full',
+    MOBILE: 'mobile',
+    MINI: 'mini',
+  },
   cardTypes: {
     DRIVERS: 'drivers',
     TEAMS: 'teams',

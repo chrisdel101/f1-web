@@ -130,8 +130,7 @@ picture {
 .driver-card-page {
   margin: 50px;
 }
-.all-drivers,
-.all-teams {
+.all-drivers .all-teams {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -173,6 +172,7 @@ picture {
 .team-card.mini {
   width: 200px;
   margin: 5px;
+  list-style: none;
 }
 .all-drivers .driver-card.full,
 .all-teams .team-card.full {
