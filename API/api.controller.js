@@ -1,5 +1,10 @@
 const utils = require('../utils')
-const { urls, screenShotTypes, screenShotSizes } = require('../constants')
+const {
+  urls,
+  screenShotTypes,
+  screenShotSizes,
+  cardSizes,
+} = require('../constants')
 const fs = require('fs')
 var puppeteer = require('puppeteer')
 const { fetchDrivers } = require('../clients/driver.client')
@@ -63,53 +68,67 @@ async function takeCardScreenShot(ctx, screenShotType) {
       ],
     })
     const page = await browser.newPage()
-    if (process.env.NODE_ENV === 'development') {
-      if (screenShotType === screenShotTypes.TEAMS) {
-        if (ctx.path.includes('api/mobile')) {
-          await page.setViewport({
-            width: 400,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        } else {
-          await page.setViewport({
-            width: 1000,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        }
-        // url is for internal api to take shot with - not user entered endpoint
-        const req = await page.goto(
-          `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
+    if (screenShotType === screenShotTypes.TEAMS) {
+      const size = ctx.query?.['size'] || cardSizes.MOBILE
+      if (size === cardSizes.MOBILE) {
+        await page.setViewport({
+          width: 400,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
+      } else if (size === cardSizes.MINI) {
+        await page.setViewport({
+          width: 300,
+          height: 300,
+          deviceScaleFactor: 1,
+        })
+      } else if (size === cardSizes.FULL) {
+        await page.setViewport({
+          width: 1000,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
+      } else {
+        console.error('Invalid card size in API controller')
+      }
+      // url is for internal api to take shot with - not user entered endpoint
+      const req = await page.goto(
+        `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
+      )
+      if (!utils.statusCodeChecker(req._status)) {
+        throw Error(
+          `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
         )
-        if (!utils.statusCodeChecker(req._status)) {
-          throw Error(
-            `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
-          )
-        }
-      } else if (screenShotType === screenShotTypes.DRIVERS) {
-        if (ctx.path.includes('api/mobile')) {
-          await page.setViewport({
-            width: 600,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        } else {
-          await page.setViewport({
-            width: 900,
-            height: 600,
-            deviceScaleFactor: 1,
-          })
-        }
-
-        const req = await page.goto(
-          `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
+      }
+    } else if (screenShotType === screenShotTypes.DRIVERS) {
+      if (size === cardSizes.MOBILE) {
+        await page.setViewport({
+          width: 600,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
+      } else if (size === cardSizes.MINI) {
+        await page.setViewport({
+          width: 300,
+          height: 300,
+          deviceScaleFactor: 1,
+        })
+      } else if (size === cardSizes.FULL) {
+        await page.setViewport({
+          width: 900,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
+      } else {
+        console.error('Invalid card size in API controller')
+      }
+      const req = await page.goto(
+        `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
+      )
+      if (!utils.statusCodeChecker(req._status)) {
+        throw Error(
+          `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
         )
-        if (!utils.statusCodeChecker(req._status)) {
-          throw Error(
-            `${req._status} error recieved from puppeteer. Check endpoint returns valid res in takeCardScreenShot`
-          )
-        }
       }
     }
     // determine where to store screenshot
@@ -267,7 +286,7 @@ async function buildTeamScreenShotData() {
   const teamFullImgs = {
     folderToSave: 'API/screenShotsStore/web/teams',
     viewPortDims: {
-      width: 900,
+      width: 1000,
       height: 600,
       deviceScaleFactor: 1,
     },
@@ -281,7 +300,7 @@ async function buildTeamScreenShotData() {
   const teamMobileImgs = {
     folderToSave: 'API/screenShotsStore/mobile/teams',
     viewPortDims: {
-      width: 600,
+      width: 400,
       height: 600,
       deviceScaleFactor: 1,
     },
@@ -410,22 +429,7 @@ async function takeAllPreRunScreenShots(ctx) {
         )
         await takeCardScreenShots(screenShotDataSets[dataSetKey])
       })
-      // // if not size return all sizes
-      // await takeCardScreenShots(screenShotDataSets['fullTeamImgs'])
-      // await takeCardScreenShots(screenShotDataSets['fullDriverImgs'])
-      // await takeCardScreenShots(screenShotDataSets['teamMobileImgs'])
-      // await takeCardScreenShots(screenShotDataSets['driverMobileImgs'])
-      // await takeCardScreenShots(screenShotDataSets['teamMiniImgs'])
-      // await takeCardScreenShots(screenShotDataSets['driverMiniImgs'])
     }
-
-    // await takeCardScreenShots(teamFullImgs)
-    // await takeCardScreenShots(teamMobileImgs)
-    // await takeCardScreenShots(teamMiniImgs)
-    // await takeCardScreenShots(driverFullImgs)
-    // await takeCardScreenShots(driverMobileImgs)
-    // await takeCardScreenShots(driverMiniImgs)
-    // if no errors in screenshots then okay
   } catch (e) {
     console.error('takeAllPreRunScreenShots error', e)
     // if any errors in screenshots then false
@@ -435,7 +439,6 @@ async function takeAllPreRunScreenShots(ctx) {
 function returnImage(ctx, screenShotType) {
   try {
     const params = ctx.params?.['name_slug']
-    console.log('XX', screenShotType)
     const size = ctx.query?.['size']
     if (!utils.objValueExists(screenShotTypes, screenShotType)) {
       console.error(
@@ -449,12 +452,8 @@ function returnImage(ctx, screenShotType) {
       )
       return
     }
-    // /Users/chrisdielschnieder/code_work/formula1/f1Web/API/screenShotsStore/mini/drivers/lewis-hamilton.png
     const path = `API/screenShotsStore/${size}/${screenShotType}/${params}.png`
     return fs.createReadStream(path)
-    // return fs.createReadStream(
-    //   '/Users/chrisdielschnieder/code_work/formula1/f1Web/API/screenShotsStore/mini/drivers/lewis-hamilton.png'
-    // )
   } catch (e) {
     console.error('An error occured in returnImage', e)
   }

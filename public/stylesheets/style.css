@@ -130,7 +130,8 @@ picture {
 .driver-card-page {
   margin: 50px;
 }
-.all-drivers .all-teams {
+.all-drivers,
+.all-teams {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -155,23 +156,25 @@ picture {
 .all-teams li {
   transition: border 0.1s;
 }
-.all-drivers .driver-card.mini li:hover,
-.all-teams .team-card.mini li:hover {
+.all-drivers li.driver-card.mini:hover,
+.all-teams li.team-card.mini:hover,
+.all-drivers li.driver-card:hover,
+.all-teams li.team-card:hover {
   border: 2px solid blue;
 }
-.all-drivers .driver-card.mini li,
-.all-teams .team-card.mini li {
-  border: 2px solid transparent;
-}
-
-.all-teams .team-card.mini li.selected,
-.all-drivers .driver-card.mini li.selected {
-  border: 2px solid blue;
+.all-drivers li.driver-card.mini:hover img,
+.all-teams li.team-card.mini:hover img,
+.all-drivers li.driver-card:hover img,
+.all-teams li.team-card:hover img {
+  margin: 0.5px;
 }
 .driver-card.mini,
 .team-card.mini {
   width: 200px;
   margin: 5px;
+}
+.driver-card,
+.team-card {
   list-style: none;
 }
 .all-drivers .driver-card.full,
@@ -180,6 +183,7 @@ picture {
   margin-bottom: 20px;
   margin-right: 10px;
   overflow: hidden;
+  flex-direction: column;
 }
 .all-drivers .driver-title-container {
   display: flex;
@@ -191,9 +195,10 @@ picture {
 .all-drivers .full .driver-title-container {
   min-height: 70px;
 }
-.all-drivers .driver-card.full .main-image-container {
+.all-drivers .driver-card .main-image-container {
   height: 100%;
   width: 100%;
+  margin: 0;
 }
 .all-drivers .driver-card.full .main-image-container img {
   object-fit: cover;
@@ -271,6 +276,7 @@ h6.select-text {
 }
 .team-card .main-image {
   height: 100%;
+  margin: 0;
 }
 .team-card.mini {
   height: 80%;

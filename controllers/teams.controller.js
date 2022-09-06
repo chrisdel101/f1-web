@@ -5,6 +5,7 @@ const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 const { fetchTeam, fetchTeams } = require('../clients/team.client')
 const { urls, cardTypes, cardSizes } = require('../constants')
+console.log('cardSizes', cardSizes)
 
 module.exports = {
   buildTeamCard,
@@ -17,22 +18,24 @@ async function renderAllTeamsPage(ctx) {
   try {
     const teamNamesArr = await fetchTeams()
     // TODO send proper error
-    if (!teamNamesArr || teamNamesArr.length >= 0) {
+    if (!teamNamesArr || teamNamesArr.length <= 0) {
       // check backend and DB is running
       return (ctx.body = 'No teams data found')
     }
-    console.log('Teams Obj', teamNamesArr)
     // loop over names and get each team
     const teamsDataArr = await Promise.all(
       teamNamesArr.map(async (team) => {
         return await fetchTeam(team.name_slug)
       })
     )
+    console.log('cardSizes', cardSizes)
+    console.log('cardTypes', ctx.query.size)
+
     return await ctx.render('allTeams', {
       teamsDataArr,
       cardSize: utils.objValueExists(cardSizes, ctx.query.size)
         ? ctx.query.size
-        : 'mobile',
+        : 'full',
       urls,
       ENV: utils.ENV,
       toggleState: ctx?.query?.size === 'mini' ? false : true,

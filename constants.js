@@ -9,7 +9,9 @@ module.exports = {
     MINI: 'mini',
   },
   cardSizes: {
-    ...module.exports.screenShotSizes,
+    FULL: 'full',
+    MOBILE: 'mobile',
+    MINI: 'mini',
   },
   cardTypes: {
     DRIVERS: 'drivers',

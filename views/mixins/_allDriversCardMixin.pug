@@ -1,8 +1,8 @@
 mixin allDriversCardMixin(data, cardSize)
   if cardSize === "mini"
-    .card.driver-card(class=cardSize data-slug=data.name_slug)
-      li
-        a(href=`/drivers/${data.name_slug}`).driver-click
+    li.card.driver-card(class=cardSize data-slug=data.name_slug)
+      
+        a(href=`/demo?demo-driver=${data.name_slug}`)
           .driver-title-container 
             h6  #{data.driver_name}
             figure.flag-img-container
@@ -11,12 +11,11 @@ mixin allDriversCardMixin(data, cardSize)
             .ratio-box
               img(src=data.main_image)
   else if cardSize === "full"
-    .card.driver-card(class=cardSize data-slug=data.name_slug)
-      li
-        .driver-title-container 
-          a(href=`/demo?demo-driver=${data.name_slug}`).driver-click
-            h4  #{data.driver_name}
-          figure.flag-img-container
-            img(src=data.flag_img_url)
-        figure.main-image-container
-          img(src=data.main_image)
+    li.card.driver-card(class=cardSize data-slug=data.name_slug)
+      .driver-title-container 
+        a(href=`/demo?demo-driver=${data.name_slug}`)
+          h4  #{data.driver_name}
+        figure.flag-img-container
+          img(src=data.flag_img_url)
+      figure.main-image-container
+        img(src=data.main_image)
