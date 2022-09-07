@@ -177,8 +177,8 @@ picture {
 .team-card {
   list-style: none;
 }
-.all-drivers .driver-card.full,
-.all-teams .team-card.full {
+.driver-card.select-card,
+.team-card.select-card {
   max-width: 400px;
   margin-bottom: 20px;
   margin-right: 10px;
@@ -282,7 +282,7 @@ h6.select-text {
   height: 80%;
 }
 .team-card .main-image img {
-  object-fit: contain;
+  object-fit: cover;
   height: 100%;
   width: 100%;
 }

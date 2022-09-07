@@ -292,7 +292,7 @@ async function buildTeamScreenShotData() {
     },
     urlsDataArr: teams.map((team) => {
       return {
-        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true`,
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&format=stats`,
         name_slug: team.name_slug,
       }
     }),
@@ -306,7 +306,7 @@ async function buildTeamScreenShotData() {
     },
     urlsDataArr: teams.map((team) => {
       return {
-        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true`,
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&format=stats`,
         name_slug: team.name_slug,
       }
     }),
@@ -320,7 +320,7 @@ async function buildTeamScreenShotData() {
     },
     urlsDataArr: teams.map((team) => {
       return {
-        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&size=mini`,
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&format=select`,
         name_slug: team.name_slug,
       }
     }),
@@ -334,7 +334,6 @@ async function buildTeamScreenShotData() {
 async function takeAllPreRunScreenShots(ctx) {
   try {
     const type = ctx.query['type']
-    console.log('HERE', type)
     const { teamFullImgs, teamMobileImgs, teamMiniImgs } =
       await buildTeamScreenShotData()
     const { driverFullImgs, driverMobileImgs, driverMiniImgs } =
@@ -432,8 +431,6 @@ async function takeAllPreRunScreenShots(ctx) {
     }
   } catch (e) {
     console.error('takeAllPreRunScreenShots error', e)
-    // if any errors in screenshots then false
-    return false
   }
 }
 function returnImage(ctx, screenShotType) {

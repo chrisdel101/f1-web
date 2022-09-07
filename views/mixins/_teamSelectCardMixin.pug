@@ -1,7 +1,7 @@
+//- card for allTeams
 mixin teamSelectCardMixin(teamData, cardSize)
   //- - console.log('XXX', cardSize)
     - console.log('FOR1', format) 
-
   if cardSize === "full" || cardSize === 'mobile'
     li.card.team-card.select-card(class=cardSize data-slug=teamData.team_name_slug)
         a(href=`/demo?demo-team=${teamData.team_name_slug}`)
@@ -10,7 +10,7 @@ mixin teamSelectCardMixin(teamData, cardSize)
           figure.main-image
             img(src=teamData.images[Math.round(randomNumInRange(0, teamData.images.length-1))])
   else if cardSize === "mini"
-      li.card.team-card.select-card(class=cardSize data-slug=teamData.team_name_slug)
+      li.card.team-card.select-card(class=cardSize data-slug=teamData.team_name_slug) 
         a(href=`/teams/${teamData.team_name_slug}`)
           .team-title
             h6 #{teamData.full_team_name}

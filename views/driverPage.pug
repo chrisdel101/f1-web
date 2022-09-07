@@ -6,8 +6,8 @@ block layoutVariables
 block content
 
   include mixins/_toggleSwitch
-  include mixins/_driverCardMixin
-  include mixins/_allDriversCardMixin
+  include mixins/_driverStatsCardMixin
+  include mixins/_driverSelectCardMixin
   block append content
       .driver-card-page
           //- used with /api
@@ -16,7 +16,7 @@ block content
               div.toggle-text Hide Demo
               +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav}) 
           //- render single mini card
-          if cardSize === "mini"
-            +allDriversCardMixin(driverData,cardSize)
+          if format === "select"
+            +driverSelectCardMixin(driverData,cardSize)
           else
-            +driverCardMixin(driverData)  
+            +driverStatsCardMixin(driverData)  

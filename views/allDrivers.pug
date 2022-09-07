@@ -1,5 +1,5 @@
 extends layout
-include mixins/_allDriversCardMixin
+include mixins/_driverSelectCardMixin
 include mixins/_toggleSwitch
 block content
   #all-drivers-toggle.toggle-switch-container 
@@ -14,4 +14,4 @@ block content
   .all-drivers-container
     ul.all-drivers
       for driverData in driversDataArr
-        +allDriversCardMixin(driverData, cardSize)
+        +driverSelectCardMixin(driverData, cardSize)

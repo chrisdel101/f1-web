@@ -1,6 +1,6 @@
 const utils = require('../utils')
 const cache = require('../cache')
-const { urls, cardTypes } = require('../constants')
+const { urls, cardTypes, cardFormats } = require('../constants')
 const cacheController = require('./cache.controller')
 const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeam } = require('../clients/team.client')
@@ -108,6 +108,7 @@ async function renderDriverPage(ctx) {
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,
       cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
+      format: ctx.query['format'] || cardFormats.STATS,
     })
   } catch (e) {
     error('Error in renderDriverPage', e)

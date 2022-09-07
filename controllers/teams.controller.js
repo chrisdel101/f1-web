@@ -5,7 +5,6 @@ const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 const { fetchTeam, fetchTeams } = require('../clients/team.client')
 const { urls, cardTypes, cardSizes, cardFormats } = require('../constants')
-console.log('cardSizes', cardSizes)
 
 module.exports = {
   buildTeamCard,
@@ -28,9 +27,6 @@ async function renderAllTeamsPage(ctx) {
         return await fetchTeam(team.name_slug)
       })
     )
-    console.log('cardSizes', cardSizes)
-    console.log('cardTypes', ctx.query.size)
-
     return await ctx.render('allTeams', {
       teamsDataArr,
       cardSize: utils.objValueExists(cardSizes, ctx.query.size)

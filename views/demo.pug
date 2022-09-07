@@ -1,5 +1,5 @@
 extends layout
-include mixins/_driverCardMixin
+include mixins/_driverStatsCardMixin
 include mixins/_teamStatsCardMixin
 
 include mixins/_select
@@ -24,7 +24,7 @@ block content
     +toggleSwitch({pageType, ENV, toggleState, toggleNextEndpoint, toggleHideNav}) 
   if driverCardData
     .driver-card-demo
-        +driverCardMixin(driverCardData)
+        +driverStatsCardMixin(driverCardData)
   if teamCardData
     .team-card-demo
         +teamStatsCardMixin(teamCardData)

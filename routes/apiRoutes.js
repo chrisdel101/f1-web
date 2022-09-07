@@ -29,9 +29,8 @@ router.get('/api/take-screenshot/teams/:name_slug', async (ctx) => {
       })
   }
 })
-// return driver SS or html card
 router.get('/api/take-screenshots', apiController.takeAllPreRunScreenShots)
-// take driver sceenshot with slug
+// return driver SS or html card
 router.get('/api/drivers/:name_slug', async (ctx) => {
   // send html version
   if (ctx.query.html === 'true') {
@@ -42,7 +41,7 @@ router.get('/api/drivers/:name_slug', async (ctx) => {
     return (ctx.body = apiController.returnImage(ctx, screenShotTypes.DRIVERS))
   }
 })
-// take team SS or html card
+// return team SS or html card
 router.get('/api/teams/:name_slug', async (ctx) => {
   // send html version
   if (ctx.query.html === 'true') {
