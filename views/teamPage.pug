@@ -5,8 +5,8 @@ block layoutVariables
     send this to the layout page
   - let hideNav= noNav || false
 block content
-  include mixins/_teamCardMixin
-  include mixins/_allTeamsCardMixin
+  include mixins/_teamStatsCardMixin
+  include mixins/_teamSelectCardMixin
   include mixins/_toggleSwitch
 
     //- append the card content to page
@@ -16,9 +16,8 @@ block content
           if !noToggle 
             div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
                   div.toggle-text Hide Demo
-                  +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav }) 
-
-          if cardSize === "mini"
-            +allTeamsCardMixin(teamData,cardSize)
+                  +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav })
+          if format === "select"
+            +teamSelectCardMixin(teamData,cardSize)
           else
-            +teamCardMixin(teamData)
+            +teamStatsCardMixin(teamData)

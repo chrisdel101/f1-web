@@ -4,7 +4,7 @@ const utils = require('../utils')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 const { fetchTeam, fetchTeams } = require('../clients/team.client')
-const { urls, cardTypes, cardSizes } = require('../constants')
+const { urls, cardTypes, cardSizes, cardFormats } = require('../constants')
 console.log('cardSizes', cardSizes)
 
 module.exports = {
@@ -94,6 +94,7 @@ async function renderTeamCard(ctx) {
       cardSize: utils.objValueExists(cardSizes, ctx.query.size)
         ? ctx.query.size
         : 'mobile',
+      format: ctx.query['format'] || cardFormats.STATS,
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)
@@ -117,6 +118,7 @@ async function renderTeamPage(ctx) {
       cardSize: utils.objValueExists(cardSizes, ctx.query.size)
         ? ctx.query.size
         : 'mobile',
+      format: ctx.query['format'] || cardFormats.STATS,
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)

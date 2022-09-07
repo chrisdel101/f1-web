@@ -1,6 +1,6 @@
 extends layout
 include mixins/_driverCardMixin
-include mixins/_teamCardMixin
+include mixins/_teamStatsCardMixin
 
 include mixins/_select
 include mixins/_toggleSwitch
@@ -27,5 +27,5 @@ block content
         +driverCardMixin(driverCardData)
   if teamCardData
     .team-card-demo
-        +teamCardMixin(teamCardData)
+        +teamStatsCardMixin(teamCardData)
 

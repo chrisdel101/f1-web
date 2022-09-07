@@ -13,6 +13,10 @@ module.exports = {
     MOBILE: 'mobile',
     MINI: 'mini',
   },
+  cardFormats: {
+    STATS: 'stats', //card with stats
+    SELECT: 'select', //card w/ img and name
+  },
   cardTypes: {
     DRIVERS: 'drivers',
     TEAMS: 'teams',
