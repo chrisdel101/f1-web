@@ -177,30 +177,49 @@ picture {
 .team-card {
   list-style: none;
 }
-.driver-card.select-card,
-.team-card.select-card {
+.all-drivers .driver-card.select-card,
+.all-teams .team-card.select-card {
   max-width: 400px;
+}
+.driver-card.select-card a,
+.team-card.select-card a {
+  color: initial;
+}
+.all-drivers .driver-card.select-card a,
+.all-teams .team-card.select-card a {
+  color: #007bff;
+}
+.driver-card.select-card,
+.team-card.select-card,
+.driver-card.stats-card,
+.team-card.stats-card {
   margin-bottom: 20px;
   margin-right: 10px;
   overflow: hidden;
   flex-direction: column;
 }
-.all-drivers .driver-title-container {
-  display: flex;
-  align-items: center;
+.driver-card.select-card,
+.team-card.select-card .driver-card.stats-card,
+.team-card.stats-card {
+  margin-bottom: 20px;
+  margin-right: 10px;
+  overflow: hidden;
+  flex-direction: column;
 }
-.all-drivers .mini .driver-title-container {
+.driver-card.select-card h1,
+.team-card.select-card h1 {
+  font-size: 1.5rem;
+}
+.mini .driver-title-container {
   min-height: 50px;
 }
-.all-drivers .full .driver-title-container {
-  min-height: 70px;
-}
+
 .all-drivers .driver-card .main-image-container {
   height: 100%;
   width: 100%;
   margin: 0;
 }
-.all-drivers .driver-card.full .main-image-container img {
+.all-drivers .driver-card.main-image-container img {
   object-fit: cover;
   height: 100%;
   width: 100%;
@@ -293,13 +312,10 @@ h6.select-text {
 .driver-title-container {
   display: flex;
   justify-content: space-around;
+  min-height: 70px;
+  align-items: center;
 }
-.driver-title {
-  display: flex;
-  min-height: 60px;
-  justify-content: center;
-}
-.driver-title h6 {
+.driver-title-container h6 {
   align-self: center;
   font-family: 'Montserat', sans-serif;
   font-size: 25px;
@@ -418,16 +434,22 @@ h6.select-text {
     flex-direction: column;
     overflow: hidden;
   }
-  .card.driver-card,
-  .card.team-card {
+  .team-card .driver {
+    display: flex;
+  }
+  .card.driver-card.stats-card,
+  .card.team-card.stats-card {
     height: auto;
     flex-direction: row;
     overflow: hidden;
   }
-  .team-card .driver {
-    display: flex;
-    flex-direction: row;
+  .card.driver-card.select-card,
+  .card.team-card.select-card {
+    height: auto;
+    flex-direction: column;
+    overflow: hidden;
   }
+
   .driver-table-container {
     margin-top: 15px;
   }

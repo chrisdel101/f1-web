@@ -1,6 +1,12 @@
 const utils = require('../utils')
 const cache = require('../cache')
-const { urls, cardTypes, cardFormats } = require('../constants')
+const {
+  urls,
+  cardTypes,
+  cardFormats,
+  cardSizes,
+  pageTypes,
+} = require('../constants')
 const cacheController = require('./cache.controller')
 const { fetchDriver, fetchDrivers } = require('../clients/driver.client')
 const { fetchTeam } = require('../clients/team.client')
@@ -16,6 +22,15 @@ module.exports = {
   renderDriverPage,
   renderAllDriversPage,
   makeAllDriversObjs,
+}
+function setDefaultQueryParams(ctx) {
+  return {
+    cardSize: ctx.query?.size || cardSizes.FULL,
+    format: ctx.query['format'] || cardFormats.STATS,
+    pageType: pageTypes?.DRIVER,
+    noNav: true ? ctx.query?.noNav === 'true' : false,
+    noToggle: true ? ctx.query?.noToggle === 'true' : false,
+  }
 }
 async function makeAllDriversObjs(ctx, driverSlug, size = 'full') {
   try {
@@ -100,13 +115,13 @@ async function renderDriverPage(ctx) {
       driverData: driverCard,
       noNav: true ? ctx.query.noNav === 'true' : false,
       noToggle: true ? ctx.query.noToggle === 'true' : false,
-      pageType: cardTypes.DRIVER,
       urls: urls,
       ENV: utils.ENV,
       toggleState: ctx?.state?.hideDemo,
       toggleNextEndpoint: utils.toggleNextEndpointDriver,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,
+      pageType: cardTypes.DRIVER,
       cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
       format: ctx.query['format'] || cardFormats.STATS,
     })

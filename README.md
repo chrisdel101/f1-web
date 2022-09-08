@@ -7,10 +7,46 @@
 
 **URL query params Param**
 
-- All type and sizes `/screenshots`
-- For size use `full, mobile, mini` like `/screenshots?size=mini`
-- For type use `drivers, teams` like `/screenshots?type=drivers`
-- For card format, options are `stats` or `select` like `/teams/ferrari?format=select`
+### Card Size:
+
+Usage:
+
+- use with `/` endpoints
+- use with `/api` endpoints
+- applies differnt CSS to get various card sizes on screen
+
+Specs:
+
+- `size` : `[full, mobile, mini, unset]`
+- `/screenshots?size=mini`
+- `teams/:name_slug:?size=mini`
+- unset is full size of screen with no width or height restraints. This is unused in demo.
+
+### Card Type
+
+Usage:
+
+- use with `/api/take-screenshots` endpoints
+- used to take only that type of new shots
+
+Specs:
+
+- `type` : `[drivers, teams]`
+- `screenshots?type=drivers`
+- `screenshots?type=teams`
+
+### Card Format
+
+Usage:
+
+- use with `/` endpoints
+- use with `/api` endpoints
+- used to render which format of card to show
+
+Specs:
+
+- `format` : `[stats,select]`
+- `/teams/ferrari?format=select`
 
 ### Endpoints
 
@@ -19,3 +55,4 @@
 - driver `/drivers/:name_slug`
 - teams `/teams`
 - team `/teams/:team_slug`
+- all `/take-screenshots`

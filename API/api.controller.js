@@ -76,10 +76,11 @@ async function takeCardScreenShot(ctx, screenShotType) {
           height: 600,
           deviceScaleFactor: 1,
         })
+        // take full size, shrink with css
       } else if (size === cardSizes.MINI) {
         await page.setViewport({
-          width: 300,
-          height: 300,
+          width: 1000,
+          height: 600,
           deviceScaleFactor: 1,
         })
       } else if (size === cardSizes.FULL) {
@@ -93,7 +94,7 @@ async function takeCardScreenShot(ctx, screenShotType) {
       }
       // url is for internal api to take shot with - not user entered endpoint
       const req = await page.goto(
-        `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
+        `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true$`
       )
       if (!utils.statusCodeChecker(req._status)) {
         throw Error(
@@ -107,10 +108,11 @@ async function takeCardScreenShot(ctx, screenShotType) {
           height: 600,
           deviceScaleFactor: 1,
         })
+        // take full size, shrink with css
       } else if (size === cardSizes.MINI) {
         await page.setViewport({
-          width: 300,
-          height: 300,
+          width: 900,
+          height: 600,
           deviceScaleFactor: 1,
         })
       } else if (size === cardSizes.FULL) {
@@ -140,7 +142,7 @@ async function takeCardScreenShot(ctx, screenShotType) {
         imgPath = `./API/screenShotsStore/mobile/${ctx.params.name_slug}.png`
       }
     } else {
-      imgPath = `./API/screenShotsStore/web/${ctx.params.name_slug}.png`
+      imgPath = `./API/screenShotsStore/full/${ctx.params.name_slug}.png`
     }
     // store screenshots for return
     await page.screenshot({ path: imgPath, fullPage: true })
@@ -231,7 +233,7 @@ async function buildDriverScreenShotData() {
   try {
     const drivers = await fetchDrivers()
     const driverFullImgs = {
-      folderToSave: 'API/screenShotsStore/web/drivers',
+      folderToSave: 'API/screenShotsStore/full/drivers',
       viewPortDims: {
         width: 900,
         height: 600,
@@ -258,11 +260,12 @@ async function buildDriverScreenShotData() {
         }
       }),
     }
+    // take full size, shrink w css
     const driverMiniImgs = {
       folderToSave: 'API/screenShotsStore/mini/drivers',
       viewPortDims: {
-        width: 300,
-        height: 300,
+        width: 900,
+        height: 600,
         deviceScaleFactor: 1,
       },
       urlsDataArr: drivers.map((driver) => {
@@ -284,7 +287,7 @@ async function buildDriverScreenShotData() {
 async function buildTeamScreenShotData() {
   const teams = await fetchTeams()
   const teamFullImgs = {
-    folderToSave: 'API/screenShotsStore/web/teams',
+    folderToSave: 'API/screenShotsStore/full/teams',
     viewPortDims: {
       width: 1000,
       height: 600,
@@ -311,11 +314,12 @@ async function buildTeamScreenShotData() {
       }
     }),
   }
+  // take full size, shrink with css
   const teamMiniImgs = {
     folderToSave: 'API/screenShotsStore/mini/teams',
     viewPortDims: {
-      width: 300,
-      height: 300,
+      width: 1000,
+      height: 600,
       deviceScaleFactor: 1,
     },
     urlsDataArr: teams.map((team) => {

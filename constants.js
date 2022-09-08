@@ -23,6 +23,12 @@ module.exports = {
     DRIVER: 'driver',
     TEAM: 'team',
   },
+  pageTypes: {
+    DRIVERS: 'drivers',
+    TEAMS: 'teams',
+    DRIVER: 'driver',
+    TEAM: 'team',
+  },
   urls: {
     localCardsEndpoint: `http://localhost:3000`,
     prodCardsEndpoint: `https://f1-cards.herokuapp.com`,

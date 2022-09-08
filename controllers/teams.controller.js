@@ -4,7 +4,13 @@ const utils = require('../utils')
 const { catchErrors } = require('../errorHandlers')
 const { errorHandler } = require('../utilities/errorManager')
 const { fetchTeam, fetchTeams } = require('../clients/team.client')
-const { urls, cardTypes, cardSizes, cardFormats } = require('../constants')
+const {
+  urls,
+  cardTypes,
+  cardSizes,
+  cardFormats,
+  pageTypes,
+} = require('../constants')
 
 module.exports = {
   buildTeamCard,
@@ -12,6 +18,15 @@ module.exports = {
   renderTeamPage,
   getDriversData,
   renderAllTeamsPage,
+}
+function setDefaultQueryParams(ctx) {
+  return {
+    cardSize: ctx.query?.size || cardSizes.FULL,
+    format: ctx.query['format'] || cardFormats.STATS,
+    pageType: pageTypes?.TEAM,
+    noNav: true ? ctx.query?.noNav === 'true' : false,
+    noToggle: true ? ctx.query?.noToggle === 'true' : false,
+  }
 }
 async function renderAllTeamsPage(ctx) {
   try {

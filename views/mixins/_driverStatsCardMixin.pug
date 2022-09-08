@@ -1,8 +1,8 @@
-mixin driverStatsCardMixin(data)
+mixin driverStatsCardMixin(data, cardSize)
   //- - console.log('mixin lg', data)
-  .card.driver-card.stats_card
+  .card.driver-card.stats-card
     .column.left-column
-      .driver-title
+      .driver-title-container
         h6  #{data.driver_name}
         .flag-img-container
           img(src=data.flag_img_url)

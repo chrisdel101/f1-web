@@ -15,8 +15,9 @@ block content
             div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
               div.toggle-text Hide Demo
               +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav}) 
+          //- - console.log('SEL', format)
           //- render single mini card
-          if format === "select"
+          if format === "select" || cardSize == 'mini'
             +driverSelectCardMixin(driverData,cardSize)
           else
             +driverStatsCardMixin(driverData)  

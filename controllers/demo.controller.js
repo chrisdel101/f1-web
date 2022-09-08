@@ -9,6 +9,13 @@ const { buildDriverCard } = require('./drivers.controller')
 const { cardTypes } = require('../constants')
 const utils = require('../utils')
 
+function setDefaultQueryParams(ctx) {
+  return {
+    pageType: data?.['driverCardData'] ? cardTypes.DRIVER : cardTypes.TEAM,
+    noNav: true ? ctx.query?.noNav === 'true' : false,
+    noToggle: true ? ctx.query?.noToggle === 'true' : false,
+  }
+}
 // render demo page and select forms
 exports.renderDemo = async (ctx) => {
   let data = {}
