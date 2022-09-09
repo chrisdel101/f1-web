@@ -1,6 +1,6 @@
-mixin teamStatsCardMixin(data)
+mixin teamStatsCardMixin(data, cardSize)
   //- - console.log('teamStatsCardMixinLg', data)
-  .card.team-card.stats-card
+  .card.team-card.stats-card(class=cardSize)
     .column.left-column
       .team-title
         h5 #{data.full_team_name}

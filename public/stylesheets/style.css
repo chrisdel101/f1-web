@@ -224,6 +224,9 @@ picture {
   height: 100%;
   width: 100%;
 }
+figure.main-image-container.main-image-container {
+  margin:0;
+} 
 .all-drivers .mini .driver-title-container,
 .all-drivers .mini .driver-title-container h6,
 .all-drivers .mini .main-image-container,
@@ -321,6 +324,9 @@ h6.select-text {
   font-size: 25px;
   margin-right: 10px;
 }
+.mini .driver-title-container h6 {
+  font-size: initial;
+f}
 .driver-title .flag-img-container {
   align-self: center;
 }
@@ -429,6 +435,9 @@ h6.select-text {
   .right-column {
     width: 150%;
   }
+  .mobile .right-column {
+    width: inherit;
+  }
   .card.driver-card.mini,
   .card.team-card.mini {
     flex-direction: column;
@@ -443,6 +452,12 @@ h6.select-text {
     flex-direction: row;
     overflow: hidden;
   }
+  .card.driver-card.stats-card.mobile,
+  .card.team-card.stats-card.mobile {
+    height: auto;
+    flex-direction: column;
+    overflow: hidden;
+  }
   .card.driver-card.select-card,
   .card.team-card.select-card {
     height: auto;
@@ -453,15 +468,15 @@ h6.select-text {
   .driver-table-container {
     margin-top: 15px;
   }
-  .team-card-container-lg {
-    flex-direction: column;
-  }
-  .team-card-container-lg .drivers {
-    font-size: 18px;
-  }
-  .team-card-container-lg .drivers .driver {
-    margin: 5px 0;
-  }
+  /* .team-card-container-lg {
+      flex-direction: column;
+    }
+    .team-card-container-lg .drivers {
+      font-size: 18px;
+    }
+    .team-card-container-lg .drivers .driver {
+      margin: 5px 0;
+    } */
   .table-container {
     height: 100%;
     align-items: center;

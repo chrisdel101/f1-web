@@ -270,7 +270,7 @@ async function buildDriverScreenShotData() {
       },
       urlsDataArr: drivers.map((driver) => {
         return {
-          url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true&size=mini`,
+          url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true&format=select`,
           name_slug: driver.name_slug,
         }
       }),

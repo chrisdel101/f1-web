@@ -114,22 +114,22 @@ async function renderTeamCard(ctx) {
 // build card and show on page with nav header - same as renderTeamCard w/o showCardOnly
 async function renderTeamPage(ctx) {
   try {
+    const { cardSize, noNav, noToggle, pageType, format } =
+      setDefaultQueryParams(ctx)
     const teamCard = await buildTeamCard(ctx.params.name_slug)
     return await ctx.render('teamPage', {
       teamData: teamCard,
-      noNav: true ? ctx.query.noNav === 'true' : false,
-      noToggle: true ? ctx.query.noNav === 'true' : false,
-      pageType: cardTypes.DRIVER,
       urls: urls,
       ENV: utils.ENV,
       toggleState: ctx?.state?.hideDemo,
       toggleNextEndpoint: utils.toggleNextEndpointTeam,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,
-      cardSize: utils.objValueExists(cardSizes, ctx.query.size)
-        ? ctx.query.size
-        : 'mobile',
-      format: ctx.query['format'] || cardFormats.STATS,
+      noNav: noNav,
+      noToggle: noToggle,
+      pageType: pageType,
+      cardSize: cardSize,
+      format: format,
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)

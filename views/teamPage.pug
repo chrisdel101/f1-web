@@ -17,7 +17,7 @@ block content
             div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
                   div.toggle-text Hide Demo
                   +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav })
-          if format === "select"
+          if format === "select" || cardSize == 'mini'
             +teamSelectCardMixin(teamData,cardSize)
           else
-            +teamStatsCardMixin(teamData)
+            +teamStatsCardMixin(teamData, cardSize)

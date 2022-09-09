@@ -9,6 +9,7 @@ mixin driverSelectCardMixin(data, cardSize)
           figure.main-image-container
             .ratio-box
               img(src=data.main_image)
+    
   else if cardSize === "full" || cardSize === 'mobile'
     li.card.driver-card.select-card(class=cardSize data-slug=data.name_slug)
       .driver-title-container 

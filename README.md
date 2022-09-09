@@ -13,13 +13,14 @@ Usage:
 
 - use with `/` endpoints
 - use with `/api` endpoints
-- applies differnt CSS to get various card sizes on screen
+- applies different CSS to get various card sizes on screen
 
 Specs:
 
 - `size` : `[full, mobile, mini, unset]`
 - `/screenshots?size=mini`
-- `teams/:name_slug:?size=mini`
+- `teams/:name_slug:?size=mini` => small version, select card
+- `teams/:name_slug:?size=mobile` => full size, stats card
 - unset is full size of screen with no width or height restraints. This is unused in demo.
 
 ### Card Type

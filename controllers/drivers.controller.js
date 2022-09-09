@@ -109,21 +109,23 @@ async function renderDriverCard(ctx) {
 }
 // build card and show on page with nav header - same as renderDriverCard w/o showCardOnly
 async function renderDriverPage(ctx) {
+  const { cardSize, noNav, noToggle, pageType, format } =
+    setDefaultQueryParams(ctx)
   try {
     const driverCard = await buildDriverCard(ctx.params.name_slug)
     return await ctx.render('driverPage', {
       driverData: driverCard,
-      noNav: true ? ctx.query.noNav === 'true' : false,
-      noToggle: true ? ctx.query.noToggle === 'true' : false,
       urls: urls,
       ENV: utils.ENV,
       toggleState: ctx?.state?.hideDemo,
       toggleNextEndpoint: utils.toggleNextEndpointDriver,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,
-      pageType: cardTypes.DRIVER,
-      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
-      format: ctx.query['format'] || cardFormats.STATS,
+      ...setDefaultQueryParams(ctx),
+      noNav: noNav,
+      noToggle: noToggle,
+      pageType: pageType,
+      format: format,
     })
   } catch (e) {
     error('Error in renderDriverPage', e)
