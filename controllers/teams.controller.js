@@ -8,8 +8,9 @@ const {
   urls,
   cardTypes,
   cardSizes,
-  cardFormats,
+  cardLayouts,
   pageTypes,
+  cardFormats
 } = require('../constants')
 
 module.exports = {
@@ -22,7 +23,7 @@ module.exports = {
 function setDefaultQueryParams(ctx) {
   return {
     cardSize: ctx.query?.size || cardSizes.FULL,
-    format: ctx.query['format'] || cardFormats.STATS,
+    layout: ctx.query['layout'] || cardLayouts.STATS,
     pageType: pageTypes?.TEAM,
     noNav: true ? ctx.query?.noNav === 'true' : false,
     noToggle: true ? ctx.query?.noToggle === 'true' : false,
@@ -104,8 +105,8 @@ async function renderTeamCard(ctx) {
       noNav: true,
       cardSize: utils.objValueExists(cardSizes, ctx.query.size)
         ? ctx.query.size
-        : 'mobile',
-      format: ctx.query['format'] || cardFormats.STATS,
+        : 'full',
+      layout: ctx.query['layout'] || cardLayouts.STATS,
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)
@@ -114,7 +115,7 @@ async function renderTeamCard(ctx) {
 // build card and show on page with nav header - same as renderTeamCard w/o showCardOnly
 async function renderTeamPage(ctx) {
   try {
-    const { cardSize, noNav, noToggle, pageType, format } =
+    const { cardSize, noNav, noToggle, pageType, layout } =
       setDefaultQueryParams(ctx)
     const teamCard = await buildTeamCard(ctx.params.name_slug)
     return await ctx.render('teamPage', {
@@ -129,7 +130,7 @@ async function renderTeamPage(ctx) {
       noToggle: noToggle,
       pageType: pageType,
       cardSize: cardSize,
-      format: format,
+      layout: layout,
     })
   } catch (e) {
     console.error('Error in renderTeamCard', e)

@@ -4,6 +4,7 @@ const {
   screenShotTypes,
   screenShotSizes,
   cardSizes,
+  cardFormats
 } = require('../constants')
 const fs = require('fs')
 var puppeteer = require('puppeteer')
@@ -29,6 +30,7 @@ async function takeCardScreenShot(ctx, screenShotType) {
   }
   // set content type to image
   ctx.type = `image/png`
+  const format = ctx.query?.['format'] || cardFormats.MOBILE
   try {
     const browser = await puppeteer.launch({
       headless: true,
@@ -69,21 +71,21 @@ async function takeCardScreenShot(ctx, screenShotType) {
     })
     const page = await browser.newPage()
     if (screenShotType === screenShotTypes.TEAMS) {
-      const size = ctx.query?.['size'] || cardSizes.MOBILE
-      if (size === cardSizes.MOBILE) {
+      const format = ctx.query?.['format'] || cardFormats.MOBILE
+      if (format === cardFormats.MOBILE) {
         await page.setViewport({
           width: 400,
           height: 600,
           deviceScaleFactor: 1,
         })
         // take full size, shrink with css
-      } else if (size === cardSizes.MINI) {
+      } else if (format === cardFormats.MENU) {
         await page.setViewport({
           width: 1000,
           height: 600,
           deviceScaleFactor: 1,
         })
-      } else if (size === cardSizes.FULL) {
+      } else if (format === cardFormats.WEB) {
         await page.setViewport({
           width: 1000,
           height: 600,
@@ -102,20 +104,20 @@ async function takeCardScreenShot(ctx, screenShotType) {
         )
       }
     } else if (screenShotType === screenShotTypes.DRIVERS) {
-      if (size === cardSizes.MOBILE) {
+      if (format === cardFormats.MOBILE) {
         await page.setViewport({
           width: 600,
           height: 600,
           deviceScaleFactor: 1,
         })
         // take full size, shrink with css
-      } else if (size === cardSizes.MINI) {
+      } else if (format === cardFormats.MINI) {
         await page.setViewport({
           width: 900,
           height: 600,
           deviceScaleFactor: 1,
         })
-      } else if (size === cardSizes.FULL) {
+      } else if (format === cardFormats.FULL) {
         await page.setViewport({
           width: 900,
           height: 600,
@@ -137,12 +139,12 @@ async function takeCardScreenShot(ctx, screenShotType) {
     let imgPath = ''
     if (ctx.request.url.includes('mobile')) {
       if (ctx.request.url.includes('mini')) {
-        imgPath = `./API/screenShotsStore/mobile/mini/${ctx.params.name_slug}.png`
+        imgPath = `./API/screenShotStore/mobile/mini/${screenShotType}/${ctx.params.name_slug}.png`
       } else {
-        imgPath = `./API/screenShotsStore/mobile/${ctx.params.name_slug}.png`
+        imgPath = `./API/screenShotStore/mobile/${screenShotType}/${ctx.params.name_slug}.png`
       }
     } else {
-      imgPath = `./API/screenShotsStore/full/${ctx.params.name_slug}.png`
+      imgPath = `./API/screenShotStore/full/${screenShotType}/${ctx.params.name_slug}.png`
     }
     // store screenshots for return
     await page.screenshot({ path: imgPath, fullPage: true })
@@ -270,7 +272,7 @@ async function buildDriverScreenShotData() {
       },
       urlsDataArr: drivers.map((driver) => {
         return {
-          url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true&format=select`,
+          url: `${urls.localCardsEndpoint}/drivers/${driver.name_slug}?noNav=true&noToggle=true&layout=select`,
           name_slug: driver.name_slug,
         }
       }),
@@ -295,7 +297,7 @@ async function buildTeamScreenShotData() {
     },
     urlsDataArr: teams.map((team) => {
       return {
-        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&format=stats`,
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&layout=stats`,
         name_slug: team.name_slug,
       }
     }),
@@ -309,7 +311,7 @@ async function buildTeamScreenShotData() {
     },
     urlsDataArr: teams.map((team) => {
       return {
-        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&format=stats`,
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&layout=stats`,
         name_slug: team.name_slug,
       }
     }),
@@ -324,7 +326,7 @@ async function buildTeamScreenShotData() {
     },
     urlsDataArr: teams.map((team) => {
       return {
-        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&format=select`,
+        url: `${urls.localCardsEndpoint}/teams/${team.name_slug}?noNav=true&noToggle=true&layout=select`,
         name_slug: team.name_slug,
       }
     }),

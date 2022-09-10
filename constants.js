@@ -10,10 +10,14 @@ module.exports = {
   },
   cardSizes: {
     FULL: 'full',
-    MOBILE: 'mobile',
     MINI: 'mini',
   },
   cardFormats: {
+    WEB: 'web', // flex row
+    MOBILE: 'mobile', // flex col
+    MENU: 'menu', // pic + name only
+  },
+  cardLayouts: {
     STATS: 'stats', //card with stats
     SELECT: 'select', //card w/ img and name
   },

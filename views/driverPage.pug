@@ -1,6 +1,6 @@
 extends layout
 block layoutVariables
-  //-   https://stackoverflow.com/a/20502117/5972531
+  //- https://stackoverflow.com/a/20502117/5972531
     assign this back to LAYOUT file
   - let hideNav= noNav || false
 block content
@@ -10,13 +10,13 @@ block content
   include mixins/_driverSelectCardMixin
   block append content
       .driver-card-page
-          //- used with /api
+          //- noToggle is used with /api
           if !noToggle 
             div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
               div.toggle-text Hide Demo
               +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav}) 
-          //- render single mini card
-          if format === "select" || cardSize == 'mini'
+          //- both flags use same mixin
+          if layout === "select" || cardSize == 'mini'
             +driverSelectCardMixin(driverData,cardSize)
           else
             +driverStatsCardMixin(driverData, cardSize)  

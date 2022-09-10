@@ -3,7 +3,7 @@ const cache = require('../cache')
 const {
   urls,
   cardTypes,
-  cardFormats,
+  cardLayouts,
   cardSizes,
   pageTypes,
 } = require('../constants')
@@ -26,7 +26,7 @@ module.exports = {
 function setDefaultQueryParams(ctx) {
   return {
     cardSize: ctx.query?.size || cardSizes.FULL,
-    format: ctx.query['format'] || cardFormats.STATS,
+    layout: ctx.query['layout'] || cardLayouts.STATS,
     pageType: pageTypes?.DRIVER,
     noNav: true ? ctx.query?.noNav === 'true' : false,
     noToggle: true ? ctx.query?.noToggle === 'true' : false,
@@ -109,7 +109,7 @@ async function renderDriverCard(ctx) {
 }
 // build card and show on page with nav header - same as renderDriverCard w/o showCardOnly
 async function renderDriverPage(ctx) {
-  const { cardSize, noNav, noToggle, pageType, format } =
+  const { cardSize, noNav, noToggle, pageType, layout } =
     setDefaultQueryParams(ctx)
   try {
     const driverCard = await buildDriverCard(ctx.params.name_slug)
@@ -125,7 +125,8 @@ async function renderDriverPage(ctx) {
       noNav: noNav,
       noToggle: noToggle,
       pageType: pageType,
-      format: format,
+      layout: layout,
+      cardSize: cardSize,
     })
   } catch (e) {
     error('Error in renderDriverPage', e)

@@ -42,12 +42,12 @@ Usage:
 
 - use with `/` endpoints
 - use with `/api` endpoints
-- used to render which format of card to show
+- used to render which layout of card to show
 
 Specs:
 
-- `format` : `[stats,select]`
-- `/teams/ferrari?format=select`
+- `layout` : `[stats,select]`
+- `/teams/ferrari?layout=select`
 
 ### Endpoints
 
