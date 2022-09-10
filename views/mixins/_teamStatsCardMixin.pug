@@ -3,7 +3,7 @@ mixin teamStatsCardMixin(data, cardSize)
   .card.team-card.stats-card(class=cardSize)
     .column.left-column
       .team-title
-        h5 #{data.full_team_name}
+        h4 #{data.full_team_name}
       .main-image
         img(src=data.images[Math.round(randomNumInRange(0, data.images.length-1))])
     .column.right-column
