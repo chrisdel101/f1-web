@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const toggleSwitch = document.querySelector('.switch')
   const { src } = toggleSwitch?.dataset
-  console.log('DD', src)
   const input = toggleSwitch.firstElementChild
   toggleSwitch.addEventListener('click', (e) => {
     e.preventDefault()

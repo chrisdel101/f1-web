@@ -8,9 +8,11 @@ module.exports = {
     MOBILE: 'mobile',
     MINI: 'mini',
   },
+  // fit stats card - max-width 800
   cardSizes: {
-    FULL: 'full',
-    MINI: 'mini',
+    FULL: 'full', //full size of screen
+    FIT: 'fit', //fit into viewport
+    MINI: 'mini', // mini
   },
   cardFormats: {
     WEB: 'web', // flex row

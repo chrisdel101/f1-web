@@ -7,7 +7,9 @@ html
   block layoutVariables
   head
     title= title
+    link(rel="shortcut icon", href="#")
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/cards.css')
     link(href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T", crossorigin="anonymous")
     link(href="https://fonts.googleapis.com/css?family=Montserrat|PT+Sans:400,700|Lobster&display=swap", rel="stylesheet")
     script(src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous")
@@ -24,3 +26,4 @@ html
       block content
     else 
         block content
+  script(src='javascripts/resize.js', type="application/javascript", crossorigin="anonymous")

@@ -17,7 +17,7 @@ block content
                   div.toggle-text Hide Demo
                   +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav })
           //- both flags use same mixin
-          if layout === "select" || cardSize == 'mini'
+          if layout === "select" || cardSize == 'mini' || format == 'menu'
             +teamSelectCardMixin(teamData,cardSize)
           else
-            +teamStatsCardMixin(teamData, cardSize)
+            +teamStatsCardMixin(teamData, format, cardSize)

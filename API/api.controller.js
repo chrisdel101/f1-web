@@ -105,29 +105,29 @@ async function takeCardScreenShot(ctx, screenShotType) {
         )
       }
     } else if (screenShotType === screenShotTypes.DRIVERS) {
-      if (format === cardFormats.MOBILE) {
-        await page.setViewport({
-          width: 600,
-          height: 600,
-          deviceScaleFactor: 1,
-        })
-        // take full size, shrink with css
-      } else if (format === cardFormats.MINI) {
-        await page.setViewport({
-          width: 900,
-          height: 600,
-          deviceScaleFactor: 1,
-        })
-      } else if (format === cardFormats.FULL) {
-        await page.setViewport({
-          width: 900,
-          height: 600,
-          deviceScaleFactor: 1,
-        })
-      } else {
-        console.error('Invalid card size in API controller')
-        return
-      }
+      // if (format === cardFormats.MOBILE) {
+      //   await page.setViewport({
+      //     width: 600,
+      //     height: 600,
+      //     deviceScaleFactor: 1,
+      //   })
+      //   // take full size, shrink with css
+      // } else if (format === cardFormats.MINI) {
+      //   await page.setViewport({
+      //     width: 900,
+      //     height: 600,
+      //     deviceScaleFactor: 1,
+      //   })
+      // } else if (format === cardFormats.FULL) {
+      //   await page.setViewport({
+      //     width: 900,
+      //     height: 600,
+      //     deviceScaleFactor: 1,
+      //   })
+      // } else {
+      //   console.error('Invalid card size in API controller')
+      //   return
+      // }
       const req = await page.goto(
         `${apiHost}/${screenShotType}/${ctx.params.name_slug}?noNav=true&noToggle=true`
       )
@@ -146,10 +146,17 @@ async function takeCardScreenShot(ctx, screenShotType) {
         imgPath = `./API/screenShotStore/mobile/${screenShotType}/${ctx.params.name_slug}.png`
       }
     } else {
-      imgPath = `./API/screenShotStore/full/${screenShotType}/${ctx.params.name_slug}.png`
+      imgPath = `./API/screenShotStore/web/${screenShotType}/${ctx.params.name_slug}.png`
     }
+    const example = await page.$('.driver-card');
+    const bounding_box = await example.boundingBox();
     // store screenshots for return
-    await page.screenshot({ path: imgPath, fullPage: true })
+    await page.screenshot({ path: imgPath,  clip: {
+      x: bounding_box.x,
+      y: bounding_box.y,
+      width: Math.min(bounding_box.width, page.viewport().width),
+      height: Math.min(bounding_box.height, page.viewport().height),
+    },})
     await browser.close()
     return await fs.createReadStream(imgPath)
   } catch (e) {

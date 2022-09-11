@@ -1,5 +1,6 @@
-mixin driverStatsCardMixin(data, cardSize)
-  .card.driver-card.stats-card(class=cardSize)
+mixin driverStatsCardMixin(data, format, cardSize)
+  - console.log('TT',cardSize, format)
+  .card.driver-card.stats-card(class=format, class=cardSize)
     .column.left-column
       .driver-title-container
         h2  #{data.driver_name}
