@@ -21,7 +21,7 @@ block content
         })
   div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
     div.toggle-text Hide Demo
-    +toggleSwitch({pageType, ENV, toggleState, toggleNextEndpoint, toggleHideNav}) 
+    +toggleSwitch({pageType, ENV, toggleSwitchState, toggleNextEndpoint, toggleHideNav}) 
   if driverCardData
     .driver-card-demo
         +driverStatsCardMixin(driverCardData)

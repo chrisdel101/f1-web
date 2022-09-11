@@ -14,9 +14,9 @@ block content
           if !noToggle 
             div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 
               div.toggle-text Hide Demo
-              +toggleSwitch({pageType, urls, ENV, toggleState,toggleNextEndpoint, toggleHideNav}) 
+              +toggleSwitch({pageType, urls, ENV, toggleSwitchState,toggleNextEndpoint, toggleHideNav}) 
           //- both flags use same mixin
-          if layout === "select" || cardSize == 'mini' || format == 'menu'
-            +driverSelectCardMixin(driverData,cardSize)
+          if layout === "select" || format == 'menu'
+            +driverSelectCardMixin(driverData, cardSize)
           else
             +driverStatsCardMixin(driverData, format, cardSize)  

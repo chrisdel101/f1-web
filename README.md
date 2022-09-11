@@ -1,55 +1,57 @@
-### developer notes
+## **URL Query Params**
 
-- to use utils functions in templates, pass them in as locals
-- req status => `req._status`
-- res status => `res.statusCode`
-- for variable in `layout` use the `layoutVariables` [paradgim](https://gist.github.com/viktorbezdek/9665226)
+### **Card Size**
 
-**URL query params Param**
+Details:
 
-### Card Size:
-
-Usage:
-
-- use with `/` endpoints
-- use with `/api` endpoints
-- applies different CSS to get various card sizes on screen
+- use with [`/`, `/api`] endpoints
+- applies CSS width and height
 
 Specs:
+- `size` : `[full, fit, mini ]`
+    - `full`: no width params
+    - `fit`: fit into viewport
+    - `mini`: mini version 
 
-- `size` : `[full, mobile, mini, unset]`
+Examples:
 - `/screenshots?size=mini`
-- `teams/:name_slug:?size=mini` => small version, select card
-- `teams/:name_slug:?size=mobile` => full size, stats card
-- unset is full size of screen with no width or height restraints. This is unused in demo.
+- `teams/:name_slug:?size=mini` => mini version 
+- `teams/:name_slug:?size=fit` => fit version
 
-### Card Type
+### **Card Type**
 
-Usage:
+Details:
 
-- use with `/api/take-screenshots` endpoints
-- used to take only that type of new shots
+- use with `/api/take-screenshots` endpoint
+- filters which screen shots to take when  calling `takeAllPreRunScreenShots`
 
 Specs:
-
 - `type` : `[drivers, teams]`
-- `screenshots?type=drivers`
-- `screenshots?type=teams`
+    - `drivers`: take only driver screenshots
+    - `teams`: take only team screenshots
 
-### Card Format
+Examples:
+- `api/take-screenshots?type=drivers`
+- `api/take-screenshots?type=teams`
 
-Usage:
+### **Card Layout**
 
-- use with `/` endpoints
-- use with `/api` endpoints
-- used to render which layout of card to show
+Details:
+
+- use with [`/`, `/api`] endpoints
+- used to render specific card layout template
 
 Specs:
 
-- `layout` : `[stats,select]`
-- `/teams/ferrari?layout=select`
+- `layout` : [`select`, `stats`]
+    - `select`: render selectCardMixin
+    - `stats`: render statsCardMixin 
 
-### Endpoints
+Example:
+- `/teams/ferrari?layout=select`
+- `/drivers/lewis-hamilton?layout=stats`
+
+## Endpoints
 
 - root `/api`
 - drivers `/drivers`
@@ -57,3 +59,11 @@ Specs:
 - teams `/teams`
 - team `/teams/:team_slug`
 - all `/take-screenshots`
+
+
+### developer notes
+
+- to use utils functions in templates, pass them in as locals
+- req status => `req._status`
+- res status => `res.statusCode`
+- for variable in `layout` use the `layoutVariables` [paradgim](https://gist.github.com/viktorbezdek/9665226)

@@ -8,10 +8,10 @@ block content
       pageType:'drivers',
       urls, 
       ENV, 
-      toggleState
+      toggleSwitchState
       }
   )
   .all-drivers-container
     ul.all-drivers
       for driverData in driversDataArr
-        +driverSelectCardMixin(driverData, layout)
+        +driverSelectCardMixin(driverData, cardSize)

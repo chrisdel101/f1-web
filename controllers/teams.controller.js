@@ -51,7 +51,7 @@ async function renderAllTeamsPage(ctx) {
         : 'full',
       urls,
       ENV: utils.ENV,
-      toggleState: ctx?.query?.size === 'mini' ? false : true,
+      toggleSwitchState: ctx?.query?.size === 'mini' ? false : true,
     })
   } catch (e) {
     console.error('Error in renderAllTeamsPage', e)
@@ -123,7 +123,7 @@ async function renderTeamPage(ctx) {
       teamData: teamCard,
       urls: urls,
       ENV: utils.ENV,
-      toggleState: ctx?.state?.hideDemo,
+      toggleSwitchState: ctx?.state?.hideDemo,
       toggleNextEndpoint: utils.toggleNextEndpointTeam,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,

@@ -1,5 +1,7 @@
 //- diff- mini card is wrapped in a tag
 mixin driverSelectCardMixin(data, cardSize)
+  - console.log('XXX', cardSize)
+
   if cardSize === "mini" 
     li.card.driver-card.select-card(class=cardSize data-slug=data.name_slug)
         a(href=`/demo?demo-driver=${data.name_slug}`)

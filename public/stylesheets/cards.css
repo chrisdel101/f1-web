@@ -1,8 +1,3 @@
-.driver-card.mini,
-.team-card.mini {
-  width: 200px;
-  margin: 5px;
-}
 .driver-card,
 .team-card {
   list-style: none;
@@ -28,12 +23,6 @@
   margin-right: 10px;
   overflow: hidden;
   flex-direction: column;
-}
-.team-card.select-card:not(.mini) h5 {
-  font-size: 2rem;
-}
-.team-card.select-card:not(.mini) .team-title {
-  min-height: 100px;
 }
 .mini .driver-title-container {
   min-height: 50px;
@@ -71,9 +60,6 @@ figure.main-image-container.main-image-container {
   height: 100%;
   margin: 0;
 }
-.team-card.mini {
-  height: 80%;
-}
 .team-card .main-image img {
   object-fit: cover;
   height: 100%;
@@ -89,34 +75,14 @@ figure.main-image-container.main-image-container {
   min-height: 70px;
   align-items: center;
 }
-.select-card:not(.mini) .driver-title-container,
-.stats-card.mobile .driver-title-container {
-  min-height: 100px;
-}
-.mini .driver-title-container h2 {
-  font-size: 1em;
-}
-.select-card:not(.mini) h2 {
-  font-size: 2.5rem;
-}
 .driver-title-container h2 {
   font-family: 'Montserat', sans-serif;
 }
 .driver-title-container .flag-img-container {
   align-self: center;
 }
-.select-card:not(.mini) .flag-img-container,
-.stats-card .flag-img-container {
-  max-width: 75px;
-}
-.select-card.mini .flag-img-container {
-  max-width: 50px;
-}
 figure.flag-img-container {
   margin: 0;
-}
-.team-card.mini .team-title {
-  min-height: 40px;
 }
 .team-title {
   font-family: 'Montserat', sans-serif;
@@ -149,48 +115,86 @@ figure.flag-img-container {
 .all-drivers .select-card:not(.mini) .flag-img-container {
   max-width: 50px;
 }
-/* From this and up */
-@media (min-width: 768px) {
-    .left-column {
-    height: auto;
-  }
-  .right-column {
-    width: 150%;
-  }
-  .mobile .right-column {
-    width: inherit;
-  }
-  .card.driver-card.mini,
-  .card.team-card.mini {
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .team-card .driver {
-    display: flex;
-  }
-  .card.driver-card.stats-card,
-  .card.team-card.stats-card {
-    height: auto;
-    flex-direction: row;
-    overflow: hidden;
-  }
-  .card.driver-card.stats-card.mobile,
-  .card.team-card.stats-card.mobile {
-    height: auto;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .card.driver-card.select-card,
-  .card.team-card.select-card {
-    height: auto;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .driver-table-container {
-    margin-top: 15px;
-  }
-  .table-container {
-    height: 100%;
-    align-items: center;
-  }
+.select-card:not(.mini) h2 {
+  font-size: 2.5rem;
+}
+.select-card:not(.mini) .flag-img-container,
+.stats-card .flag-img-container {
+  max-width: 75px;
+}
+.team-card.select-card:not(.mini) h5 {
+  font-size: 2rem;
+}
+.team-card.select-card:not(.mini) .team-title {
+  min-height: 100px;
+}
+.select-card:not(.mini) .driver-title-container{
+  min-height: 100px;
+}
+.card.driver-card.mini,
+.card.team-card.mini {
+  flex-direction: column;
+  overflow: hidden;
+}
+.driver-card.mini,
+.team-card.mini {
+  width: 200px;
+  margin: 5px;
+}
+.team-card.mini {
+  height: 80%;
+}
+.mini .driver-title-container h2 {
+  font-size: 1em;
+}
+.select-card.mini .flag-img-container {
+  max-width: 50px;
+}
+.team-card.mini .team-title {
+  min-height: 40px;
+}
+/* MOBILE - below 768 applied by JS */
+.mobile .right-column {
+  width: inherit;
+}
+.card.driver-card.stats-card.mobile,
+.card.team-card.stats-card.mobile {
+  height: auto;
+  flex-direction: column;
+  overflow: hidden;
+}
+.stats-card.mobile .driver-title-container {
+  min-height: 100px;
+}
+
+/* WEB Full size - 768 up appplied by JS */
+.web.driver-card .left-column,
+.web.team-card .left-column {
+  height: auto;
+}
+.web.driver-card .right-column,
+.web.team-card .right-column {
+  width: 150%;
+}
+.web.team-card .driver {
+  display: flex;
+}
+.web.card.driver-card.stats-card,
+.web.card.team-card.stats-card {
+  height: auto;
+  flex-direction: row;
+  overflow: hidden;
+}
+.web.card.driver-card.select-card,
+.web.card.team-card.select-card {
+  height: auto;
+  flex-direction: column;
+  overflow: hidden;
+}
+.web .driver-table-container {
+  margin-top: 15px;
+}
+.web .table-container {
+  height: 100%;
+  align-items: center;
 }

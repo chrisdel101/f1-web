@@ -14,6 +14,7 @@ module.exports = {
     FIT: 'fit', //fit into viewport
     MINI: 'mini', // mini
   },
+  // applies to stats card only - select is fixed 
   cardFormats: {
     WEB: 'web', // flex row
     MOBILE: 'mobile', // flex col

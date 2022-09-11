@@ -60,6 +60,9 @@ async function makeAllDriversObjs(ctx, driverSlug, size = 'full') {
 }
 async function renderAllDriversPage(ctx) {
   try {
+    const { cardSize, noNav, noToggle } =
+    setDefaultQueryParams(ctx)
+
     const driverNamesArr = await fetchDrivers()
     // loop over names and get each driver
     const driversDataArr = await Promise.all(
@@ -70,9 +73,11 @@ async function renderAllDriversPage(ctx) {
     return await ctx.render('allDrivers', {
       driversDataArr,
       ENV: utils.ENV,
-      cardSize: ctx?.query?.size === 'mini' ? 'mini' : 'full',
+      cardSize: cardSize,
       urls,
-      toggleState: ctx?.query?.size === 'mini' ? false : true,
+      toggleSwitchState: cardSize === cardSizes.MINI ? false : true,
+      noNav:noNav
+
     })
   } catch (e) {
     error('Error in renderAllDriversPage', e)
@@ -119,7 +124,7 @@ async function renderDriverPage(ctx) {
       driverData: driverCard,
       urls: urls,
       ENV: utils.ENV,
-      toggleState: ctx?.state?.hideDemo,
+      toggleSwitchState: ctx?.state?.hideDemo,
       toggleNextEndpoint: utils.toggleNextEndpointDriver,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,

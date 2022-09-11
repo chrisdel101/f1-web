@@ -51,7 +51,7 @@ exports.renderDemo = async (ctx) => {
     // toggle params
     pageType: data?.['driverCardData'] ? cardTypes.DRIVER : cardTypes.TEAM,
     ENV: utils.ENV,
-    toggleState: ctx?.state?.hideDemo,
+    toggleSwitchState: ctx?.state?.hideDemo,
     toggleNextEndpoint: data?.['driverCardData']
       ? utils.toggleNextEndpointDriver
       : utils.toggleNextEndpointTeam,
