@@ -51,6 +51,21 @@ Example:
 - `/teams/ferrari?layout=select`
 - `/drivers/lewis-hamilton?layout=stats`
 
+## **Toggle Params**
+
+**Hide Nav**
+- Hide nav UI
+- `?noNav=true`
+
+**Hide Toggle Switch**
+- Hide toggle UI
+- `?noToggle=true`
+
+**Pretty Print Page**
+- Show card with margin on page. Default is no margin.
+- `?prettyPage=true`
+
+
 ## Endpoints
 
 - root `/api`

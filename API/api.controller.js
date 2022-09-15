@@ -106,11 +106,11 @@ async function takeCardScreenShot(ctx, screenShotType) {
       }
     } else if (screenShotType === screenShotTypes.DRIVERS) {
       // if (format === cardFormats.MOBILE) {
-      //   await page.setViewport({
-      //     width: 600,
-      //     height: 600,
-      //     deviceScaleFactor: 1,
-      //   })
+        await page.setViewport({
+          width: 600,
+          height: 600,
+          deviceScaleFactor: 1,
+        })
       //   // take full size, shrink with css
       // } else if (format === cardFormats.MINI) {
       //   await page.setViewport({
@@ -151,12 +151,15 @@ async function takeCardScreenShot(ctx, screenShotType) {
     const example = await page.$('.driver-card');
     const bounding_box = await example.boundingBox();
     // store screenshots for return
-    await page.screenshot({ path: imgPath,  clip: {
-      x: bounding_box.x,
-      y: bounding_box.y,
-      width: Math.min(bounding_box.width, page.viewport().width),
-      height: Math.min(bounding_box.height, page.viewport().height),
-    },})
+    await page.screenshot({ path: imgPath,  
+    // clip: {
+    //   x: bounding_box.x,
+    //   y: bounding_box.y,
+    //   width: Math.min(bounding_box.width, page.viewport().width),
+    //   height: Math.min(bounding_box.height, page.viewport().height),
+    // },
+    fullPage: true
+  })
     await browser.close()
     return await fs.createReadStream(imgPath)
   } catch (e) {

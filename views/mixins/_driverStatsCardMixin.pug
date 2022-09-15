@@ -1,12 +1,13 @@
 mixin driverStatsCardMixin(data, format, cardSize)
-  - console.log('TT',cardSize, format)
-  .card.driver-card.stats-card(class=format, class=cardSize)
+  - console.log('cardSize',cardSize)
+  - console.log('format',format)
+  .card.driver-card.stats-card(class=[format,cardSize])
     .column.left-column
       .driver-title-container
         h2  #{data.driver_name}
         .flag-img-container
           img(src=data.flag_img_url)
-      .main-image
+      .main-image-container
         img(src=data.main_image)
     .column.right-column
       .driver-logo-container
