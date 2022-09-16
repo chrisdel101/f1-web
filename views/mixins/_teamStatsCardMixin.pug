@@ -2,7 +2,7 @@ mixin teamStatsCardMixin(data, format, cardSize)
   //- - console.log('teamStatsCardMixinLg', data)
   .card.team-card.stats-card(class=cardSize, class=format)
     .column.left-column
-      .team-title
+      .team-title-container
         h4 #{data.full_team_name}
       .main-image
         img(src=data.images[Math.round(randomNumInRange(0, data.images.length-1))])

@@ -1,5 +1,4 @@
 // https://www.w3schools.com/howto/howto_js_media_queries.asp
-
 let hasMobileTag = false
 let hasWebTag = false
 var breakPoint = window.matchMedia('(min-width: 768px)')
@@ -29,7 +28,7 @@ function toggleClass(breakPoint) {
 // check if tag in URL
 function checkForQueryParams(){
  let currentURL = window.location.href
- console.log('XX',currentURL)
+//  console.log('XX',currentURL)
   if(currentURL.includes('mobile')){
     console.log('HAS mobile')
     hasMobileTag = true

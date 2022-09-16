@@ -53,6 +53,12 @@ figure.main-image-container.main-image-container {
   flex-direction: column;
   align-items: center;
 }
+.team-card a{
+  color: #000;
+}
+.team-card-demo .team-card a {
+  color: #007bff; 
+}
 .team-card .main-image {
   height: 100%;
   margin: 0;
@@ -75,13 +81,16 @@ figure.main-image-container.main-image-container {
 figure.flag-img-container {
   margin: 0;
 }
-.team-title {
+.team-title-container {
   font-family: 'Montserat', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 60px;
   text-align: center;
+}
+.team-card.select-card.full .team-title-container  {
+  min-height: 100px;
 }
 .driver-logo-container {
   min-height: 60px;
@@ -98,7 +107,6 @@ figure.flag-img-container {
 .stat-key {
   font-weight: bold;
 }
-
 .stats-columns {
   display: flex;
   justify-content: center;
@@ -106,18 +114,21 @@ figure.flag-img-container {
 .all-drivers .select-card:not(.mini) .flag-img-container {
   max-width: 50px;
 }
-/* .dem .select-card:not(.mini) h2,
-.all-teams .select-card:not(.mini) h2,
-{
-  font-size: 2.5rem;
-} */
+.all-drivers .select-card:not(.mini) figure.flag-img-container,
+.stats-card .flag-img-container {
+  max-width: 75px;
+}
 .select-card:not(.mini) .flag-img-container,
 .stats-card .flag-img-container {
   max-width: 75px;
 }
+.team-card.select-card.full.web h5{
+  font-size: 2.5rem;
+}
 .team-card.select-card:not(.mini) h5 {
   font-size: 2rem;
 }
+
 .team-card.select-card:not(.mini) .team-title {
   min-height: 100px;
 }
@@ -157,7 +168,10 @@ figure.flag-img-container {
   flex-direction: column;
   overflow: hidden;
 }
-/* fit mobile */
+.stats-card.mobile .driver-title-container {
+  min-height: 100px;
+}
+/* FIT mobile */
 .fit.card.driver-card.stats-card.mobile,
 .fit.card.team-card.stats-card.mobile {
   width: 300px;
@@ -172,6 +186,9 @@ figure.flag-img-container {
 .fit.card.driver-card.stats-card.mobile .driver-title-container {
   min-height: 50px;  
 }
+.fit.card.driver-card.stats-card.mobile .driver-title-container {
+  min-height: 50px;  
+}
 .fit.card.driver-card.stats-card.mobile .driver-title-container h2 {
   font-size: 1.5rem;  
 }
@@ -181,19 +198,41 @@ figure.flag-img-container {
 .fit.card.driver-card.stats-card.mobile .table-container {
 font-size: 0.8em;
 }
-.all-drivers .select-card:not(.mini) figure.flag-img-container,
-.stats-card .flag-img-container {
-  max-width: 75px;
+.fit.card.stats-card.mobile .table-container {
+font-size: 0.8em;
 }
 .select-card:not(.mini):not(.fit) .flag-img-container {
   max-width: 100px;
 }
-.fit.card.driver-card.stats-card.mobile .driver-table-container {
- margin: 0;
-}
-.stats-card.mobile .driver-title-container {
+.stats-card.mobile .team-title-container {
   min-height: 100px;
 }
+.fit.stats-card.mobile .team-title-container {
+  min-height: 50px;
+}
+.mini.stats-card.mobile .team-title-container {
+  min-height: 50px;
+}
+.stats-card.mobile .team-title-container h4{
+  font-size: 2rem;
+}
+.fit.stats-card.mobile .team-title-container h4{
+  font-size: 1.4rem;
+}
+.mini.stats-card.mobile .team-title-container h4{
+  font-size: 1.4rem;
+}
+.fit.card.driver-card.stats-card.mobile .driver-logo-container {
+  min-height: initial;
+  margin-bottom: 0;
+  width: 125px;
+}
+.fit.card.driver-card.stats-card.mobile .driver-logo-container {
+  min-height: initial;
+  margin-bottom: 0;
+  width: 125px;
+}
+/*/////////// /////////// */
 
 /* WEB format - 768 up web class appplied by JS */
 .web.driver-card .left-column,
