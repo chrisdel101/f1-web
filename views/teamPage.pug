@@ -10,7 +10,8 @@ block content
 
     //- append the card content to page
   block append content
-      .team-card-page
+      - console.log('PP', prettyPage)
+      .team-card-page(class=prettyPage ? 'pretty-page' : '')
           //- noToggle is used with /api
           if !noToggle 
             div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 

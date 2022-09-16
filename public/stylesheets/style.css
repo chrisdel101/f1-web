@@ -42,7 +42,6 @@ footer {
   width: 75px;
   height: auto;
 }
-
 ul.navbar-nav {
   background: #f8f9fa;
 }
@@ -131,8 +130,8 @@ picture {
   padding: 0 50px;
   margin-bottom: 50px;
 }
-.team-card-page,
-.driver-card-page {
+.pretty-page.team-card-page,
+.pretty-page.driver-card-page {
   margin: 50px;
 }
 .all-drivers,
@@ -216,156 +215,6 @@ picture {
   display: flex;
   flex-direction: column;
 }
-/* .team-card.mini {
-  width: 200px;
-  margin: 5px;
-}
-.driver-card,
-.team-card {
-  list-style: none;
-}
-.driver-card.select-card a,
-.team-card.select-card a {
-  color: initial;
-}
-.driver-card.select-card,
-.team-card.select-card,
-.driver-card.stats-card,
-.team-card.stats-card {
-  margin-bottom: 20px;
-  margin-right: 10px;
-  overflow: hidden;
-  flex-direction: column;
-}
-.driver-card.select-card,
-.team-card.select-card,
-.driver-card.stats-card,
-.team-card.stats-card {
-  margin-bottom: 20px;
-  margin-right: 10px;
-  overflow: hidden;
-  flex-direction: column;
-}
-.team-card.select-card:not(.mini) h5 {
-  font-size: 2rem;
-}
-.team-card.select-card:not(.mini) .team-title {
-  min-height: 100px;
-}
-.mini .driver-title-container {
-  min-height: 50px;
-}
-figure.main-image-container.main-image-container {
-  margin: 0;
-}
-.right-column {
-  display: flex;
-  background-color: whitesmoke;
-  flex-direction: column;
-  padding-left: 20px;
-}
-.team-card .drivers {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.team-card .driver span {
-  margin-right: 10px;
-}
-.team-card .driver .flag {
-  max-width: 35px;
-}
-.team-card .drivers {
-  min-height: 60px;
-  margin: 10px 0;
-}
-.team-card .driver {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.team-card .main-image {
-  height: 100%;
-  margin: 0;
-}
-.team-card.mini {
-  height: 80%;
-}
-.team-card .main-image img {
-  object-fit: cover;
-  height: 100%;
-  width: 100%;
-}
-.team-title-container {
-  display: flex;
-  justify-content: center;
-}
-.driver-title-container {
-  display: flex;
-  justify-content: space-around;
-  min-height: 70px;
-  align-items: center;
-}
-.select-card:not(.mini) .driver-title-container,
-.stats-card.mobile .driver-title-container {
-  min-height: 100px;
-}
-.mini .driver-title-container h2 {
-  font-size: 1em;
-}
-.select-card:not(.mini) h2 {
-  font-size: 2.5rem;
-}
-.driver-title-container h2 {
-  font-family: 'Montserat', sans-serif;
-}
-.driver-title-container .flag-img-container {
-  align-self: center;
-}
-.select-card:not(.mini) .flag-img-container,
-.stats-card .flag-img-container {
-  max-width: 75px;
-}
-.select-card.mini .flag-img-container {
-  max-width: 50px;
-}
-figure.flag-img-container {
-  margin: 0;
-}
-.team-card.mini .team-title {
-  min-height: 40px;
-}
-.team-title {
-  font-family: 'Montserat', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 60px;
-  text-align: center;
-}
-.driver-logo-container {
-  min-height: 60px;
-  align-self: center;
-  max-width: 150px;
-  margin: 10px 0;
-}
-.table-container {
-  display: flex;
-  justify-content: center;
-  font-size: 1rem;
-  padding-bottom: 20px;
-}
-.stat-key {
-  font-weight: bold;
-}
-
-.stats-columns {
-  display: flex;
-  justify-content: center;
-}
-.all-drivers .select-card:not(.mini) .flag-img-container {
-  max-width: 50px;
-} */
 .toggle-switch-container {
   margin: 25px 0;
   display: flex;
@@ -428,45 +277,6 @@ figure.flag-img-container {
   .navbar .title {
     font-size: 4em;
   }
-  /* .left-column {
-    height: auto;
-  }
-  .right-column {
-    width: 150%;
-  }
-  .mobile .right-column {
-    width: inherit;
-  }
-  .card.driver-card.mini,
-  .card.team-card.mini {
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .team-card .driver {
-    display: flex;
-  }
-  .card.driver-card.stats-card,
-  .card.team-card.stats-card {
-    height: auto;
-    flex-direction: row;
-    overflow: hidden;
-  }
-  .card.driver-card.stats-card.mobile,
-  .card.team-card.stats-card.mobile {
-    height: auto;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .card.driver-card.select-card,
-  .card.team-card.select-card {
-    height: auto;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  .driver-table-container {
-    margin-top: 15px;
-  } */
   .table-container {
     height: 100%;
     align-items: center;

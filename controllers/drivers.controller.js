@@ -26,6 +26,8 @@ module.exports = {
 }
 function setDefaultQueryParams(ctx) {
   return {
+    // add layout margin when showing card
+    prettyPage: ctx.query?.prettyPage === 'false' ? false : true,
     format: ctx.query?.format || cardFormats.WEB,
     cardSize: ctx.query?.size || cardSizes.FULL,
     layout: ctx.query['layout'] || cardLayouts.STATS,
@@ -77,7 +79,6 @@ async function renderAllDriversPage(ctx) {
       urls,
       toggleSwitchState: cardSize === cardSizes.MINI ? false : true,
       noNav:noNav
-
     })
   } catch (e) {
     error('Error in renderAllDriversPage', e)
@@ -116,7 +117,7 @@ async function renderDriverCard(ctx) {
 }
 // build card and show on page with nav header - same as renderDriverCard w/o showCardOnly
 async function renderDriverPage(ctx) {
-  const { cardSize, noNav, noToggle, pageType, layout, format } =
+  const { cardSize, noNav, noToggle, pageType, layout, format, prettyPage } =
     setDefaultQueryParams(ctx)
   try {
     const driverCard = await buildDriverCard(ctx.params.name_slug)
@@ -128,13 +129,13 @@ async function renderDriverPage(ctx) {
       toggleNextEndpoint: utils.toggleNextEndpointDriver,
       toggleHideNav: utils.toggleHideNav,
       ctx: ctx,
-      ...setDefaultQueryParams(ctx),
       noNav: noNav,
       noToggle: noToggle,
       pageType: pageType,
       layout: layout,
       cardSize: cardSize,
-      format: format
+      format: format,
+      prettyPage: prettyPage
     })
   } catch (e) {
     error('Error in renderDriverPage', e)

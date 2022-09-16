@@ -9,7 +9,7 @@ block content
   include mixins/_driverStatsCardMixin
   include mixins/_driverSelectCardMixin
   block append content
-      .driver-card-page
+      .driver-card-page(class=prettyPage ? 'pretty-page' : '')
           //- noToggle is used with /api
           if !noToggle 
             div(id=`${pageType}-toggle-card` class=`toggle-switch-container`) 

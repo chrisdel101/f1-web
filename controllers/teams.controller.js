@@ -22,6 +22,8 @@ module.exports = {
 }
 function setDefaultQueryParams(ctx) {
   return {
+    // add layout margin when showing card
+    prettyPage: ctx.query?.prettyPage === 'false' ? false : true,
     format: ctx.query?.format || cardFormats.WEB,
     cardSize: ctx.query?.size || cardSizes.FULL,
     layout: ctx.query['layout'] || cardLayouts.STATS,
@@ -116,7 +118,7 @@ async function renderTeamCard(ctx) {
 // build card and show on page with nav header - same as renderTeamCard w/o showCardOnly
 async function renderTeamPage(ctx) {
   try {
-    const { cardSize, noNav, noToggle, pageType, layout, format } =
+    const { cardSize, noNav, noToggle, pageType, layout, format, prettyPage } =
       setDefaultQueryParams(ctx)
     const teamCard = await buildTeamCard(ctx.params.name_slug)
     return await ctx.render('teamPage', {
@@ -132,7 +134,8 @@ async function renderTeamPage(ctx) {
       pageType: pageType,
       cardSize: cardSize,
       layout: layout,
-      format: format
+      format: format,
+      prettyPage: prettyPage
 
     })
   } catch (e) {
